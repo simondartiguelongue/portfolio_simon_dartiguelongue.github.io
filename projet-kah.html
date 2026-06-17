@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KAH — Kart à Hélice · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    .projet-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .projet-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 0.9rem; flex-wrap: wrap; }
+    .projet-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .projet-badge.done { background: #181818; color: #fff; }
+    .projet-badge.inprogress { background: #e8f0ff; color: #2d5bcc; }
+    .projet-title {
+      font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
+      color: var(--text-main); margin-bottom: 0.6rem;
+    }
+    .projet-subtitle { font-family: var(--font-body); font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.6; }
+
+    .projet-section { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+    .projet-section:last-of-type { border-bottom: none; }
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 1.5rem;
+    }
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem;
+    }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* Liste à puces de description */
+    .projet-list {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin: 1rem 0 1.5rem 1.5rem;
+      padding: 0;
+    }
+    .projet-list li {
+      margin-bottom: 0.75rem;
+    }
+    .projet-list strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── FIGURES ────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #fff;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-img.h-160   { height: 160px; }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.5rem; border-top: 1px solid var(--border);
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.25rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .fig-full { margin: 1.25rem 0; }
+
+    /* ── COMPÉTENCES ────────────────────────────────────── */
+    .comp-list { display: flex; flex-direction: column; gap: 16px; margin-top: 1.5rem; }
+    .comp-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .comp-header { display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: start; padding: 1rem 1.25rem; }
+    .comp-badge {
+      font-family: var(--font-display); font-size: 13px; font-weight: 700;
+      color: var(--text-main); background: var(--tag-bg); border-radius: 8px;
+      padding: 6px 0; text-align: center; margin-top: 2px; flex-shrink: 0;
+    }
+    .comp-content-title { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 0.3rem; }
+    .comp-content-text { font-family: var(--font-body); font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.7; }
+    .comp-figures { padding: 0 1.25rem 1.25rem; }
+    .comp-figures .fig-row { margin: 0; }
+    .comp-figures .fig-full { margin: 0; }
+    .comp-link-row { margin-top: 1.25rem; }
+
+    /* ── MATRICE DE CONFORMITÉ ──────────────────────────── */
+    .conformite-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 8px; margin-top: 1.5rem;
+    }
+    .conformite-item {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.65rem 0.9rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; min-width: 0;
+    }
+    .conformite-grid .conformite-label {
+      font-family: var(--font-body); font-size: 12px; font-weight: 400;
+      color: var(--text-muted); min-width: 0; overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap;
+    }
+    .conformite-status {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 2px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+    }
+    .conformite-status.ok      { background: #e8f5e8; color: #2d7a2d; }
+    .conformite-status.nok     { background: #fdecea; color: #c0392b; }
+    .conformite-status.pending { background: #fdf5e0; color: #a07000; }
+
+    /* ── DOCUMENTS ───────────────────────────────────────── */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 1.5rem;
+    }
+    .doc-block { display: flex; flex-direction: column; gap: 0.6rem; }
+    .doc-block-header {
+      display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .doc-block-label { font-family: var(--font-body); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .doc-block-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text-main); }
+    .doc-open-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 6px 14px; background: var(--text-main); color: #fff;
+      border-radius: 50px; transition: opacity 0.2s, transform 0.2s; text-decoration: none;
+    }
+    .doc-open-btn:hover { opacity: 0.82; transform: translateY(-1px); }
+    .doc-frame-wrapper {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .doc-iframe { width: 100%; height: 320px; border: none; display: block; }
+    .doc-placeholder {
+      width: 100%; height: 320px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.75rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .doc-placeholder-icon { font-size: 32px; opacity: 0.3; }
+    .doc-placeholder-text { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .doc-placeholder-sub { font-size: 11px; color: var(--text-muted); opacity: 0.6; }
+
+    @media (max-width: 640px) {
+      .fig-row.col-2, .fig-row.col-3 { grid-template-columns: 1fr; }
+      .comp-header { grid-template-columns: 52px 1fr; }
+      .docs-grid { grid-template-columns: 1fr; }
+      .conformite-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="page-inner">
+
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link active" data-fr="Projets" data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <a href="projets.html" class="projet-back">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 12L6 8l4-4"/></svg>
+        <span data-fr="Retour aux projets" data-en="Back to projects">Retour aux projets</span>
+      </a>
+
+      <header class="projet-header anim-1">
+        <div class="projet-meta-row">
+          <span class="projet-badge done">Terminé</span>
+          <span class="projet-badge">SAÉ BUT1 — S2</span>
+          <span class="projet-badge">Toy Corporation</span>
+          <span class="projet-badge">Fév. — Mai 2026</span>
+        </div>
+        <h1 class="projet-title">Kart<br>à Hélice</h1>
+        <p class="projet-subtitle">Conception et vérification d'un kart télécommandé à hélice, infrarouge — émetteur et récepteur — IUT GEII Bordeaux</p>
+      </header>
+
+      <section class="projet-section anim-2">
+        <p class="projet-section-label">Le projet</p>
+        <h2 class="projet-section-title">Présentation</h2>
+
+        <p class="projet-text">
+          Dans le cadre de la SAÉ de première année de BUT GEII, je développe en équipe un <strong>kart à hélice télécommandé</strong> pour usage en intérieur, commandé par le client fictif Toy Corporation. Le produit se compose de deux sous-systèmes : un <strong>émetteur</strong> (télécommande, 120 × 80 mm) qui acquiert les consignes de l'utilisateur via deux potentiomètres (vitesse et direction) et un bouton klaxon, puis émet des trames infrarouges au protocole NEC à une distance minimale de 10 m ; et un <strong>récepteur</strong> (kart, 100 × 75 mm) qui décode ces trames, génère les signaux PWM pour le moteur brushless et le servomoteur de direction, et active un buzzer klaxon à 4 kHz.
+        </p>
+        <p class="projet-text">
+          L'émetteur est alimenté par un accumulateur LiPo 2S assurant 60 minutes d'autonomie. Le cœur de traitement est une carte Arduino (ATmega328P), responsable de l'acquisition des potentiomètres, du codage en trames NEC, et du pilotage des deux LED IR (courant crête &gt; 200 mA). Le coût total du prototype doit rester inférieur à <strong>160 € TTC</strong>, avec un budget de développement de 60 heures.
+        </p>
+
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img class="fig-img h-auto" src="img/KAH_img01.png" alt="Synoptique fonctionnel émetteur — DDC Fig. 1" />
+            <p class="fig-caption">Fig. 1 (DDC) — Synoptique fonctionnel de l'émetteur : acquisition (potentiomètres PTA4543 × 2 + bouton MCDTSA6-2K), traitement (ATmega328P + quartz), action (LED IR TSAL6200 × 2 + transistor BC337), énergie (LiPo 2S + régulateur LM1117T-5)</p>
+          </div>
+          <div class="fig">
+            <img class="fig-img h-auto" src="img/KAH_img02.png" alt="Synoptique fonctionnel récepteur — DDC Fig. 2" />
+            <p class="fig-caption">Fig. 2 (DDC) — Synoptique fonctionnel du récepteur : acquisition (capteur IR TSOP4438), traitement (ATmega328P), action (moteur brushless Turnigy 28-22-CQ + contrôleur XREG10, servomoteur HS322HD, buzzer MCKPT-G1210-3916, LEDs), énergie (LiPo 2S + BEC intégré)</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Phase 1</p>
+        <h2 class="projet-section-title">Ce que j'ai fait — Conception</h2>
+
+        <p class="projet-text">
+          J'ai pris en charge les paragraphes d'architecture électronique de l'émetteur : acquisition (étage potentiomètres, interface ADC), traitement NEC (codage des octets « address » et « data », construction de la trame, gestion de la répétitivité à 108 ms / 333 ms) et action (pilotage des deux LED IR avec un courant crête supérieur à 200 mA, calcul des résistances de limitation). J'ai analysé les schémas d'architecture fournis et identifié les solutions techniques retenues pour chaque exigence. Mon travail s'est concentré sur la conception et la justification technique des blocs Traitement et Action.
+        </p>
+        <p class="projet-text">
+          Pour EXIG_EMTT_TRAITEMENT, l'octet « address » encode sur 7 bits la valeur d'équipe (ex. 42h pour le groupe A4, équipe 2) et sur 1 bit l'état du bouton klaxon. L'octet « data » encode sur 3 bits la puissance moteur et sur 5 bits la direction des roues. Pour EXIG_EMTT_REPETITIVITE, la trame est émise en continu à 108 ms lorsque les données changent, et à 333 ms lorsqu'elles sont identiques — les deux avec une tolérance de ±10 %. Pour EXIG_RCPT_SECURITE, en cas d'absence ou de trame invalide, la puissance moteur est immédiatement ramenée à 0.
+        </p>
+        
+        <ul class="projet-list">
+          <li><strong>Solutions proposées pour le Traitement :</strong> J'ai opté pour un double amplificateur opérationnel MCP6002 configuré en comparateur analogique de tension. Ce choix se justifie par sa technologie Rail-to-Rail en entrée et en sortie, indispensable sous une faible alimentation de 5 V pour éviter les tensions de déchet et garantir une comparaison fiable des seuils face au signal du LM35DZ. Pour décoder ces signaux sans microcontrôleur, j'ai proposé l'intégration d'un circuit logique de portes NON-OU (74HC02). Ce circuit CMOS offre une excellente immunité aux bruits et permet, par combinaison logique issue de ma table de vérité, d'isoler mathématiquement les trois plages de température.</li>
+          <li><strong>Solutions proposées pour l'Action :</strong> J'ai conçu un étage à trois LED (Bleue, Verte, Rouge) configurées en logique exclusive pour assurer l'affichage visuel de l'état de l'eau (trop froide, idéale, trop chaude). Pour garantir qu'une seule LED ne s'allume à la fois, j'ai interfacé les sorties des portes logiques avec des transistors bipolaires montés en commutation, agissant comme des interrupteurs commandés. Chaque branche intègre une résistance de limitation de courant calculée pour fixer l'intensité à 10 mA, assurant une luminosité optimale sans surcharger les sorties du circuit intégré.</li>
+        </ul>
+
+        <p class="projet-text" style="font-style:italic;">C'est à travers ces choix techniques que j'ai développé les compétences suivantes.</p>
+
+        <div class="comp-list">
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.1</div>
+              <div>
+                <p class="comp-content-title">J'identifie les fonctions demandées à la lecture du cahier des charges</p>
+                <p class="comp-content-text">
+                  J'ai décomposé le besoin en fonctions techniques à traiter par le cœur de traitement du récepteur : décoder les trames NEC reçues, contrôler leur validité et l'adresse d'équipe (22h), extraire la puissance moteur sur 3 bits et la direction sur 5 bits, et appliquer la sécurité en cas de trame invalide ou d'absence de signal IR. Pour répondre à ces fonctions, j'ai identifié que l'ATmega328P en boîtier THD était le microcontrôleur adapté : boîtier traversant compatible avec les outils disponibles, ADC 10 bits, timers 16 bits pour générer les signaux PWM moteur et servomoteur avec une résolution de l'ordre de la microseconde, et système d'interruptions pour le décodage NEC.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig fig-full">
+                <img class="fig-img h-auto" src="img/KAH_img02.png" alt="Synoptique électronique récepteur — blocs fonctionnels — DDC" loading="lazy" />
+                <p class="fig-caption">DDC — Synoptique électronique du récepteur : blocs Acquisition (capteur IR TSOP), Traitement (ATmega328P), Action (moteur brushless, servomoteur, buzzer, LEDs), Énergie (LiPo 2S + BEC)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.2</div>
+              <div>
+                <p class="comp-content-title">Je propose une solution technique pour répondre à une fonction</p>
+                <p class="comp-content-text">
+                  Pour le bloc Traitement récepteur, j'ai argumenté le choix de l'ATmega328P sur la base de ses performances temporelles : à 20 MHz, le microcontrôleur exécute une instruction en 50 ns, ce qui est largement suffisant pour décoder une porteuse NEC à 38 kHz (période 26 µs). J'ai dimensionné le circuit RESET en calculant la résistance minimale à partir de la loi de charge RC — condition : Uc(t) &lt; 0,2·Vcc pendant t &gt; 2,5 µs avec C = 1 nF — obtenant R &gt; 11,2 kΩ, normalisé à 22 kΩ série E3. Pour le montage oscillateur Pierce, en tenant compte des 14 pF parasites internes de l'ATmega, j'ai calculé C1 = C2 = 22 pF pour un quartz 16 MHz à CL = 18 pF.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img03.png" alt="Circuit RESET ATmega328P — DDC CDT_RCPT_TRAITEMENT" loading="lazy" />
+                  <p class="fig-caption">DDC — Circuit de démarrage RESET récepteur (CDT_RCPT_TRAITEMENT) : R = 22 kΩ, C = 1 nF, τ calculé = 22 µs &gt; 2,5 µs minimum datasheet</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img04.png" alt="Montage oscillateur Pierce ATmega328P — DDC CDT_RCPT_TRAITEMENT" loading="lazy" />
+                  <p class="fig-caption">DDC — Montage oscillateur Pierce récepteur : quartz 16 MHz, C1 = C2 = 22 pF (CL = 18 pF + 14 pF parasites internes ATmega compensés)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.3</div>
+              <div>
+                <p class="comp-content-title">J'affine une solution technique en m'appuyant sur un maquettage numérique et/ou matériel</p>
+                <p class="comp-content-text">
+                  J'ai simulé le circuit RESET du récepteur sous Proteus ISIS pour valider le dimensionnement analytique. Le montage modélisé est un circuit RC avec R = 22 kΩ, C = 1 nF et Vcc = 5 V, branché sur la broche RESET de l'ATmega328P. La loi de charge donne une constante de temps τ = R·C = 22 µs ; la condition imposée est que la tension sur RESET reste inférieure à 0,2·Vcc = 1 V pendant au moins 2,5 µs au démarrage. La simulation retourne τ = 4,94 µs, supérieur au minimum requis : la broche RESET reste bien à l'état bas suffisamment longtemps pour garantir un démarrage stable et reproductible du microcontrôleur.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img05.jpeg" alt="Simulation ISIS circuit RESET ATmega328P — DDC CDT_RCPT_TRAITEMENT" loading="lazy" />
+                  <p class="fig-caption">DDC — Simulation ISIS : circuit RC de RESET récepteur, chronogramme de montée en tension sur la broche RESET (τ = 4,94 µs &gt; 2,5 µs minimum)</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img06.jpeg" alt="Carte récepteur kart à hélice assemblée — DDF" loading="lazy" />
+                  <p class="fig-caption">DDF — Carte électronique récepteur assemblée : ATmega328P, capteur IR TSOP, connecteurs moteur brushless, servomoteur et buzzer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.4</div>
+              <div>
+                <p class="comp-content-title">Je rédige un dossier de conception et de fabrication</p>
+                <p class="comp-content-text">
+                  J'ai rédigé les paragraphes de conception préliminaire et détaillée portant sur le bloc Traitement récepteur — choix du microcontrôleur, logique de sécurité, dimensionnement des circuits RESET et oscillateur — ainsi que le bloc Énergie récepteur, l'interrupteur récepteur et le schéma électrique récepteur, en respectant la structure documentaire imposée : rédacteur/relecteur, figures numérotées, référencement explicite des exigences. J'ai également contribué à la nomenclature coût-délai et à l'architecture informatique émetteur.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img07.png" alt="Typon top carte récepteur — DDF KAH_DDF_RCPT" loading="lazy" />
+                  <p class="fig-caption">DDF — Typon top (avec effet miroir) de la carte récepteur : 100 × 75 mm, ATmega328P, TSOP, connecteurs actionneurs</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img08.png" alt="Schéma électrique carte récepteur — DDF KAH_DDF_RCPT" loading="lazy" />
+                  <p class="fig-caption">DDF — Schéma électrique du récepteur : ATmega328P, circuit RESET, oscillateur Pierce 16 MHz, capteur TSOP, connecteurs moteur brushless + BEC, servomoteur, buzzer, LEDs</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="comp-link-row" style="margin-top:1.25rem;">
+          <a href="competences.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:12px;font-weight:600;padding:9px 20px;background:#111;color:#fff;border-radius:50px;text-decoration:none;transition:opacity 0.2s;">En savoir plus sur ces compétences →</a>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Phase 2</p>
+        <h2 class="projet-section-title">Ce que j'ai fait — Vérification</h2>
+
+        <p class="projet-text">
+          La phase de vérification en équipe a notamment intégré la validation de la bonne acquisition des tensions des potentiomètres et du bouton de la télécommande, le contrôle de la validité des trames générées en fonction des états de ces IHM, ainsi que la vérification que le kart pouvait fonctionner en continu pendant au moins 15 minutes à mi-puissance du moteur.
+        </p>
+        
+        <p class="projet-text">
+          <strong>Vérification du bloc Énergie (Carte Émettrice) :</strong> J'ai qualifié le sous-système d'alimentation de la télécommande. J'ai réalisé des essais de décharge en continu et des mesures électriques afin de valider l'exigence d'autonomie, confirmant que le bloc d'énergie permet au kart de fonctionner pendant au moins 15 minutes consécutives lorsque le moteur est sollicité en continu à mi-puissance. J'ai également mesuré les tensions régulées de la carte émettrice Pycom et validé le fonctionnement de la LED témoin qui signale visuellement la bonne mise sous tension du circuit.
+        </p>
+        <p class="projet-text">
+          <strong>Vérification du bloc Traitement (Carte Émettrice) :</strong> J'ai mené les contrôles fonctionnels et protocolaires de la télécommande. J'ai d'abord vérifié la bonne acquisition des tensions analogiques issues des deux potentiomètres (vitesse et direction) et le changement d'état logique lors de l'appui sur le bouton-poussoir. J'ai ensuite instrumenté la sortie infrarouge à l'oscilloscope pour contrôler la validité des trames générées au protocole NEC en fonction des actions sur ces IHM (IHM au repos ou en mouvement). L'intervalle de répétition mesuré est de 107 ms en variation dynamique (spécification à 108 ms ±10 %) et bascule à 333 ms lorsque les commandes restent immobiles.
+        </p>
+
+        <p class="projet-text" style="font-style:italic;">La conduite de ces essais m'a amené à travailler les compétences suivantes.</p>
+
+        <div class="comp-list">
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">V.1</div>
+              <div>
+                <p class="comp-content-title">J'applique, j'élabore, je rédige une procédure d'essais</p>
+                <p class="comp-content-text">
+                  J'ai rédigé et appliqué les protocoles de vérification émetteur : mécanique, traitement, répétitivité, énergie et interrupteur — but de l'essai, moyens (références appareils, câblage), procédure numérotée, résultats attendus avec tolérance et statut de conformité. Pour la vérification du bloc Traitement, la procédure consiste à instrumenter la sortie infrarouge à l'oscilloscope et à décoder six cas de trames NEC bit à bit — octet address avec bouton OFF (0010 0010) et ON (1010 0010), quatre combinaisons vitesse/direction — puis à comparer aux valeurs théoriques. Tous les cas sont conformes.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig fig-full">
+                <img class="fig-img h-auto" src="img/KAH_img09.png" alt="Schéma de mesure ESS_EXIG_EMTT_TRAITEMENT — décodage trame NEC à l'oscilloscope" loading="lazy" />
+                <p class="fig-caption">DDV — Schéma de mesure ESS_EXIG_EMTT_TRAITEMENT : oscilloscope sur sortie LED IR (via résistance shunt 4,7 Ω), alimentation LiPo 2S, décodage bit à bit des octets address et data</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">V.2</div>
+              <div>
+                <p class="comp-content-title">J'identifie, je corrige les non-conformités d'un prototype</p>
+                <p class="comp-content-text">
+                  Lors de la vérification mécanique du récepteur au pied à coulisse, j'ai mesuré la distance entre le centre des trous de fixation et les bords de la carte : les trous 1, 3 et 4 donnent des distances de 6,64 mm, 6,62 mm et 5,20 mm — hors de la tolérance autorisée de 5,5 à 6,5 mm. J'ai documenté la cause racine : un manque de précision lors du perçage en atelier. J'ai évalué que la non-conformité était purement mécanique sans impact fonctionnel sur le circuit.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img10.png" alt="Oscilloscope trame NEC ESS_EXIG_EMTT_TRAITEMENT — DDV" loading="lazy" />
+                  <p class="fig-caption">DDV — Oscilloscope ESS_EXIG_EMTT_TRAITEMENT : trame NEC décodée, octet address = 0010 0010 (bouton OFF, adresse 22h), conformité bit à bit vérifiée</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/KAH_img11.png" alt="Mesure distance trou fixation récepteur ESS_RCPT_DIMENSIONS — DDV" loading="lazy" />
+                  <p class="fig-caption">DDV — ESS_RCPT_DIMENSIONS : mesure au pied à coulisse de la distance centre-trou/bord de carte récepteur — trous 1, 3, 4 hors tolérance 5,5–6,5 mm</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="comp-link-row" style="margin-top:1.25rem;">
+          <a href="competences.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:12px;font-weight:600;padding:9px 20px;background:#111;color:#fff;border-radius:50px;text-decoration:none;transition:opacity 0.2s;">En savoir plus sur ces compétences →</a>
+        </div>
+
+        <p class="projet-section-label" style="margin-top:2rem; margin-bottom:0.4rem;">Matrice de conformité — état actuel</p>
+        <div class="conformite-grid">
+          <div class="conformite-item"><span class="conformite-label">EXIG_EMTT_DIMENSIONS</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_EMTT_ENERGIE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_EMTT_IHM</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_EMTT_TRAITEMENT</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_EMTT_REPETITIVITE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_EMTT_PUISSANCE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_EMTT_INDICATEUR</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_RCPT_DIMENSIONS</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_RCPT_TRAITEMENT</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_RCPT_SECURITE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_RCPT_MOTEUR</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_RCPT_ROUE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_RCPT_KLAXON</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_RCPT_CONNEXION</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_COUT</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_DELAI</span><span class="conformite-status ok">Conforme</span></div>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Livrables</p>
+        <h2 class="projet-section-title">Documents du projet</h2>
+
+        <div class="docs-grid">
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">CDC</p>
+                <p class="doc-block-title">Cahier des Charges</p>
+              </div>
+              <a href="documents/KAH_CDC.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/KAH_CDC.pdf#toolbar=0&navpanes=0" title="Cahier des Charges KAH"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDC</p>
+                <p class="doc-block-title">Dossier De Conception</p>
+              </div>
+              <a href="documents/KAH_DDC.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/KAH_DDC.pdf#toolbar=0&navpanes=0" title="Dossier De Conception KAH"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDF</p>
+                <p class="doc-block-title">Dossier De Fabrication</p>
+              </div>
+              <a href="documents/KAH_DDF.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/KAH_DDF.pdf#toolbar=0&navpanes=0" title="Dossier De Fabrication KAH"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDV</p>
+                <p class="doc-block-title">Dossier De Vérification</p>
+              </div>
+              <a href="documents/KAH_DDV.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/KAH_DDV.pdf#toolbar=0&navpanes=0" title="Dossier De Vérification KAH"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">Soutenance</p>
+                <p class="doc-block-title">Exposé Conception</p>
+              </div>
+              <a href="documents/KAH_EXP_CONCEPTION.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/KAH_EXP_CONCEPTION.pdf#toolbar=0&navpanes=0" title="Exposé Conception KAH"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">Soutenance</p>
+                <p class="doc-block-title">Exposé Vérification</p>
+              </div>
+              <a href="documents/KAH_EXP_VERIFICATION.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/KAH_EXP_VERIFICATION.pdf#toolbar=0&navpanes=0" title="Exposé Vérification KAH"></iframe>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SLR — Système Sonore et Lumineux · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    .projet-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .projet-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 0.9rem; flex-wrap: wrap; }
+    .projet-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .projet-badge.done { background: #181818; color: #fff; }
+    .projet-title {
+      font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
+      color: var(--text-main); margin-bottom: 0.6rem;
+    }
+    .projet-subtitle { font-family: var(--font-body); font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.6; }
+
+    .projet-section { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+    .projet-section:last-of-type { border-bottom: none; }
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 1.5rem;
+    }
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem;
+    }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* Liste à puces de description */
+    .projet-list {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin: 1rem 0 1.5rem 1.5rem;
+      padding: 0;
+    }
+    .projet-list li {
+      margin-bottom: 0.75rem;
+    }
+    .projet-list strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── FIGURES ────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #fff;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-img.h-160   { height: 160px; }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.5rem; border-top: 1px solid var(--border);
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.25rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .fig-full { margin: 1.25rem 0; }
+
+    /* ── COMPÉTENCES ────────────────────────────────────── */
+    .comp-list { display: flex; flex-direction: column; gap: 16px; margin-top: 1.5rem; }
+    .comp-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .comp-header { display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: start; padding: 1rem 1.25rem; }
+    .comp-badge {
+      font-family: var(--font-display); font-size: 13px; font-weight: 700;
+      color: var(--text-main); background: var(--tag-bg); border-radius: 8px;
+      padding: 6px 0; text-align: center; margin-top: 2px; flex-shrink: 0;
+    }
+    .comp-content-title { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 0.3rem; }
+    .comp-content-text { font-family: var(--font-body); font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.7; }
+    .comp-figures { padding: 0 1.25rem 1.25rem; }
+    .comp-figures .fig-row { margin: 0; }
+    .comp-figures .fig-full { margin: 0; }
+    .comp-link-row { margin-top: 1.25rem; }
+
+    /* ── MATRICE DE CONFORMITÉ ──────────────────────────── */
+    .conformite-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 8px; margin-top: 1.5rem;
+    }
+    .conformite-item {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.65rem 0.9rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; min-width: 0;
+    }
+    .conformite-label {
+      font-family: var(--font-body); font-size: 12px; font-weight: 400;
+      color: var(--text-muted); min-width: 0; overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap;
+    }
+    .conformite-status {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 2px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+    }
+    .conformite-status.ok  { background: #e8f5e8; color: #2d7a2d; }
+    .conformite-status.nok { background: #fdecea; color: #c0392b; }
+
+    /* ── DOCUMENTS ───────────────────────────────────────── */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 1.5rem;
+    }
+    .doc-block { display: flex; flex-direction: column; gap: 0.6rem; }
+    .doc-block-header {
+      display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .doc-block-label { font-family: var(--font-body); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .doc-block-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text-main); }
+    .doc-open-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 6px 14px; background: var(--text-main); color: #fff;
+      border-radius: 50px; transition: opacity 0.2s, transform 0.2s; text-decoration: none;
+    }
+    .doc-open-btn:hover { opacity: 0.82; transform: translateY(-1px); }
+    .doc-frame-wrapper {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .doc-iframe { width: 100%; height: 320px; border: none; display: block; }
+    .doc-placeholder {
+      width: 100%; height: 320px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.75rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .doc-placeholder-icon { font-size: 32px; opacity: 0.3; }
+    .doc-placeholder-text { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .doc-placeholder-sub { font-size: 11px; color: var(--text-muted); opacity: 0.6; }
+
+    @media (max-width: 640px) {
+      .fig-row.col-2, .fig-row.col-3 { grid-template-columns: 1fr; }
+      .comp-header { grid-template-columns: 52px 1fr; }
+      .docs-grid { grid-template-columns: 1fr; }
+      .conformite-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="page-inner">
+
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link active" data-fr="Projets" data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <a href="projets.html" class="projet-back">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 12L6 8l4-4"/></svg>
+        <span data-fr="Retour aux projets" data-en="Back to projects">Retour aux projets</span>
+      </a>
+
+      <header class="projet-header anim-1">
+        <div class="projet-meta-row">
+          <span class="projet-badge done">Terminé</span>
+          <span class="projet-badge">SAÉ BUT1 — S1</span>
+          <span class="projet-badge">Toy Corporation</span>
+          <span class="projet-badge">Sept. — Oct. 2025</span>
+        </div>
+        <h1 class="projet-title">Système Sonore<br>et Lumineux</h1>
+        <p class="projet-subtitle">Conception et vérification d'un système électronique sonore et lumineux embarqué sur un planeur Rafale miniature — IUT GEII Bordeaux</p>
+      </header>
+
+      <section class="projet-section anim-2">
+        <p class="projet-section-label">Le projet</p>
+        <h2 class="projet-section-title">Présentation</h2>
+
+        <p class="projet-text">
+          Dans le cadre de la SAÉ de première année de BUT GEII, j'ai conçu et vérifié un <strong>système sonore et lumineux</strong> destiné à équiper un planeur Rafale miniature lancé à la main lors de sessions d'aéromodélisme en soirée, commandé par le client fictif Toy Corporation. L'objectif était de rendre le planeur visible et sonore — trois voyants lumineux (rouge, vert et jaune clignotant) et un buzzer reproduisant un bruit pseudo-aléatoire modulé par la tension d'alimentation.
+        </p>
+        <p class="projet-text">
+          Le produit se compose de deux cartes électroniques superposées : une <strong>carte son</strong> (95 × 40 mm, coût ~15,85 € TTC) intégrant un microcontrôleur ATtiny45V, un super-condensateur 1F/5,4V comme source d'énergie, une référence de tension LM385BZ-1.2 et un buzzer piézoélectrique ; et une <strong>carte lumière</strong> (70 × 40 mm) dont j'ai assuré la conception, avec un NE555P en astable pilotant la LED jaune (période 1,9 s, temps actif 0,1 s) et deux résistances pour les LED rouge et verte à allumage permanent.
+        </p>
+
+        <div class="fig-full fig">
+          <img class="fig-img h-auto" src="img/SLR_img01.png" alt="Architecture fonctionnelle SLR — DDC Fig. 1" />
+          <p class="fig-caption">Fig. 1 (DDC) — Architecture fonctionnelle du système sonore et lumineux : carte son (énergie, acquisition, traitement, action sonore) et carte lumière (traitement clignotement, action LED)</p>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Phase 1</p>
+        <h2 class="projet-section-title">Ce que j'ai fait — Conception</h2>
+
+        <p class="projet-text">
+          J'ai pris en charge les paragraphes <strong>CDT_CLIGNOTE</strong> de la carte lumière, ainsi que la rédaction des sections correspondantes du DDC. Mon travail a débuté par la lecture du CDC : l'exigence EXIG_CLIGNOTE impose une période de 1,9 s (±20 %) et un temps actif de 0,1 s (±20 %). Le bloc de traitement retenu en conception préliminaire est un NE555P en montage astable avec logique négative.
+        </p>
+        
+        <ul class="projet-list">
+          <li><strong>Solutions proposées pour le Traitement :</strong> J'ai choisi d'utiliser le circuit intégré <strong>NE555P</strong> configuré en oscillateur astable. Pour répondre à la contrainte d'un temps actif très court (0,1 s) face à une période longue (1,9 s), j'ai implémenté une <strong>logique négative</strong> : la LED est connectée entre la sortie du timer et le +VCC. Ainsi, l'allumage correspond au temps bas de la sortie, ce qui permet de dissocier mathématiquement le rapport cyclique des constantes de temps classiques du 555.</li>
+          <li><strong>Solutions proposées pour l'Action :</strong> J'ai conçu un étage de puissance simple composé de résistances de limitation calculées pour chaque couleur. Pour la LED jaune clignotante, la valeur de R4 (4,7 kΩ) a été dimensionnée pour limiter le courant à 10 mA lors de l'état bas du NE555, garantissant ainsi une intensité lumineuse cible de 500 mCd tout en protégeant les sorties du circuit contre une surcharge.</li>
+        </ul>
+
+        <p class="projet-text" style="font-style:italic;">C'est à travers ces choix techniques que j'ai développé les compétences suivantes.</p>
+
+        <div class="comp-list">
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.1</div>
+              <div>
+                <p class="comp-content-title">J'identifie les fonctions demandées à la lecture du cahier des charges</p>
+                <p class="comp-content-text">
+                  J'ai décomposé le besoin de la carte lumière en deux fonctions distinctes : le traitement du clignotement (NE555P en astable, signal « Clignote » de période 1,9 s et temps actif 0,1 s) et l'action sur les trois LEDs (allumage permanent pour le rouge et le vert, allumage commandé par le signal « Clignote » pour le jaune). Cette décomposition m'a permis d'identifier que la contrainte d'un temps actif très court (0,1 s) face à une période longue (1,9 s) imposait une logique négative : la LED jaune est câblée entre le +VCC et la sortie du NE555, de sorte que l'allumage correspond au temps bas de la sortie.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig fig-full">
+                <img class="fig-img h-auto" src="img/SLR_img02.png" alt="Synoptique carte lumière — DDC Fig. 4" loading="lazy" />
+                <p class="fig-caption">DDC — Schéma électrique préliminaire du NE555P en astable : broche 3 = signal « Clignote » en logique négative, LED jaune MCL034SYC câblée entre +VCC et la sortie pour l'allumage au temps bas</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.2</div>
+              <div>
+                <p class="comp-content-title">Je propose une solution technique pour répondre à une fonction</p>
+                <p class="comp-content-text">
+                  Pour le bloc Traitement, j'ai calculé les valeurs de Ra, Rb et C à partir des deux formules de la datasheet NE555 : T = 0,693(Ra + 2Rb)C et TL = 0,693·Rb·C. En partant de C = 100 µF — les valeurs 1 µF et 10 µF conduisant à Rb &gt; 100 kΩ — j'ai obtenu Rb = 1 443 Ω et Ra = 24 540 Ω, normalisés à Ra = 22 kΩ et Rb = 1,5 kΩ série E6 (tolérance ±20 % autorisée). Pour le bloc Action, j'ai dimensionné R4 (4 700 Ω, LED jaune) et R5/R6 (1 000 Ω et 2 200 Ω, LEDs rouge et verte) à partir des courbes If/Iv des datasheets pour atteindre 500 mCd ±50 % sur chaque voyant.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img03.png" alt="Schéma électrique carte lumière — DDC Fig. 7" loading="lazy" />
+                  <p class="fig-caption">DDC — Tableau de calcul des valeurs Ra, Rb, C du NE555P astable : T = 0,693(Ra + 2Rb)C, TL = 0,693·Rb·C — normalisation série E6 vers Ra = 22 kΩ, Rb = 1,5 kΩ, C = 100 µF</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img04.png" alt="Chronogramme signal Clignote — DDC Fig. 5" loading="lazy" />
+                  <p class="fig-caption">DDC — Chronogramme cible du signal « Clignote » : T = 1,9 s, TL = 0,1 s, rapport cyclique ≈ 5 %, en logique négative sur la broche 3 du NE555P</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.3</div>
+              <div>
+                <p class="comp-content-title">J'affine une solution technique en m'appuyant sur un maquettage numérique et/ou matériel</p>
+                <p class="comp-content-text">
+                  Afin de valider les valeurs normalisées avant toute gravure, j'ai simulé le montage NE555P astable sous ISIS en renseignant Ra = 22 kΩ, Rb = 1,5 kΩ et C = 100 µF. Les chronogrammes obtenus donnent T = 1,73 s et TL = 103 ms. J'ai calculé les écarts relatifs par rapport aux valeurs cibles du cahier des charges (1,9 s et 0,1 s) : −8,8 % pour la période et +3,0 % pour le temps actif, tous deux dans la fenêtre de tolérance ±20 %. La simulation confirme que le jeu de valeurs normalisées retenu est conforme avant tout perçage.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img05.png" alt="Simulation ISIS NE555 — chronogramme période" loading="lazy" />
+                  <p class="fig-caption">DDC — Simulation ISIS : chronogramme de la période (T = 1,73 s mesuré, écart −8,8 % / CDC)</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img06.png" alt="Simulation ISIS NE555 — chronogramme temps allumage" loading="lazy" />
+                  <p class="fig-caption">DDC — Simulation ISIS : chronogramme du temps d'allumage (TL = 103 ms mesuré, écart +3,0 % / CDC)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.4</div>
+              <div>
+                <p class="comp-content-title">Je rédige un dossier de conception et de fabrication</p>
+                <p class="comp-content-text">
+                  J'ai rédigé le paragraphe CDT_CLIGNOTE du DDC : démarche de calcul de Ra, Rb et C, normalisation série E6, simulation ISIS et conclusion de conformité, en respectant la structure documentaire imposée : rédacteur/relecteur, figures numérotées, référencement des exigences. J'ai également contribué au DDF de la carte lumière en fournissant le schéma électrique complet, la nomenclature, les typons top/bottom, le plan de perçage et le schéma d'implantation.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img07.png" alt="Typon top carte lumière — DDF" loading="lazy" />
+                  <p class="fig-caption">DDF — Typon top (avec effet miroir) de la carte lumière : 70 × 40 mm, THD, NE555P + 3 LED + 5 résistances + 3 condensateurs</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img08.png" alt="Schéma électrique carte lumière complet — DDF" loading="lazy" />
+                  <p class="fig-caption">DDF — Schéma électrique complet de la carte lumière avec nomenclature (R1 = 22 kΩ, R2 = 1,5 kΩ, R4 = 4,7 kΩ, R5 = 1 kΩ, R6 = 2,2 kΩ, C1 = 100 µF, C2 = 10 nF, C3 = 10 µF, U1 = NE555)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="comp-link-row" style="margin-top:1.25rem;">
+          <a href="competences.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:12px;font-weight:600;padding:9px 20px;background:#111;color:#fff;border-radius:50px;text-decoration:none;transition:opacity 0.2s;">En savoir plus sur ces compétences →</a>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Phase 2</p>
+        <h2 class="projet-section-title">Ce que j'ai fait — Vérification</h2>
+
+        <p class="projet-text">
+          J'ai rédigé et réalisé l'essai <strong>ESS_CLIGNOTE</strong> sur la carte lumière assemblée. Le banc de test est alimenté par un générateur réglé à 5 V. J'ai relié la sonde oscilloscope pour mesurer le signal « Clignote ». La mesure donne <strong>T = 1,8 s</strong> (écart −5,3 %, conforme ±20 %) et <strong>TL = 108 ms</strong> (écart +8 %, conforme ±20 %).
+        </p>
+
+        <ul class="projet-list">
+          <li><strong>Vérification de l'étage de clignotement :</strong> À l'aide d'un oscilloscope numérique, j'ai caractérisé le signal de sortie du NE555P sous une alimentation stabilisée de 5 V. Les mesures de période (1,8 s) et de temps actif (108 ms) confirment que le montage est parfaitement opérationnel et respecte les tolérances de ±20 % exigées par le cahier des charges.</li>
+          <li><strong>Qualification des intensités lumineuses :</strong> J'ai mesuré la tension aux bornes des résistances de limitation pour chaque LED. Par l'application de la loi d'Ohm et des données constructeurs, j'ai vérifié que l'intensité lumineuse réelle se situe dans la plage de 500 mCd ±50 %, validant l'EXIG_INTENSITES pour les trois voyants.</li>
+        </ul>
+
+        <p class="projet-text" style="font-style:italic;">La conduite de ces essais m'a amené à travailler les compétences suivantes.</p>
+
+        <div class="comp-list">
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">V.1</div>
+              <div>
+                <p class="comp-content-title">J'applique, j'élabore, je rédige une procédure d'essais</p>
+                <p class="comp-content-text">
+                  J'ai rédigé et appliqué le protocole ESS_CLIGNOTE : but de l'essai, moyens (banc carte lumière, alimentation de table réglée à 5 V, oscilloscope), procédure numérotée (installation sur banc, positionnement de la sonde sur la piste de R4, réglage à 250 ms/div pour la période et 25 ms/div pour le temps actif, placement des curseurs), résultats attendus avec tolérance. Les mesures donnent T = 1,8 s (écart −5,3 %, conforme ±20 %) et TL = 108 ms (écart +8,0 %, conforme ±20 %).
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img09.png" alt="Schéma câblage ESS_CLIGNOTE — DDV" loading="lazy" />
+                  <p class="fig-caption">DDV — Schéma de câblage ESS_CLIGNOTE : alimentation de table 5 V → banc carte lumière, sonde oscilloscope positionnée sur la piste de R4 (résistance de limitation LED jaune)</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img10.png" alt="Photo montage ESS_CLIGNOTE — DDV" loading="lazy" />
+                  <p class="fig-caption">DDV — Photo du montage ESS_CLIGNOTE : carte lumière assemblée sur banc de test, alimentation 5 V connectée, oscilloscope en position de mesure</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">V.2</div>
+              <div>
+                <p class="comp-content-title">J'identifie, je corrige les non-conformités d'un prototype</p>
+                <p class="comp-content-text">
+                  Lors de l'assemblage de la carte lumière, j'ai identifié deux non-conformités : une soudure débordante créant un court-circuit avec le plan de masse, corrigée par refusion, et un NE555P monté à l'envers, corrigé par remplacement du composant. J'ai dans les deux cas documenté la cause et appliqué la solution corrective avant de procéder aux essais, obtenant une conformité totale sur l'ensemble des mesures finales.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img11.png" alt="Oscilloscope mesure période — DDV" loading="lazy" />
+                  <p class="fig-caption">DDV — Oscilloscope ESS_CLIGNOTE : mesure de la période T = 1,8 s à 250 ms/div (écart −5,3 % / 1,9 s cible, conforme ±20 %)</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/SLR_img12.png" alt="Oscilloscope mesure temps allumage — DDV" loading="lazy" />
+                  <p class="fig-caption">DDV — Oscilloscope ESS_CLIGNOTE : mesure du temps actif TL = 108 ms à 25 ms/div (écart +8,0 % / 0,1 s cible, conforme ±20 %)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="comp-link-row" style="margin-top:1.25rem;">
+          <a href="competences.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:12px;font-weight:600;padding:9px 20px;background:#111;color:#fff;border-radius:50px;text-decoration:none;transition:opacity 0.2s;">En savoir plus sur ces compétences →</a>
+        </div>
+
+        <p class="projet-section-label" style="margin-top:2rem; margin-bottom:0.4rem;">Matrice de conformité</p>
+        <div class="conformite-grid">
+          <div class="conformite-item"><span class="conformite-label">EXIG_CLIGNOTE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_INTENSITES</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_ENCOMBREMENT</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_AUTONOMIE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_ALLUMAGES</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_COUT</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_DELAI</span><span class="conformite-status ok">Conforme</span></div>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Livrables</p>
+        <h2 class="projet-section-title">Documents du projet</h2>
+
+        <div class="docs-grid">
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">CDC</p>
+                <p class="doc-block-title">Cahier des Charges</p>
+              </div>
+              <a href="documents/SLR_CDC.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/SLR_CDC.pdf#toolbar=0&navpanes=0" title="Cahier des Charges SLR"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDC</p>
+                <p class="doc-block-title">Dossier De Conception</p>
+              </div>
+              <a href="documents/SLR_DDC.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/SLR_DDC.pdf#toolbar=0&navpanes=0" title="Dossier De Conception SLR"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDF</p>
+                <p class="doc-block-title">Dossier De Fabrication</p>
+              </div>
+              <a href="documents/SLR_DDF.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/SLR_DDF.pdf#toolbar=0&navpanes=0" title="Dossier De Fabrication SLR"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDV</p>
+                <p class="doc-block-title">Dossier De Vérification</p>
+              </div>
+              <a href="documents/SLR_DDV.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/SLR_DDV.pdf#toolbar=0&navpanes=0" title="Dossier De Vérification SLR"></iframe>
+            </div>
+          </div>
+
+
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

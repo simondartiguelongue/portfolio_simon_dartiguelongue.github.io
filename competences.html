@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compétences — Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Intro texte pleine largeur ─────────────────────────────── */
+    .comp-intro-text {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--text-main);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 3.5rem;
+    }
+
+    .comp-intro-text h3 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .comp-intro-text p {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 0.85rem;
+    }
+    .comp-intro-text p:last-child { margin-bottom: 0; }
+    .comp-intro-text strong {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    /* ── Référentiel schéma (pleine largeur, grand) ─────────────── */
+    .comp-referentiel-section {
+      margin-bottom: 4rem;
+    }
+
+    .comp-schema-full {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .comp-schema-full img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .comp-schema-caption {
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Grille cartes référentiel BUT ─────────────────────────── */
+    .comp-cards-section {
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .comp-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ── Carte compétence (carrousel) ──────────────────────────── */
+    .comp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .comp-card-header {
+      padding: 1.1rem 1.1rem 0.75rem;
+      text-align: center;
+    }
+
+    .comp-card-label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .comp-card-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .comp-carousel-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: #E0DFDA;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .comp-carousel-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .comp-slide {
+      flex: 0 0 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .comp-slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-color: #D8D7D1;
+    }
+
+    .comp-slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.55) 100%);
+    }
+
+    .comp-slide-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.75rem;
+    }
+
+    .comp-slide-id {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .comp-slide-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .comp-slide-btn {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 50px;
+      padding: 7px 20px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .comp-slide-btn:hover {
+      background: rgba(255,255,255,0.22);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    .comp-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 34px; height: 34px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .comp-arrow:hover { background: rgba(255,255,255,0.32); }
+    .comp-arrow.prev { left: 12px; }
+    .comp-arrow.next { right: 12px; }
+
+    .comp-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+
+    .comp-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .comp-dot.active {
+      background: #fff;
+      transform: scale(1.3);
+    }
+
+    /* ── Section compétences techniques (Grandes Cartes avec descriptions) ── */
+    .comp-extra-section {
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    /* Grille 3 en haut, 2 en bas centrés de manière flexible */
+    .comp-extra-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .comp-bloc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      flex: 0 1 calc(33.333% - 1rem);
+      min-width: 320px;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .comp-bloc-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--text-main);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.06);
+    }
+
+    .comp-bloc-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .comp-bloc-icon {
+      font-size: 26px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .comp-bloc-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .comp-bloc-eyebrow {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .comp-bloc-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .comp-bloc-desc-preview {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .comp-bloc-hint {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--text-main);
+      font-weight: 500;
+      margin-top: auto;
+      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    /* ── Système de fenêtres modales discrètes (Popups centrés) ── */
+    .comp-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(244, 243, 238, 0.65); /* Fond clair discret calqué sur ton site */
+      backdrop-filter: blur(4px); /* Léger flou pour rester sobre */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 1.5rem;
+    }
+
+    .comp-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .comp-modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 900px; /* Plus large pour les intégrations de texte/images */
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(10px);
+      transition: transform 0.25s ease;
+      padding: 2.5rem;
+    }
+
+    .comp-modal.active .comp-modal-content {
+      transform: translateY(0);
+    }
+
+    .comp-modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: transparent;
+      border: none;
+      font-size: 26px;
+      color: var(--text-muted);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .comp-modal-close:hover { color: var(--text-main); }
+
+    .comp-modal-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .comp-modal-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    /* Layout interne : Alternance Texte / Image intégrée */
+    .comp-modal-body {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+    
+    .comp-modal-intro {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-main);
+      margin: 0;
+      border-left: 3px solid var(--text-main);
+      padding-left: 1.25rem;
+    }
+
+    .comp-modal-row {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .comp-modal-row.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .comp-modal-text-block {
+      flex: 1;
+    }
+    .comp-modal-text-block h4 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 0.75rem 0;
+    }
+    .comp-modal-text-block p {
+      margin: 0 0 0.75rem 0;
+    }
+    .comp-modal-text-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Listes techniques précises */
+    .comp-technical-list {
+      margin: 0.75rem 0;
+      padding-left: 1.25rem;
+    }
+    .comp-technical-list li {
+      margin-bottom: 0.4rem;
+    }
+    .comp-technical-list strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .comp-modal-media-block {
+      width: 320px;
+      flex-shrink: 0;
+    }
+
+    .comp-modal-img-container {
+      background: rgba(0,0,0,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 0.5rem;
+      overflow: hidden;
+    }
+    .comp-modal-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    /* ── Section Langues (Cartes Larges) ───────────────────────── */
+    .comp-badges-section {
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .comp-langues-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .comp-lang-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .comp-lang-flag {
+      font-size: 36px;
+      line-height: 1;
+    }
+
+    .comp-lang-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .comp-lang-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .comp-lang-level {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(0,0,0,0.06);
+      color: var(--text-main);
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .comp-lang-desc {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Section Compétences Transversales (Rectangles) ─────────── */
+    .comp-transversales-section {
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .comp-rects-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    .comp-rect-badge {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+
+    .comp-rect-badge::before {
+      content: '■';
+      color: var(--text-main);
+      font-size: 8px;
+      opacity: 0.5;
+    }
+
+    .comp-rect-badge:hover {
+      border-color: var(--text-main);
+      transform: translateX(3px);
+    }
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .comp-bloc-card {
+        flex: 0 1 calc(50% - 0.75rem);
+      }
+      .comp-modal-row, .comp-modal-row.reverse {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .comp-modal-media-block {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .comp-cards-grid,
+      .comp-langues-grid,
+      .comp-rects-wrap {
+        grid-template-columns: 1fr;
+      }
+      .comp-bloc-card {
+        flex: 0 1 100%;
+      }
+      .comp-modal-content {
+        padding: 1.75rem;
+      }
+    }
+
+  </style>
+</head>
+<body class="page-inner">
+
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link"        data-fr="Accueil"      data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link"        data-fr="À propos"     data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link"        data-fr="Projets"      data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link active" data-fr="Compétences"  data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link"        data-fr="Contact"      data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="wrapper">
+
+      <p class="section-label anim-1" data-fr="Référentiel BUT GEII" data-en="BUT GEII Framework">Référentiel BUT GEII</p>
+      <h2 class="section-title anim-2" data-fr="Mes compétences" data-en="My skills">Mes compétences</h2>
+
+      <div class="comp-intro-text anim-3 card-stagger">
+        <h3 data-fr="Compétences développées en BUT GEII" data-en="Skills developed in BUT GEII">Compétences développées en BUT GEII</h3>
+        <p data-fr="Durant ma formation en <strong>BUT GEII</strong>, j'ai été amené à développer un ensemble de compétences techniques et professionnelles à travers des projets concrets, des <strong>SAÉ</strong>, des TP encadrés et du travail en autonomie."
+           data-en="Throughout my <strong>BUT GEII</strong> degree, I have developed a range of technical and professional skills through concrete projects, <strong>SAÉ</strong> assignments, supervised lab work and independent study.">
+          Durant ma formation en <strong>BUT GEII</strong>, j'ai été amené à développer un ensemble de compétences techniques et professionnelles à travers des projets concrets, des <strong>SAÉ</strong>, des TP encadrés et du travail en autonomie.
+        </p>
+        <p data-fr="Ces compétences sont organisées en <strong>blocs de compétences</strong> — les grands axes qui correspondent aux capacités attendues d'un technicien supérieur dans les domaines de l'électronique, de l'automatisme et de l'énergie."
+           data-en="These skills are organised into <strong>competency blocks</strong> — the main areas that reflect the capabilities expected of a higher technician in electronics, automation and energy.">
+          Ces compétences sont organisées en <strong>blocs de compétences</strong> — les grands axes qui correspondent aux capacités attendues d'un technicien supérieur dans les domaines de l'électronique, de l'automatisme et de l'énergie.
+        </p>
+      </div>
+
+      <div class="comp-referentiel-section">
+        <p class="section-label" data-fr="Référentiel national" data-en="National framework">Référentiel national</p>
+        <h2 class="section-title" data-fr="BUT GEII — Blocs de compétences" data-en="BUT GEII — Competency blocks">BUT GEII — Blocs de compétences</h2>
+
+        <div class="comp-schema-full card-stagger">
+          <img src="img/referentiel-geii.jpg" alt="Référentiel de compétences BUT GEII" onerror="this.style.display='none'; this.nextElementSibling.style.display='none'; this.parentElement.style.background='#E0DFDA'; this.parentElement.style.minHeight='320px';" />
+          <p class="comp-schema-caption" data-fr="Référentiel national de compétences BUT GEII" data-en="BUT GEII national competency framework">Référentiel national de compétences BUT GEII</p>
+        </div>
+      </div>
+
+      <div class="comp-cards-section">
+        <p class="section-label" data-fr="Référentiel BUT GEII" data-en="BUT GEII Framework">Référentiel BUT GEII</p>
+        <h2 class="section-title" data-fr="Concevoir & Vérifier" data-en="Design & Verify">Concevoir & Vérifier</h2>
+
+        <div class="comp-cards-grid">
+
+          <div class="comp-card card-stagger">
+            <div class="comp-card-header">
+              <p class="comp-card-label" data-fr="Compétence C" data-en="Competency C">Compétence C</p>
+              <h3 class="comp-card-title" data-fr="Concevoir" data-en="Design">Concevoir</h3>
+            </div>
+
+            <div class="comp-carousel-wrap" id="carouselConcevoir">
+              <div class="comp-carousel-track" id="trackConcevoir">
+                <div class="comp-slide">
+                  <div class="comp-slide-bg" style="background-image: url('img/concevoir-c1.jpg');"></div>
+                  <div class="comp-slide-overlay"></div>
+                  <div class="comp-slide-content">
+                    <span class="comp-slide-id">C.1</span>
+                    <span class="comp-slide-name" data-fr="J'identifie les fonctions demandées à la lecture du cahier des charges" data-en="I identify the required functions from the specification">J'identifie les fonctions demandées à la lecture du cahier des charges</span>
+                    <a href="concevoir-c1.html" class="comp-slide-btn" data-fr="Découvrir" data-en="Discover">Découvrir</a>
+                  </div>
+                </div>
+                <div class="comp-slide">
+                  <div class="comp-slide-bg" style="background-image: url('img/concevoir-c2.jpg');"></div>
+                  <div class="comp-slide-overlay"></div>
+                  <div class="comp-slide-content">
+                    <span class="comp-slide-id">C.2</span>
+                    <span class="comp-slide-name" data-fr="Je propose une solution technique pour répondre à une fonction" data-en="I propose a technical solution to meet a function">Je propose une solution technique pour répondre à une fonction</span>
+                    <a href="concevoir-c2.html" class="comp-slide-btn" data-fr="Découvrir" data-en="Discover">Découvrir</a>
+                  </div>
+                </div>
+                <div class="comp-slide">
+                  <div class="comp-slide-bg" style="background-image: url('img/concevoir-c3.jpg');"></div>
+                  <div class="comp-slide-overlay"></div>
+                  <div class="comp-slide-content">
+                    <span class="comp-slide-id">C.3</span>
+                    <span class="comp-slide-name" data-fr="J'affine une solution technique en m'appuyant sur un maquettage numérique et/ou matériel" data-en="I refine a technical solution using digital and/or physical prototyping">J'affine une solution technique en m'appuyant sur un maquettage numérique et/ou matériel</span>
+                    <a href="concevoir-c3.html" class="comp-slide-btn" data-fr="Découvrir" data-en="Discover">Découvrir</a>
+                  </div>
+                </div>
+                <div class="comp-slide">
+                  <div class="comp-slide-bg" style="background-image: url('img/concevoir-c4.jpg');"></div>
+                  <div class="comp-slide-overlay"></div>
+                  <div class="comp-slide-content">
+                    <span class="comp-slide-id">C.4</span>
+                    <span class="comp-slide-name" data-fr="Je rédige un dossier de conception et de fabrication" data-en="I write a design and manufacturing file">Je rédige un dossier de conception et de fabrication</span>
+                    <a href="concevoir-c4.html" class="comp-slide-btn" data-fr="Découvrir" data-en="Discover">Découvrir</a>
+                  </div>
+                </div>
+              </div>
+              <button class="comp-arrow prev" data-target="concevoir" aria-label="Précédent">&#8592;</button>
+              <button class="comp-arrow next" data-target="concevoir" aria-label="Suivant">&#8594;</button>
+              <div class="comp-dots" id="dotsConcevoir">
+                <button class="comp-dot active" data-carousel="concevoir" data-index="0"></button>
+                <button class="comp-dot"        data-carousel="concevoir" data-index="1"></button>
+                <button class="comp-dot"        data-carousel="concevoir" data-index="2"></button>
+                <button class="comp-dot"        data-carousel="concevoir" data-index="3"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-card card-stagger">
+            <div class="comp-card-header">
+              <p class="comp-card-label" data-fr="Compétence V" data-en="Competency V">Compétence V</p>
+              <h3 class="comp-card-title" data-fr="Vérifier" data-en="Verify">Vérifier</h3>
+            </div>
+
+            <div class="comp-carousel-wrap" id="carouselVerifier">
+              <div class="comp-carousel-track" id="trackVerifier">
+                <div class="comp-slide">
+                  <div class="comp-slide-bg" style="background-image: url('img/verifier-v1.jpg');"></div>
+                  <div class="comp-slide-overlay"></div>
+                  <div class="comp-slide-content">
+                    <span class="comp-slide-id">V.1</span>
+                    <span class="comp-slide-name" data-fr="J'applique, j'élabore, je rédige une procédure d'essais" data-en="I apply, develop and write a test procedure">J'applique, j'élabore, je rédige une procédure d'essais</span>
+                    <a href="verifier-v1.html" class="comp-slide-btn" data-fr="Découvrir" data-en="Discover">Découvrir</a>
+                  </div>
+                </div>
+                <div class="comp-slide">
+                  <div class="comp-slide-bg" style="background-image: url('img/verifier-v2.jpg');"></div>
+                  <div class="comp-slide-overlay"></div>
+                  <div class="comp-slide-content">
+                    <span class="comp-slide-id">V.2</span>
+                    <span class="comp-slide-name" data-fr="J'identifie, je corrige les non-conformités d'un prototype" data-en="I identify and correct the non-conformities of a prototype">J'identifie, je corrige les non-conformités d'un prototype</span>
+                    <a href="verifier-v2.html" class="comp-slide-btn" data-fr="Découvrir" data-en="Discover">Découvrir</a>
+                  </div>
+                </div>
+              </div>
+              <button class="comp-arrow prev" data-target="verifier" aria-label="Précédent">&#8592;</button>
+              <button class="comp-arrow next" data-target="verifier" aria-label="Suivant">&#8594;</button>
+              <div class="comp-dots" id="dotsVerifier">
+                <button class="comp-dot active" data-carousel="verifier" data-index="0"></button>
+                <button class="comp-dot"        data-carousel="verifier" data-index="1"></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="comp-extra-section">
+        <p class="section-label" data-fr="Outils & domaines" data-en="Tools & domains">Outils & domains</p>
+        <h2 class="section-title" data-fr="Compétences techniques" data-en="Technical skills">Compétences techniques</h2>
+
+        <div class="comp-extra-grid">
+
+          <div class="comp-bloc-card card-stagger" onclick="openModal('modalElec')">
+            <div class="comp-bloc-header">
+              <span class="comp-bloc-icon">⚡</span>
+              <div class="comp-bloc-titles">
+                <span class="comp-bloc-eyebrow" data-fr="Bloc 1" data-en="Block 1">Bloc 1</span>
+                <span class="comp-bloc-name" data-fr="Électronique & Instrumentation" data-en="Electronics & Instrumentation">Électronique & Instrumentation</span>
+              </div>
+            </div>
+            <p class="comp-bloc-desc-preview" data-fr="Conception complète de cartes, CAO électronique (Proteus ISIS/ARES), fabrication matérielle traversante (THD - HTUT 4) et mesures en laboratoire." data-en="Complete board design, electronics CAD (Proteus), through-hole wiring fabrication (THD - HTUT 4) and lab characterization measurements.">Conception complète de cartes, CAO électronique (Proteus ISIS/ARES), fabrication matérielle traversante (THD - HTUT 4) et mesures en laboratoire.</p>
+            <div class="comp-bloc-hint" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</div>
+          </div>
+
+          <div class="comp-bloc-card card-stagger" onclick="openModal('modalInfo')">
+            <div class="comp-bloc-header">
+              <span class="comp-bloc-icon">💻</span>
+              <div class="comp-bloc-titles">
+                <span class="comp-bloc-eyebrow" data-fr="Bloc 2" data-en="Block 2">Bloc 2</span>
+                <span class="comp-bloc-name" data-fr="Informatique embarquée & Microcontrôleurs" data-en="Embedded Software & MCUs">Informatique embarquée & Microcontrôleurs</span>
+              </div>
+            </div>
+            <p class="comp-bloc-desc-preview" data-fr="Programmation C/C++ sur architectures ARM Cortex (STM32 sous Keil µVision) et AVR (Arduino), gestion des registres bas niveau, timers et protocoles complexes." data-en="C/C++ firmware coding on ARM Cortex (STM32 via Keil µVision) and AVR (Arduino) targets, low-level register control, hardware timers and protocols.">Programmation C/C++ sur architectures ARM Cortex (STM32 sous Keil µVision) et AVR (Arduino), gestion des registres bas niveau, timers et protocoles complexes.</p>
+            <div class="comp-bloc-hint" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</div>
+          </div>
+
+          <div class="comp-bloc-card card-stagger" onclick="openModal('modalAuto')">
+            <div class="comp-bloc-header">
+              <span class="comp-bloc-icon">🤖</span>
+              <div class="comp-bloc-titles">
+                <span class="comp-bloc-eyebrow" data-fr="Bloc 3" data-en="Block 3">Bloc 3</span>
+                <span class="comp-bloc-name" data-fr="Automatisme" data-en="Automation">Automatisme</span>
+              </div>
+            </div>
+            <p class="comp-bloc-desc-preview" data-fr="Conception d'algorithmes industriels complexes (GRAFCET), programmation d'API Siemens S7 (TIA Portal) et pilotage de stations pneumatiques réelles (FESTO)." data-en="Design of complex industrial algorithms (GRAFCET), Siemens S7 PLC programming (TIA Portal) and operations of physical pneumatic stations (FESTO).">Conception d'algorithmes industriels complexes (GRAFCET), programmation d'API Siemens S7 (TIA Portal) et pilotage de stations pneumatiques réelles (FESTO).</p>
+            <div class="comp-bloc-hint" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</div>
+          </div>
+
+          <div class="comp-bloc-card card-stagger" onclick="openModal('modalEnergie')">
+            <div class="comp-bloc-header">
+              <span class="comp-bloc-icon">🔌</span>
+              <div class="comp-bloc-titles">
+                <span class="comp-bloc-eyebrow" data-fr="Bloc 4" data-en="Block 4">Bloc 4</span>
+                <span class="comp-bloc-name" data-fr="Énergie & Électrotechnique" data-en="Energy & Electrical Eng.">Énergie & Électrotechnique</span>
+              </div>
+            </div>
+            <p class="comp-bloc-desc-preview" data-fr="Étude des réseaux électriques industriels, compensation d'énergie réactive (facteur de puissance), schématique WinRelais et câblage de départs-moteurs triphasés." data-en="Study of industrial power grids, reactive energy compensation (power factor correction), WinRelais schematics and wiring of three-phase motor starters.">Étude des réseaux électriques industriels, compensation d'énergie réactive (facteur de puissance), schématique WinRelais et câblage de départs-moteurs triphasés.</p>
+            <div class="comp-bloc-hint" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</div>
+          </div>
+
+          <div class="comp-bloc-card card-stagger" onclick="openModal('modalMethode')">
+            <div class="comp-bloc-header">
+              <span class="comp-bloc-icon">📋</span>
+              <div class="comp-bloc-titles">
+                <span class="comp-bloc-eyebrow" data-fr="Bloc 5" data-en="Block 5">Bloc 5</span>
+                <span class="comp-bloc-name" data-fr="Méthode & Documentation technique" data-en="Method & Documentation">Méthode & Documentation technique</span>
+              </div>
+            </div>
+            <p class="comp-bloc-desc-preview" data-fr="Gestion rigoureuse du Cycle en V de projets selon les standards d'assurance qualité ISO 9001, rédaction des livrables (CDC, DDC, DDF, DDV) et calcul formel sous Maple." data-en="Rigorous project V-Model lifecycle tracking under ISO 9001 quality assurance standards, milestone files generation (CDC, DDC, DDF, DDV) and Maple computing.">Gestion rigoureuse du Cycle en V de projets selon les standards d'assurance qualité ISO 9001, rédaction des livrables (CDC, DDC, DDF, DDV) et calcul formel sous Maple.</p>
+            <div class="comp-bloc-hint" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="modalElec" class="comp-modal" onclick="closeModalOnBackdrop(event)">
+        <div class="comp-modal-content">
+          <button class="comp-modal-close" onclick="closeModal('modalElec')">&times;</button>
+          <div class="comp-modal-header"><span>⚡</span><h3 class="comp-modal-title" data-fr="Électronique & Instrumentation" data-en="Electronics & Instrumentation">Électronique & Instrumentation</h3></div>
+          <div class="comp-modal-body">
+            <p class="comp-modal-intro" data-fr="Conception matérielle de cartes électroniques de la définition des besoins au circuit imprimé fini. Maîtrise de la CAO, de l'assemblage traditionnel et de la caractérisation instrumentale." data-en="Hardware design of electronic boards from requirement definition to finished printed circuits. Mastery of CAD tools, traditional assembly, and instrumental evaluation.">Conception matérielle de cartes électroniques de la définition des besoins au circuit imprimé fini. Maîtrise de la CAO, de l'assemblage traditionnel et de la caractérisation instrumentale.</p>
+            
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Saisie de schéma & Routage (Proteus ISIS / ARES)" data-en="Schematic Capture & Routing (Proteus ISIS / ARES)">Saisie de schéma & Routage (Proteus ISIS / ARES)</h4>
+                <p data-fr="Réalisation des schémas structurels et placement/routage de PCB pour les projets <strong>SAÉ TDB</strong> (Thermomètre de Bain) et <strong>SAÉ KAH</strong> (Kart à Hélice)." data-en="Design of structural schematics and PCB routing/placement for the <strong>SAÉ TDB</strong> and <strong>SAÉ KAH</strong> projects.">Réalisation des schémas structurels et placement/routage de PCB pour les projets <strong>SAÉ TDB</strong> (Thermomètre de Bain) et <strong>SAÉ KAH</strong> (Kart à Hélice).</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Gestion des composants :</strong> Intégration de capteurs analogiques (LM35), de structures d'amplificateurs opérationnels (AOP en comparateur de seuil) et régulation linéaire (LM78L05)." data-en="<strong>Component management:</strong> Integration of analog sensors (LM35), operational amplifier configurations (threshold comparator op-amps) and linear regulation (LM78L05)."><strong>Gestion des composants :</strong> Intégration de capteurs analogiques (LM35), de structures d'amplificateurs opérationnels (AOP en comparateur de seuil) et régulation linéaire (LM78L05).</li>
+                  <li data-fr="<strong>Contraintes de routage :</strong> Isolation des signaux sensibles, dimensionnement des pistes de puissance et création de plans de masse pour minimiser le bruit." data-en="<strong>Routing constraints:</strong> Isolation of sensitive signals, power trace sizing and copper ground planes creation to minimize electrical noise."><strong>Contraintes de routage :</strong> Isolation des signaux sensibles, dimensionnement des pistes de puissance et création de plans de masse pour minimiser le bruit.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/schema-isis.jpg" alt="Schéma ISIS" onerror="this.parentElement.innerText='[Capture Schéma ISIS / CAO]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row reverse">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Fabrication PCB & Câblage (HTUT 4)" data-en="PCB Manufacturing & Wiring (HTUT 4)">Fabrication PCB & Câblage (HTUT 4)</h4>
+                <p data-fr="Mise en œuvre des exigences pratiques de l'Habilitation aux Travaux sous Tension (HTUT 4) dédiée à la fabrication de circuits imprimés à technologie traversante (<strong>THD - Through-Hole Device</strong>)." data-en="Implementation of the practical requirements of the Live Working Authorization (HTUT 4) dedicated to the assembly of through-hole devices (<strong>THD</strong>) printed circuit boards.">Mise en œuvre des exigences pratiques de l'Habilitation aux Travaux sous Tension (HTUT 4) dédiée à la fabrication de circuits imprimés à technologie traversante (<strong>THD - Through-Hole Device</strong>).</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Procédés physiques :</strong> Perçage précis du substrat, cambrage calibré et implantation propre des composants discrets." data-en="<strong>Physical processes:</strong> Accurate drilling of the substrate, calibrated bending and clean layout of discrete components."><strong>Procédés physiques :</strong> Perçage précis du substrat, cambrage calibré et implantation propre des composants discrets.</li>
+                  <li data-fr="<strong>Brasage manuel :</strong> Maîtrise des techniques de soudure à l'étain (température du fer, gestion du flux, capillarité) et inspection rigoureuse de la conformité des joints." data-en="<strong>Manual soldering:</strong> Mastery of tin soldering techniques (iron temperature, flux control, capillarity) and strict quality inspection of solder joints."><strong>Brasage manuel :</strong> Maîtrise des techniques de soudure à l'étain (température du fer, gestion du flux, capillarité) et inspection rigoureuse de la conformité des joints.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/routage-ares.jpg" alt="Carte THD" onerror="this.parentElement.innerText='[Photo Réelle Carte THD Soudée]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Composants, Instrumentation & Mesures" data-en="Components, Instrumentation & Measurements">Composants, Instrumentation & Mesures</h4>
+                <p data-fr="Validation expérimentale et caractérisation dynamique de circuits électroniques lors de séances de travaux pratiques ou des phases de vérification (DDV)." data-en="Experimental validation and dynamic characterization of electronic circuits during laboratory sessions or verification phases (DDV).">Validation expérimentale et caractérisation dynamique de circuits électroniques lors de séances de travaux pratiques ou des phases de vérification (DDV).</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Étude de composants discrets :</strong> Analyse du comportement réel des diodes (de signal, Schottky, Zener) et des transistors (bipolaires NPN/PNP, MOSFET en commutation)." data-en="<strong>Discrete component analysis:</strong> Evaluation of real-world behavior of diodes (signal, Schottky, Zener) and transistors (bipolar NPN/PNP, switching MOSFETs)."><strong>Étude de composants discrets :</strong> Analyse du comportement réel des diodes (de signal, Schottky, Zener) et des transistors (bipolaires NPN/PNP, MOSFET en commutation).</li>
+                  <li data-fr="<strong>Instrumentation de laboratoire :</strong> Utilisation experte d'oscilloscopes numériques (analyse spectrale, temps de montée), de générateurs de signaux (GBF), de multimètres et de l'étuve thermique." data-en="<strong>Laboratory instruments:</strong> Expert use of digital oscilloscopes (spectrum analysis, rise times), function generators (GBF), multimeters, and thermal ovens."><strong>Instrumentation de laboratoire :</strong> Utilisation experte d'oscilloscopes numériques (analyse spectrale, temps de montée), de générateurs de signaux (GBF), de multimètres et de l'étuve thermique.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/oscilloscope.jpg" alt="Mesures" onerror="this.parentElement.innerText='[Photo Manipulation Labo / Scope]';"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalInfo" class="comp-modal" onclick="closeModalOnBackdrop(event)">
+        <div class="comp-modal-content">
+          <button class="comp-modal-close" onclick="closeModal('modalInfo')">&times;</button>
+          <div class="comp-modal-header"><span>💻</span><h3 class="comp-modal-title" data-fr="Informatique embarquée & Microcontrôleurs" data-en="Embedded Software & MCUs">Informatique embarquée & Microcontrôleurs</h3></div>
+          <div class="comp-modal-body">
+            <p class="comp-modal-intro" data-fr="Développement de logiciels de bas niveau (firmwares) optimisés pour cibles matérielles contraintes en ressources, en garantissant la maîtrise de la temporisation et de l'interfaçage matériel." data-en="Low-level software development (firmware) optimized for hardware targets constrained in resources, ensuring control over timing and hardware interfacing.">Développement de logiciels de bas niveau (firmwares) optimisés pour cibles matérielles contraintes en ressources, en garantissant la maîtrise de la temporisation et de l'interfaçage matériel.</p>
+            
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Programmation Bas Niveau & Registres (Keil µVision)" data-en="Low-Level Programming & Registers (Keil µVision)">Programmation Bas Niveau & Registres (Keil µVision)</h4>
+                <p data-fr="Développement en langage C sur architecture industrielle <strong>STM32 (ARM Cortex)</strong> au sein de l'environnement Keil µVision." data-en="C programming on <strong>STM32 (ARM Cortex)</strong> industrial architectures within the Keil µVision IDE.">Développement en langage C sur architecture industrielle <strong>STM32 (ARM Cortex)</strong> au sein de l'environnement Keil µVision.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Contrôle direct du matériel :</strong> Configuration manuelle des registres internes du processeur pour initialiser les ports d'entrées/sorties (GPIO)." data-en="<strong>Direct hardware control:</strong> Manual configuration of internal CPU registers to initialize digital inputs/outputs (GPIO)."><strong>Contrôle direct du matériel :</strong> Configuration manuelle des registres internes du processeur pour initialiser les ports d'entrées/sorties (GPIO).</li>
+                  <li data-fr="<strong>Gestion temporelle fine :</strong> Paramétrage des Timers matériels pour le cadencement de tâches et la surveillance de signaux d'horloge." data-en="<strong>Fine time management:</strong> Parameter setting of hardware Timers for task clocking and clock signal monitoring."><strong>Gestion temporelle fine :</strong> Paramétrage des Timers matériels pour le cadencement de tâches et la surveillance de signaux d'horloge.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/code-keil.jpg" alt="Code Keil" onerror="this.parentElement.innerText='[Capture Code C Keil µVision]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row reverse">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Prototypage & Gestion des Périphériques (Arduino IDE)" data-en="Prototypage & Peripherals Management (Arduino IDE)">Prototypage & Gestion des Périphériques (Arduino IDE)</h4>
+                <p data-fr="Exploitation de l'architecture <strong>ATmega328P</strong> pour le développement rapide de sous-ensembles fonctionnels et l'acquisition de capteurs." data-en="Exploitation of the <strong>ATmega328P</strong> architecture for fast development of functional sub-assemblies and sensor acquisition.">Exploitation de l'architecture <strong>ATmega328P</strong> pour le développement rapide de sous-ensembles fonctionnels et l'acquisition de capteurs.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Décodage de Protocoles :</strong> Implémentation complète du décodage temporel du <strong>protocole Infrarouge NEC</strong> pour la gestion des ordres de télécommande de la <strong>SAÉ KAH</strong>." data-en="<strong>Protocol Decoding:</strong> In-depth implementation of time decoding for the <strong>NEC Infrared protocol</strong> to manage remote control inputs for the <strong>SAÉ KAH</strong> project."><strong>Décodage de Protocoles :</strong> Implémentation complète du décodage temporel du <strong>protocole Infrarouge NEC</strong> pour la gestion des ordres de télécommande de la <strong>SAÉ KAH</strong>.</li>
+                  <li data-fr="<strong>Conversion & Modulation :</strong> Configuration des convertisseurs analogique-numériques (ADC) pour la lecture de grandeurs physiques et génération de signaux PWM (Modulation d'Impulsion en Largeur)." data-en="<strong>Conversion & Modulation:</strong> Configuration of Analog-to-Digital converters (ADC) for physical value readings and generation of PWM signals."><strong>Conversion & Modulation :</strong> Configuration des convertisseurs analogique-numériques (ADC) pour la lecture de grandeurs physiques et génération de signaux PWM (Modulation d'Impulsion en Largeur).</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/trames-nec.jpg" alt="Trame NEC" onerror="this.parentElement.innerText='[Capture Logique / Trame NEC]';"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalAuto" class="comp-modal" onclick="closeModalOnBackdrop(event)">
+        <div class="comp-modal-content">
+          <button class="comp-modal-close" onclick="closeModal('modalAuto')">&times;</button>
+          <div class="comp-modal-header"><span>🤖</span><h3 class="comp-modal-title" data-fr="Automatisme & Conduite Industrielle" data-en="Automation & Industrial Control">Automatisme & Conduite Industrielle</h3></div>
+          <div class="comp-modal-body">
+            <p class="comp-modal-intro" data-fr="Modélisation de systèmes de production industriels complexes, écriture d'algorithmes et programmation d'automates pour le pilotage d'actionneurs pneumatiques et électriques en sécurité." data-en="Modeling of complex industrial production systems, algorithm architecture and PLC programming for safety-compliant control of pneumatic and electrical actuators.">Modélisation de systèmes de production industriels complexes, écriture d'algorithmes et programmation d'automates pour le pilotage d'actionneurs pneumatiques et électriques en sécurité.</p>
+            
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Modélisation d'Algorithmes Industriels (GRAFCET)" data-en="Industrial Algorithm Modeling (GRAFCET)">Modélisation d'Algorithmes Industriels (GRAFCET)</h4>
+                <p data-fr="Traduction rigoureuse de cahiers des charges industriels en structures fonctionnelles normalisées. Étude structurée à travers 3 points de vue : d'un point de vue système (coordination globale), point de vue conduite (interface opérateur) et point de vue sécurité." data-en="Rigorous conversion of industrial specifications into standardized functional structures. Structured analysis through 3 viewpoints: system point of view (global coordination), control point of view (operator interface), and safety point of view.">Traduction rigoureuse de cahiers des charges industriels en structures fonctionnelles normalisées. Étude structurée à travers 3 points de vue : d'un point de vue système (coordination globale), point de vue conduite (interface opérateur) et point de vue sécurité.</p>
+                <p data-fr="Intégration systématique des modes de marches et d'arrêts (Guide GEMMA) pour gérer les initialisations de cycles, les arrêts d'urgence et les procédures de mise en sécurité d'installations de production." data-en="Systematic integration of operation and stop modes (GEMMA Guide) to handle cycle initializations, emergency stops, and safety procedures for production systems.">Intégration systématique des modes de marches et d'arrêts (Guide GEMMA) pour gérer les initialisations de cycles, les arrêts d'urgence et les procédures de mise en sécurité d'installations de production.</p>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/gemma.jpg" alt="GRAFCET" onerror="this.parentElement.innerText='[Schéma GRAFCET / Logique GEMMA]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row reverse">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Programmation d'API Siemens (TIA Portal)" data-en="Siemens PLC Programming (TIA Portal)">Programmation d'API Siemens (TIA Portal)</h4>
+                <p data-fr="Développement, configuration de variables industrielles et téléversement de programmes sur automates programmables <strong>Siemens S7-1200 / S7-300</strong> au cours des TP d'Automatisme 1, 2 et 3." data-en="Development, configuration of industrial variables and program deployment on <strong>Siemens S7-1200 / S7-300</strong> Programmable Logic Controllers during Automation lab works 1, 2 and 3.">Développement, configuration de variables industrielles et téléversement de programmes sur automates programmables <strong>Siemens S7-1200 / S7-300</strong> au cours des TP d'Automatisme 1, 2 et 3.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Langage LADDER (Schéma à contacts) :</strong> Écriture des équations de logique booléenne, verrouillages de sécurité, gestion des bobines de commande d'actionneurs et temporisateurs industriels (TON/TOF)." data-en="<strong>LADDER Language (Contact Diagrams):</strong> Writing Boolean logic equations, safety interlocks, actuator control coils handling and industrial timers (TON/TOF)."><strong>Langage LADDER (Schéma à contacts) :</strong> Écriture des équations de logique booléenne, verrouillages de sécurité, gestion des bobines de commande d'actionneurs et temporisateurs industriels (TON/TOF).</li>
+                  <li data-fr="<strong>Langage FBD (Blocs logiques) :</strong> Structuration de programmes complexes par blocs fonctionnels réutilisables, compteurs industriels et routage de signaux de capteurs." data-en="<strong>FBD Language (Function Blocks):</strong> Structuring complex software through reusable functional blocks, industrial counters and sensor signal routing."><strong>Langage FBD (Blocs logiques) :</strong> Structuration de programmes complexes par blocs fonctionnels réutilisables, compteurs industriels et routage de signaux de capteurs.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/tia-portal.jpg" alt="TIA Portal" onerror="this.parentElement.innerText='[Capture Écran TIA Portal LADDER]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Mise en Œuvre Pratique : Plateforme FESTO" data-en="Practical Implementation: FESTO Platform">Mise en Œuvre Pratique : Plateforme FESTO</h4>
+                <p data-fr="Interfaçage physique direct et câblage logique des programmes d'automates sur une véritable cellule automatisée industrielle de manipulation et de transfert <strong>FESTO</strong>." data-en="Direct physical interfacing and logical wiring of PLC software on a real <strong>FESTO</strong> industrial handling and transfer station.">Interfaçage physique direct et câblage logique des programmes d'automates sur une véritable cellule automatisée industrielle de manipulation et de transfert <strong>FESTO</strong>.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Pilotage Pneumatique :</strong> Commande de vérins double effet à l'aide de distributeurs monostables et bistables, réglage de réducteurs de débit pour contrôler les profils de vitesse." data-en="<strong>Pneumatic Control:</strong> Driving double-acting cylinders through monostable and bistable directional valves, adjusting flow controllers to master speed profiles."><strong>Pilotage Pneumatique :</strong> Commande de vérins double effet à l'aide de distributeurs monostables et bistables, réglage de réducteurs de débit pour contrôler les profils de vitesse.</li>
+                  <li data-fr="<strong>Acquisition Industrielle :</strong> Intégration et raccordement électrique de capteurs de fin de course magnétiques (capteurs ILS), de capteurs photoélectriques de présence de pièces et de capteurs inductifs." data-en="<strong>Industrial Acquisition:</strong> Integration and electrical connection of magnetic limit switches (reed sensors), photoelectric part-presence sensors, and inductive sensors."><strong>Acquisition Industrielle :</strong> Intégration et raccordement électrique de capteurs de fin de course magnétiques (capteurs ILS), de capteurs photoélectriques de présence de pièces et de capteurs inductifs.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/festo.jpg" alt="Cellule Festo" onerror="this.parentElement.innerText='[Photo Station FESTO Réelle]';"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalEnergie" class="comp-modal" onclick="closeModalOnBackdrop(event)">
+        <div class="comp-modal-content">
+          <button class="comp-modal-close" onclick="closeModal('modalEnergie')">&times;</button>
+          <div class="comp-modal-header"><span>🔌</span><h3 class="comp-modal-title" data-fr="Énergie & Électrotechnique" data-en="Energy & Electrical Engineering">Énergie & Électrotechnique</h3></div>
+          <div class="comp-modal-body">
+            <p class="comp-modal-intro" data-fr="Analyse, schématisation CAO et manipulation pratique d'équipements électriques de puissance. Gestion de la distribution d'énergie industrielle et de la sécurité des biens et des personnes." data-en="Analysis, CAD schematics, and practical operation of high-power electrical systems. Management of industrial power distribution and safety standards for assets and individuals.">Analyse, schématisation CAO et manipulation pratique d'équipements électriques de puissance. Gestion de la distribution d'énergie industrielle et de la sécurité des biens et des personnes.</p>
+            
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="TP Énergie : Analyse de Réseau & Facteur de Puissance" data-en="Energy Lab Works: Network Analysis & Power Factor">TP Énergie : Analyse de Réseau & Facteur de Puissance</h4>
+                <p data-fr="Étude expérimentale approfondie des régimes sinusoïdaux monophasés et triphasés sur bancs de puissance en laboratoire." data-en="In-depth experimental study of single-phase and three-phase sinusoidal networks on lab power benches.">Étude expérimentale approfondie des régimes sinusoïdaux monophasés et triphasés sur bancs de puissance en laboratoire.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Compensation d'Énergie Réactive :</strong> Réalisation complète de manipulations de relèvement du facteur de puissance ($\cos \phi$). Calcul et raccordement de batteries de condensateurs en parallèle pour minimiser l'appel de courant réactif sur le réseau." data-en="<strong>Reactive Power Compensation:</strong> Full operations on power factor correction ($\cos \phi$). Calculation and wiring of parallel capacitor banks to minimize reactive current draw from the main power grid."><strong>Compensation d'Énergie Réactive :</strong> Réalisation complète de manipulations de relèvement du facteur de puissance ($\cos \phi$). Calcul et raccordement de batteries de condensateurs en parallèle pour minimiser l'appel de courant réactif sur le réseau.</li>
+                  <li data-fr="<strong>Mesures de Puissances :</strong> Utilisation d'analyseurs de réseau et wattmètres industriels pour quantifier les puissances active (W), réactive (VAR) et apparente (VA)." data-en="<strong>Power Measurements:</strong> Use of network analyzers and industrial wattmeters to measure active (W), reactive (VAR) and apparent (VA) power values."><strong>Mesures de Puissances :</strong> Utilisation d'analyseurs de réseau et wattmètres industriels pour quantifier les puissances active (W), réactive (VAR) et apparente (VA).</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/facteur-puissance.jpg" alt="Facteur de puissance" onerror="this.parentElement.innerText='[Photo Banc Condensateurs / Scope]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row reverse">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Schématique Industrielle & Distribution (WinRelais)" data-en="Industrial Schematics & Distribution (WinRelais)">Schématique Industrielle & Distribution (WinRelais)</h4>
+                <p data-fr="Utilisation professionnelle du logiciel WinRelais pour élaborer des dossiers de schémas électriques industriels normalisés selon la réglementation en vigueur." data-en="Professional use of WinRelais software to build standard industrial electrical layout files according to current guidelines.">Utilisation professionnelle du logiciel WinRelais pour élaborer des dossiers de schémas électriques industriels normalisés selon la réglementation en vigueur.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Conception Multifilaire :</strong> Séparation nette des circuits de puissance (forte tension/fort courant) et des circuits de commande (basse tension de sécurité 24V)." data-en="<strong>Multi-line Layout:</strong> Clear isolation of high-voltage power networks and low-voltage (24V safety) control loops."><strong>Conception Multifilaire :</strong> Séparation nette des circuits de puissance (forte tension/fort courant) et des circuits de commande (basse tension de sécurité 24V).</li>
+                  <li data-fr="<strong>Appareillage de Protection :</strong> Sélection et modélisation de disjoncteurs magnétothermiques, sectionneurs porte-fusibles, contacteurs de puissance et relais thermiques de surcharge." data-en="<strong>Protection Switchgear:</strong> Sizing and layout modeling of magnetothermal circuit breakers, fused isolators, power contactors and thermal overload relays."><strong>Appareillage de Protection :</strong> Sélection et modélisation de disjoncteurs magnétothermiques, sectionneurs porte-fusibles, contacteurs de puissance et relais thermiques de surcharge.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/winrelais.jpg" alt="WinRelais" onerror="this.parentElement.innerText='[Capture Schéma Électrique WinRelais]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Câblage de Départs-Moteurs Triphasés" data-en="Three-Phase Motor Starters Wiring">Câblage de Départs-Moteurs Triphasés</h4>
+                <p data-fr="Manipulation physique et raccordement de cellules d'armoires industrielles pour le contrôle de machines tournantes (Moteurs asynchrones triphasés à cage)." data-en="Physical wiring and connection of industrial cabinet systems for rotating machine speed and directional controls (squirrel-cage three-phase asynchronous motors).">Manipulation physique et raccordement de cellules d'armoires industrielles pour le contrôle de machines tournantes (Moteurs asynchrones triphasés à cage).</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Logique Câblée :</strong> Réalisation de circuits de commande classiques comme le démarrage direct un sens, double sens de marche avec verrouillage électrique par contact inverseur, et signalisations de défauts." data-en="<strong>Wired Logic:</strong> Building classic control setups like direct online starting (single or dual-direction with electrical interlocking through NC auxiliary contacts), and fault indicators."><strong>Logique Câblée :</strong> Réalisation de circuits de commande classiques comme le démarrage direct un sens, double sens de marche avec verrouillage électrique par contact inverseur, et signalisations de défauts.</li>
+                  <li data-fr="<strong>Sécurité :</strong> Application stricte des consignes de sécurité électrique, consignation, mise hors tension et vérification de l'absence de tension (VAT)." data-en="<strong>Safety:</strong> Strict implementation of electrical safety rules, locking procedures, isolation, and voltage absence checks (VAT)."><strong>Sécurité :</strong> Application stricte des consignes de sécurité électrique, consignation, mise hors tension et vérification de l'absence de tension (VAT).</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/moteur-tri.jpg" alt="Banc Moteur" onerror="this.parentElement.innerText='[Photo Câblage Armoire / Armature Tri]';"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalMethode" class="comp-modal" onclick="closeModalOnBackdrop(event)">
+        <div class="comp-modal-content">
+          <button class="comp-modal-close" onclick="closeModal('modalMethode')">&times;</button>
+          <div class="comp-modal-header"><span>📋</span><h3 class="comp-modal-title" data-fr="Méthode & Documentation technique" data-en="Method & Documentation">Méthode & Documentation technique</h3></div>
+          <div class="comp-modal-body">
+            <p class="comp-modal-intro" data-fr="Planification, structuration documentaire et maîtrise des processus de validation d'ingénierie selon des exigences strictes de gestion de projets d'assurance qualité." data-en="Planning, document architecture and mastery of engineering validation processes according to strict quality assurance project management requirements.">Planification, structuration documentaire et maîtrise des processus de validation d'ingénierie selon des exigences strictes de gestion de projets d'assurance qualité.</p>
+            
+            <div class="comp-modal-row">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Cycle en V & Livrables Qualité (ISO 9001)" data-en="V-Model & Quality Deliverables (ISO 9001)">Cycle en V & Livrables Qualité (ISO 9001)</h4>
+                <p data-fr="Suivi méthodologique rigoureux du cycle de vie complet des projets complexes (<strong>SAÉ TDB</strong> et <strong>SAÉ KAH</strong>), s'inspirant des normes de management de la qualité ISO 9001." data-en="Rigorous methodological tracking of the full lifecycle of complex projects (<strong>SAÉ TDB</strong> and <strong>SAÉ KAH</strong>), based on ISO 9001 quality management standards.">Suivi méthodologique rigoureux du cycle de vie complet des projets complexes (<strong>SAÉ TDB</strong> et <strong>SAÉ KAH</strong>), s'inspirant des normes de management de la qualité ISO 9001.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>CDC (Cahier des Charges) :</strong> Formalisation des exigences, critères d'acceptabilité et contraintes techniques." data-en="<strong>CDC (Specifications):</strong> Formalization of requirements, acceptability criteria and technical limits."><strong>CDC (Cahier des Charges) :</strong> Formalisation des exigences, critères d'acceptabilité et contraintes techniques.</li>
+                  <li data-fr="<strong>DDC (Dossier de Conception) :</strong> Rédaction des revues de conception spécifiée puis détaillée, choix technologiques justifiés." data-en="<strong>DDC (Design File):</strong> Technical writing of specified and detailed design reviews, with justified engineering choices."><strong>DDC (Dossier de Conception) :</strong> Rédaction des revues de conception spécifiée puis détaillée, choix technologiques justifiés.</li>
+                  <li data-fr="<strong>DDF & DDV (Fabrication & Vérification) :</strong> Élaboration du dossier de fabrication (fichiers de perçage, plans de câblage) et construction de matrices de conformité pour valider chaque exigence du CDC." data-en="<strong>DDF & DDV (Manufacturing & Verification):</strong> Processing manufacturing files (drill maps, wiring sheets) and building compliance matrices to validate each specification rule."><strong>DDF & DDV (Fabrication & Vérification) :</strong> Élaboration du dossier de fabrication (fichiers de perçage, plans de câblage) et construction de matrices de conformité pour valider chaque exigence du CDC.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/cycle-v.jpg" alt="Cycle en V" onerror="this.parentElement.innerText='[Schéma Graphique Cycle en V]';"></div>
+              </div>
+            </div>
+
+            <div class="comp-modal-row reverse">
+              <div class="comp-modal-text-block">
+                <h4 data-fr="Calcul Formel & Bureautique Technique" data-en="Computer Algebra & Engineering Suite">Calcul Formel & Bureautique Technique</h4>
+                <p data-fr="Maîtrise des environnements logiciels requis pour la modélisation théorique, l'analyse de données et le compte-rendu d'ingénierie." data-en="Mastery of software environments required for theoretical modeling, data analysis, and engineering reporting.">Maîtrise des environnements logiciels requis pour la modélisation théorique, l'analyse de données et le compte-rendu d'ingénierie.</p>
+                <ul class="comp-technical-list">
+                  <li data-fr="<strong>Calcul formel (Maple) :</strong> Modélisation mathématique de systèmes physiques, résolution d'équations différentielles complexes pour le dimensionnement théorique de composants et l'analyse de filtres." data-en="<strong>Computer Algebra (Maple):</strong> Mathematical modeling of physical systems, complex differential equations solving for component theoretical sizing and filter analysis."><strong>Calcul formel (Maple) :</strong> Modélisation mathématique de systèmes physiques, résolution d'équations différentielles complexes pour le dimensionnement théorique de composants et l'analyse de filtres.</li>
+                  <li data-fr="<strong>Bureautique (Office & Workspace) :</strong> Utilisation avancée d'Excel/Sheets (formules, graphiques d'essais, matrices complexes) et Word/Docs pour la rédaction technique collaborative." data-en="<strong>Office Suites (Office & Workspace):</strong> Advanced use of Excel/Sheets (formulas, test charts, complex matrices) and Word/Docs for collaborative technical writing."><strong>Bureautique (Office & Workspace) :</strong> Utilisation avancée d'Excel/Sheets (formules, graphiques d'essais, matrices complexes) et Word/Docs pour la rédaction technique collaborative.</li>
+                </ul>
+              </div>
+              <div class="comp-modal-media-block">
+                <div class="comp-modal-img-container"><img src="img/excel-ddv.jpg" alt="Maple & Excel" onerror="this.parentElement.innerText='[Capture Matrice Excel / Maple]';"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-badges-section">
+        <p class="section-label" data-fr="Profil international" data-en="International profile">Profil international</p>
+        <h2 class="section-title" data-fr="Langues" data-en="Languages">Langues</h2>
+
+        <div class="comp-langues-grid">
+          <div class="comp-lang-card card-stagger">
+            <span class="comp-lang-flag">🇬🇧</span>
+            <div class="comp-lang-details">
+              <h3 class="comp-lang-name">
+                <span data-fr="Anglais" data-en="English">Anglais</span>
+                <span class="comp-lang-level">B2</span>
+              </h3>
+              <p class="comp-lang-desc" 
+                 data-fr="Utilisation courante et fluide en environnement technique. Lecture autonome de documentations constructeurs (datasheets), rédaction de comptes-rendus techniques, et utilisation de logiciels intégralement en anglais." 
+                 data-en="Fluent and regular use in technical environments. Independent reading of manufacturers' documentations (datasheets), writing of technical reports, and operating professional software fully set in English.">
+                Utilisation courante et fluide en environnement technique. Lecture autonome de documentations constructeurs (datasheets), rédaction de comptes-rendus techniques, et utilisation de logiciels intégralement en anglais.
+              </p>
+            </div>
+          </div>
+
+          <div class="comp-lang-card card-stagger">
+            <span class="comp-lang-flag">🇪🇸</span>
+            <div class="comp-lang-details">
+              <h3 class="comp-lang-name">
+                <span data-fr="Espagnol" data-en="Spanish">Espagnol</span>
+                <span class="comp-lang-level">B1</span>
+              </h3>
+              <p class="comp-lang-desc" 
+                 data-fr="Niveau intermédiaire. Bonne compréhension écrite et orale des consignes, compétences relationnelles fondamentales et capacité à échanger de manière simple en contexte professionnel." 
+                 data-en="Intermediate level. Good written and oral comprehension of guidelines, core interpersonal communication skills, and capability to handle simple exchanges in professional situations.">
+                Niveau intermédiaire. Bonne compréhension écrite et orale des consignes, compétences relationnelles fondamentales et capacité à échanger de manière simple en contexte professionnel.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-transversales-section">
+        <p class="section-label" data-fr="Méthodologies professionnelles" data-en="Professional methodologies">Méthodologies professionnelles</p>
+        <h2 class="section-title" data-fr="Compétences transversales" data-en="Transferable skills">Compétences transversales</h2>
+
+        <div class="comp-rects-wrap">
+          <div class="comp-rect-badge card-stagger" data-fr="Travail en équipe projet" data-en="Project teamwork">Travail en équipe projet</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Partage de connaissances & doc" data-en="Knowledge sharing & doc">Partage de connaissances & doc</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Rigueur et méthode" data-en="Rigour and method">Rigueur et méthode</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Respect des délais & livrables" data-en="Meeting deadlines & deliverables">Respect des délais & livrables</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Résolution de problèmes autonome" data-en="Autonomous problem solving">Résolution de problèmes autonome</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Expression orale (Soutenances)" data-en="Oral skills (Presentations)">Expression orale (Soutenances)</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Rédaction technique (Rapports)" data-en="Technical writing (Reports)">Rédaction technique (Rapports)</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Apprentissage rapide d'outils" data-en="Fast learning of new tools">Apprentissage rapide d'outils</div>
+          <div class="comp-rect-badge card-stagger" data-fr="Polyvalence inter-domaines" data-en="Inter-domain versatility">Polyvalence inter-domaines</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy" data-fr="© 2025 Simon Dartiguelongue" data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:ton@email.com" class="footer-contact" data-fr="ton@email.com" data-en="your@email.com">ton@email.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    /* ── Carrousels compétences référentiel ─────────────────────── */
+    const carousels = {
+      concevoir: {
+        track: document.getElementById('trackConcevoir'),
+        dots:  document.querySelectorAll('[data-carousel=\"concevoir\"]'),
+        total: 4,
+        current: 0
+      },
+      verifier: {
+        track: document.getElementById('trackVerifier'),
+        dots:  document.querySelectorAll('[data-carousel=\"verifier\"]'),
+        total: 2,
+        current: 0
+      }
+    };
+
+    function goTo(name, n) {
+      const c = carousels[name];
+      c.current = (n + c.total) % c.total;
+      c.track.style.transform = `translateX(-${c.current * 100}%)`;
+      c.dots.forEach((d, i) => d.classList.toggle('active', i === c.current));
+    }
+
+    document.querySelectorAll('.comp-arrow').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name = btn.dataset.target;
+        const dir  = btn.classList.contains('prev') ? -1 : 1;
+        goTo(name, carousels[name].current + dir);
+      });
+    });
+
+    document.querySelectorAll('.comp-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        goTo(dot.dataset.carousel, +dot.dataset.index);
+      });
+    });
+
+    /* ── Gestion des Modales Popups ───────────────────────────── */
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeModalOnBackdrop(event) {
+      if (event.target.classList.contains('comp-modal')) {
+        event.target.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+  </script>
+</body>
+</html>

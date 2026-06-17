@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C.2 — Proposer une solution technique · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Wrapper ─────────────────────────────────────────────── */
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Retour ──────────────────────────────────────────────── */
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+      text-decoration: none;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    /* ── En-tête page ────────────────────────────────────────── */
+    .comp-page-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-page-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .comp-page-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .comp-page-badge.highlight {
+      background: #181818; color: #fff;
+    }
+    .comp-page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--text-main); margin-bottom: 0.8rem;
+    }
+    .comp-page-subtitle {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.75; max-width: 620px;
+    }
+
+    /* ── Section projet ──────────────────────────────────────── */
+    .projet-section {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .projet-section:last-of-type { border-bottom: none; }
+
+    .projet-section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .projet-section-header-left { flex: 1; min-width: 0; }
+
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.35rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 0;
+    }
+
+    .projet-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      border: 1px solid var(--border); border-radius: 50px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap; flex-shrink: 0; margin-top: 4px;
+    }
+    .projet-link:hover { color: var(--text-main); border-color: var(--text-main); }
+
+    /* ── Texte ───────────────────────────────────────────────── */
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem;
+    }
+    .projet-text:last-of-type { margin-bottom: 0; }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── Figures ─────────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #f5f4f0;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-placeholder {
+      height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .fig-placeholder-icon { font-size: 24px; opacity: 0.25; }
+    .fig-placeholder-text {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      color: var(--text-muted); opacity: 0.5;
+    }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.55rem; border-top: 1px solid var(--border);
+      line-height: 1.55;
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.5rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fig-full { margin: 1.5rem 0; }
+
+    /* ── Navigation bas de page ──────────────────────────────── */
+    .comp-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .comp-nav-btn {
+      font-family: var(--font-display);
+      font-size: 13px; font-weight: 600;
+      padding: 10px 24px; border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+      letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .comp-nav-btn.back {
+      background: var(--text-main); color: #fff;
+      border: 1px solid var(--text-main);
+    }
+    .comp-nav-btn.back:hover { opacity: 0.82; }
+    .comp-nav-btn.prev {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.prev:hover { border-color: var(--text-main); }
+    .comp-nav-btn.next {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.next:hover { border-color: var(--text-main); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .fig-row.col-2,
+      .fig-row.col-3 { grid-template-columns: 1fr; }
+      .projet-section-header { flex-direction: column; gap: 0.6rem; }
+      .comp-nav-footer { flex-direction: column; align-items: stretch; }
+      .comp-nav-btn { justify-content: center; text-align: center; }
+    }
+
+  </style>
+</head>
+<body class="page-inner">
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link" data-fr="Projets"     data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link active" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <!-- ── Retour ──────────────────────────────────────── -->
+      <a href="competences.html" class="projet-back anim-1">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10 12L6 8l4-4"/>
+        </svg>
+        <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+      </a>
+
+      <!-- ── En-tête ─────────────────────────────────────── -->
+      <header class="comp-page-header anim-2">
+        <div class="comp-page-meta-row">
+          <span class="comp-page-badge highlight"
+                data-fr="Compétence C" data-en="Competency C">Compétence C</span>
+          <span class="comp-page-badge"
+                data-fr="Concevoir" data-en="Design">Concevoir</span>
+          <span class="comp-page-badge"
+                data-fr="C.2" data-en="C.2">C.2</span>
+          <span class="comp-page-badge"
+                data-fr="BUT 1 — S1 &amp; S2" data-en="BUT 1 — S1 &amp; S2">BUT 1 — S1 &amp; S2</span>
+        </div>
+        <h1 class="comp-page-title"
+            data-fr="Je propose une solution technique pour répondre à une fonction"
+            data-en="I propose a technical solution to fulfil a function">
+          Je propose une solution technique<br>pour répondre à une fonction
+        </h1>
+        <p class="comp-page-subtitle"
+           data-fr="Identifier les fonctions d'un système ne suffit pas : il faut choisir les composants qui les réalisent. Cette compétence consiste à sélectionner, parmi les solutions disponibles, le composant ou circuit le mieux adapté à une exigence donnée — en justifiant chaque choix par les caractéristiques du cahier des charges."
+           data-en="Identifying a system's functions is not enough: components must be chosen to implement them. This competency involves selecting, from available options, the component or circuit best suited to a given requirement — justifying every choice against the specification's characteristics.">
+          Identifier les fonctions d'un système ne suffit pas : il faut choisir les composants qui les réalisent. Cette compétence consiste à sélectionner, parmi les solutions disponibles, le composant ou circuit le mieux adapté à une exigence donnée — en justifiant chaque choix par les caractéristiques du cahier des charges.
+        </p>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 1 — SLR
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="SLR — Système Sonore et Lumineux Rafale"
+                data-en="SLR — Sound and Light Rafale System">
+              SLR — Système Sonore et Lumineux Rafale
+            </h2>
+          </div>
+          <a href="projet-slr.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Pour le SLR, chaque exigence identifiée en phase de conception devait être traduite en un composant concret. Pour répondre à EXIG_CLIGNOTE (clignotement d'une LED jaune à période 1,9 s et temps d'allumage 0,1 s), j'ai retenu le NE555 en mode astable. En appliquant les formules issues de la datasheet, j'ai dimensionné les composants en partant de C = 100 µF pour rester dans des valeurs de résistances raisonnables. J'ai obtenu Ra = 22 kΩ et Rb = 1,5 kΩ après normalisation en série E6."
+           data-en="For the SLR, each requirement identified during the design phase had to be translated into a concrete component. To meet EXIG_CLIGNOTE (LED blinking at a 1.9 s period with a 0.1 s on-time), I selected the NE555 in astable mode. Applying the datasheet formulas, I sized the components starting from C = 100 µF to keep resistor values reasonable. After normalising to the E6 series I obtained Ra = 22 kΩ and Rb = 1.5 kΩ.">
+          Pour le SLR, chaque exigence identifiée en phase de conception devait être traduite en un composant concret. Pour répondre à <strong>EXIG_CLIGNOTE</strong> (clignotement d'une LED jaune à période 1,9 s et temps d'allumage 0,1 s), j'ai retenu le <strong>NE555 en mode astable</strong>. En appliquant les formules issues de la datasheet, j'ai dimensionné les composants en partant de C = 100 µF pour rester dans des valeurs de résistances raisonnables. J'ai obtenu Ra = 22 kΩ et Rb = 1,5 kΩ après normalisation en série E6.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Pour valider ces valeurs avant fabrication, j'ai simulé le montage sous ISIS : la période mesurée était de 1,73 s (écart de −8,8 % par rapport à la cible de 1,9 s) et le temps d'allumage de 0,103 s (+3,0 %), tous deux dans la tolérance de ±20 % autorisée par le cahier des charges. Ce premier dimensionnement m'a confronté à une démarche concrète de lecture de datasheet et de simulation comme outil de validation avant de proposer une solution finale."
+           data-en="To validate these values before manufacturing, I simulated the circuit in ISIS: the measured period was 1.73 s (−8.8 % from the 1.9 s target) and the on-time was 0.103 s (+3.0 %), both within the ±20 % tolerance allowed by the specification. This first dimensioning exercise introduced me to a concrete workflow of reading datasheets and using simulation as a validation step before finalising a solution.">
+          Pour valider ces valeurs avant fabrication, j'ai simulé le montage sous ISIS : la période mesurée était de 1,73 s (écart de −8,8 % par rapport à la cible) et le temps d'allumage de 0,103 s (+3,0 %), tous deux dans la tolérance de <strong>±20 %</strong> autorisée par le cahier des charges. Ce premier dimensionnement m'a confronté à une démarche concrète de lecture de datasheet et d'utilisation de la simulation comme outil de <strong>validation</strong> avant de proposer une solution finale.
+        </p>
+
+        <!-- Figure SLR -->
+        <div class="fig-full">
+          <div class="fig">
+            <img src="img/slr-c2-schema-ne555.png" alt="Schéma NE555 en mode astable — SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">slr-c2-schema-ne555.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 1 : Schéma du NE555 en mode astable simulé sous ISIS — Ra = 22 kΩ, Rb = 1,5 kΩ, C = 100 µF pour EXIG_CLIGNOTE (§CDT_CLIGNOTE)"
+               data-en="Figure 1: NE555 astable circuit simulated in ISIS — Ra = 22 kΩ, Rb = 1.5 kΩ, C = 100 µF for EXIG_CLIGNOTE (§CDT_CLIGNOTE)">
+              Figure 1 : NE555 astable simulé sous ISIS — Ra = 22 kΩ, Rb = 1,5 kΩ, C = 100 µF (§CDT_CLIGNOTE)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 2 — TDB
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="TDB — Thermomètre De Bain"
+                data-en="TDB — Bath Thermometer">
+              TDB — Thermomètre De Bain
+            </h2>
+          </div>
+          <a href="projet-tdb.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Le TDB m'a confronté à des choix de composants portant sur des grandeurs physiques mesurables. Pour EXIG_COMPARAISONS (comparaison de la température mesurée aux seuils froid 36 °C et chaud 39 °C), j'ai co-rédigé avec Baptiste Masiero la justification du choix de l'amplificateur opérationnel MCP6002 en comparateur. Face au choix entre un comparateur dédié et un AOP, nous avons retenu le MCP6002 pour sa compatibilité alimentation simple 5 V et sa capacité à piloter directement les LED d'alerte, sans circuit de commande additionnel."
+           data-en="The TDB project involved component choices based on measurable physical quantities. For EXIG_COMPARAISONS (comparing the measured temperature against cold (36 °C) and hot (39 °C) thresholds), I co-authored with Baptiste Masiero the justification for choosing the MCP6002 operational amplifier as a comparator. Faced with the choice between a dedicated comparator and an op-amp, we selected the MCP6002 for its single-supply 5 V compatibility and its ability to directly drive the alert LEDs without an additional driver circuit.">
+          Le TDB m'a confronté à des choix de composants portant sur des grandeurs physiques mesurables. Pour <strong>EXIG_COMPARAISONS</strong> (seuils froid 36 °C / chaud 39 °C), j'ai co-rédigé avec Baptiste Masiero la justification du choix de l'amplificateur opérationnel <strong>MCP6002</strong> en comparateur. Face au choix entre un comparateur dédié et un AOP, nous avons retenu le MCP6002 pour sa compatibilité alimentation simple 5 V et sa capacité à piloter directement les LED d'alerte, sans circuit de commande additionnel.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Cette chaîne de mesure s'appuie sur trois étages interdépendants : le capteur LM35 (10 mV/°C), le pont diviseur de tension à trois résistances qui génère les références à 360 mV (36 °C) et 390 mV (39 °C), et enfin les deux MCP6002 associés à une porte logique pour distinguer les zones froide, tiède et chaude. J'ai compris que la cohérence entre ces trois étages — mêmes niveaux de tension, même référence d'alimentation — doit être garantie dès la sélection des composants."
+           data-en="This measurement chain relies on three interdependent stages: the LM35 sensor (10 mV/°C), a three-resistor voltage divider generating reference voltages at 360 mV (36 °C) and 390 mV (39 °C), and finally the two MCP6002s paired with a logic gate to distinguish cold, warm, and hot zones. I understood that the coherence between these three stages — matching voltage levels, shared supply reference — must be guaranteed at component selection stage.">
+          Cette chaîne de mesure s'appuie sur trois étages interdépendants : le capteur <strong>LM35</strong> (10 mV/°C), le pont diviseur de tension qui génère les références à 360 mV (36 °C) et 390 mV (39 °C), et enfin les deux MCP6002 associés à une porte logique pour distinguer les zones froide, tiède et chaude. La cohérence entre ces trois étages — mêmes niveaux de tension, même référence d'alimentation — doit être garantie dès la <strong>sélection des composants</strong>.
+        </p>
+
+        <!-- Figures TDB -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/tdb-c2-schema-mesure.png" alt="Schéma acquisition TDB — LM35 et pont diviseur de seuils"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-c2-schema-mesure.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 2 : Étage d'acquisition — LM35 avec pont diviseur générant les tensions de seuil froid et chaud (§CPR_MESURE / §CPR_SEUILS)"
+               data-en="Figure 2: Acquisition stage — LM35 with voltage divider generating cold and hot threshold voltages (§CPR_MESURE / §CPR_SEUILS)">
+              Figure 2 : Acquisition — LM35 et pont diviseur seuils froid / chaud (§CPR_MESURE / §CPR_SEUILS)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/tdb-c2-schema-comparateur.png" alt="Schéma traitement TDB — deux MCP6002 en comparateurs et porte logique"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-c2-schema-comparateur.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 3 : Étage de traitement — deux MCP6002 en comparateurs et porte 74HC02 pour la détection des trois zones de température (§CPR_COMPARAISONS)"
+               data-en="Figure 3: Processing stage — two MCP6002 comparators and 74HC02 gate for three-zone temperature detection (§CPR_COMPARAISONS)">
+              Figure 3 : Traitement — MCP6002 comparateurs + porte 74HC02 détection zones (§CPR_COMPARAISONS)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 3 — KAH
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S2" data-en="BUT 1 · SAÉ S2">BUT 1 · SAÉ S2</p>
+            <h2 class="projet-section-title"
+                data-fr="KAH — Kart à Hélice"
+                data-en="KAH — Propeller Kart">
+              KAH — Kart à Hélice
+            </h2>
+          </div>
+          <a href="projet-kah.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Le KAH est le projet où j'ai proposé le plus de solutions techniques, en co-rédigeant avec Baptiste Masiero les paragraphes du sous-système récepteur. Pour EXIG_RCPT_TRAITEMENT, nous avons justifié le choix de l'ATmega328P face à l'ATSAMD21 : boîtier THD plus adapté à notre outillage de soudure, performances temporelles largement suffisantes pour décoder le protocole NEC à 38 kHz, et brochage couvrant l'ensemble des périphériques nécessaires — timers, GPIO, UART. Le brochage complet du microcontrôleur nous a permis de vérifier que les 28 broches disponibles suffisaient pour connecter le récepteur IR, le moteur brushless, le servomoteur, le buzzer et les deux LED."
+           data-en="The KAH is the project where I proposed the most technical solutions, co-authoring the receiver sub-system sections with Baptiste Masiero. For EXIG_RCPT_TRAITEMENT, we justified choosing the ATmega328P over the ATSAMD21: a THD package better suited to our soldering tools, timing performance well above the 38 kHz NEC protocol requirements, and a pin count covering all necessary peripherals — timers, GPIO, UART. The full pinout let us confirm that the 28 available pins were sufficient to connect the IR receiver, brushless motor, servo, buzzer, and two LEDs.">
+          Le KAH est le projet où j'ai proposé le plus de solutions techniques, en co-rédigeant avec Baptiste Masiero les paragraphes du sous-système récepteur. Pour <strong>EXIG_RCPT_TRAITEMENT</strong>, nous avons justifié le choix de l'<strong>ATmega328P</strong> face à l'ATSAMD21 : boîtier THD plus adapté à notre outillage de soudure, performances temporelles largement suffisantes pour décoder le protocole NEC à 38 kHz, et brochage couvrant l'ensemble des périphériques nécessaires. Le brochage complet du microcontrôleur nous a permis de vérifier que les <strong>28 broches disponibles</strong> suffisaient pour connecter le récepteur IR, le moteur brushless, le servomoteur, le buzzer et les deux LED.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Pour EXIG_RCPT_CAPTEUR, le module TSOP4438 a été sélectionné pour deux avantages déterminants : sa lentille hémisphérique lui confère un champ de vision panoramique de ±45°, éliminant les angles morts critiques visibles sur le diagramme de directivité du TSOP58438 concurrent, et sa portée maximale de 45 m assure une large marge sur l'exigence de 10 m du cahier des charges."
+           data-en="For EXIG_RCPT_CAPTEUR, the TSOP4438 module was selected for two decisive advantages: its hemispherical lens provides a ±45° panoramic field of view, eliminating the critical blind spots visible in the TSOP58438 directivity diagram, and its 45 m maximum range provides a large margin over the 10 m requirement in the specification.">
+          Pour <strong>EXIG_RCPT_CAPTEUR</strong>, le module <strong>TSOP4438</strong> a été retenu pour deux avantages déterminants : sa lentille hémisphérique lui confère un champ de vision panoramique de ±45°, éliminant les angles morts critiques visibles sur le diagramme de directivité du TSOP58438 concurrent, et sa portée maximale de 45 m assure une large marge sur l'exigence de 10 m du cahier des charges.
+        </p>
+
+        <p class="projet-text"
+           data-fr="J'ai également co-rédigé les paragraphes d'énergie récepteur (§CDT_RCPT_ENERGIE) et d'interrupteur (§CDT_RCPT_INTERRUPTEUR), en calculant le courant total consommé par la carte (2,673 A à mi-puissance), ce qui m'a conduit au choix de l'accumulateur LiPo 1000 mAh. J'ai enfin rédigé seul le schéma électrique détaillé du récepteur (§CDT_RCPT_SCHEMA). Le KAH m'a appris à proposer des solutions pour deux sous-systèmes distincts dont les choix devaient rester cohérents entre eux — mêmes niveaux logiques, même protocole IR, mêmes contraintes d'alimentation — et à les documenter dans un dossier de conception partagé à huit rédacteurs."
+           data-en="I also co-authored the receiver energy section (§CDT_RCPT_ENERGIE) and the power switch section (§CDT_RCPT_INTERRUPTEUR), calculating the board's total current consumption (2.673 A at half power), which led to selecting a 1000 mAh LiPo. I authored the detailed receiver schematic on my own (§CDT_RCPT_SCHEMA). The KAH taught me to propose solutions for two distinct sub-systems whose choices had to remain mutually consistent — same logic levels, same IR protocol, same supply constraints — and to document them in a shared design file with eight contributors.">
+          J'ai également co-rédigé les paragraphes d'énergie récepteur (§CDT_RCPT_ENERGIE) et d'interrupteur (§CDT_RCPT_INTERRUPTEUR), en calculant le courant total consommé (2,673 A à mi-puissance), ce qui m'a conduit au choix de l'accumulateur <strong>LiPo 1000 mAh</strong>. J'ai enfin rédigé seul le schéma électrique détaillé du récepteur (§CDT_RCPT_SCHEMA). Le KAH m'a appris à proposer des solutions pour deux sous-systèmes distincts dont les choix devaient rester cohérents entre eux — mêmes niveaux logiques, même protocole IR, mêmes contraintes d'alimentation.
+        </p>
+
+        <!-- Figures KAH -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/kah-c2-port-atmega.png" alt="Brochage complet ATmega328P — KAH récepteur"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-c2-port-atmega.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 4 : Brochage complet de l'ATmega328P — vérification du nombre de broches disponibles pour le sous-système récepteur KAH (§CPR_RCPT_TRAITEMENT)"
+               data-en="Figure 4: Full ATmega328P pinout — verification of available pins for the KAH receiver sub-system (§CPR_RCPT_TRAITEMENT)">
+              Figure 4 : Brochage ATmega328P — vérification des broches disponibles pour le récepteur KAH (§CPR_RCPT_TRAITEMENT)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/kah-c2-directivite-tsop.png" alt="Diagrammes de directivité TSOP4438 vs TSOP58438"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-c2-directivite-tsop.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 5 : Comparaison des diagrammes de directivité TSOP4438 (gauche) vs TSOP58438 (droite) — la courbe rouge révèle les angles morts du TSOP58438, absents sur le TSOP4438 (§CPR_RCPT_CAPTEUR)"
+               data-en="Figure 5: Directivity diagrams — TSOP4438 (left) vs TSOP58438 (right); the red curve reveals the TSOP58438 blind spots that are absent on the TSOP4438 (§CPR_RCPT_CAPTEUR)">
+              Figure 5 : Directivité TSOP4438 vs TSOP58438 — angles morts (courbe rouge) éliminés sur le TSOP4438 (§CPR_RCPT_CAPTEUR)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Navigation bas de page ──────────────────── -->
+      <nav class="comp-nav-footer">
+        <a href="competences.html" class="comp-nav-btn back">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+        </a>
+        <a href="concevoir-c1.html" class="comp-nav-btn prev">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Compétence précédente : C.1" data-en="Previous competency: C.1">Compétence précédente : C.1</span>
+        </a>
+        <a href="concevoir-c3.html" class="comp-nav-btn next">
+          <span data-fr="Compétence suivante : C.3" data-en="Next competency: C.3">Compétence suivante : C.3</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy"
+            data-fr="© 2025 Simon Dartiguelongue"
+            data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact"
+         data-fr="simon.dartiguelongue@gmail.com"
+         data-en="simon.dartiguelongue@gmail.com">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C.3 — Affiner une solution · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Wrapper ─────────────────────────────────────────────── */
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Retour ──────────────────────────────────────────────── */
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+      text-decoration: none;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    /* ── En-tête page ────────────────────────────────────────── */
+    .comp-page-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-page-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .comp-page-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .comp-page-badge.highlight {
+      background: #181818; color: #fff;
+    }
+    .comp-page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--text-main); margin-bottom: 0.8rem;
+    }
+    .comp-page-subtitle {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.75; max-width: 620px;
+    }
+
+    /* ── Section projet ──────────────────────────────────────── */
+    .projet-section {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .projet-section:last-of-type { border-bottom: none; }
+
+    .projet-section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .projet-section-header-left { flex: 1; min-width: 0; }
+
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.35rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 0;
+    }
+
+    .projet-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      border: 1px solid var(--border); border-radius: 50px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap; flex-shrink: 0; margin-top: 4px;
+    }
+    .projet-link:hover { color: var(--text-main); border-color: var(--text-main); }
+
+    /* ── Texte ───────────────────────────────────────────────── */
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem;
+    }
+    .projet-text:last-of-type { margin-bottom: 0; }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── Figures ─────────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #f5f4f0;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-placeholder {
+      height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .fig-placeholder-icon { font-size: 24px; opacity: 0.25; }
+    .fig-placeholder-text {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      color: var(--text-muted); opacity: 0.5;
+    }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.55rem; border-top: 1px solid var(--border);
+      line-height: 1.55;
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.5rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fig-full { margin: 1.5rem 0; }
+
+    /* ── Navigation bas de page ──────────────────────────────── */
+    .comp-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .comp-nav-btn {
+      font-family: var(--font-display);
+      font-size: 13px; font-weight: 600;
+      padding: 10px 24px; border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+      letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .comp-nav-btn.back {
+      background: var(--text-main); color: #fff;
+      border: 1px solid var(--text-main);
+    }
+    .comp-nav-btn.back:hover { opacity: 0.82; }
+    .comp-nav-btn.prev {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.prev:hover { border-color: var(--text-main); }
+    .comp-nav-btn.next {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.next:hover { border-color: var(--text-main); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .fig-row.col-2,
+      .fig-row.col-3 { grid-template-columns: 1fr; }
+      .projet-section-header { flex-direction: column; gap: 0.6rem; }
+      .comp-nav-footer { flex-direction: column; align-items: stretch; }
+      .comp-nav-btn { justify-content: center; text-align: center; }
+    }
+
+  </style>
+</head>
+<body class="page-inner">
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link" data-fr="Projets"     data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link active" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <!-- ── Retour ──────────────────────────────────────── -->
+      <a href="competences.html" class="projet-back anim-1">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10 12L6 8l4-4"/>
+        </svg>
+        <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+      </a>
+
+      <!-- ── En-tête ─────────────────────────────────────── -->
+      <header class="comp-page-header anim-2">
+        <div class="comp-page-meta-row">
+          <span class="comp-page-badge highlight"
+                data-fr="Compétence C" data-en="Competency C">Compétence C</span>
+          <span class="comp-page-badge"
+                data-fr="Concevoir" data-en="Design">Concevoir</span>
+          <span class="comp-page-badge"
+                data-fr="C.3" data-en="C.3">C.3</span>
+          <span class="comp-page-badge"
+                data-fr="BUT 1 — S1 &amp; S2" data-en="BUT 1 — S1 &amp; S2">BUT 1 — S1 &amp; S2</span>
+        </div>
+        <h1 class="comp-page-title"
+            data-fr="J'affine une solution technique en m'appuyant sur un maquettage numérique et/ou matériel"
+            data-en="I refine a technical solution using digital and/or physical prototyping">
+          J'affine une solution technique<br>en m'appuyant sur un maquettage numérique et/ou matériel
+        </h1>
+        <p class="comp-page-subtitle"
+           data-fr="Choisir un composant ne suffit pas : encore faut-il vérifier que la solution retenue se comporte bien dans les conditions du cahier des charges. Cette compétence consiste à simuler et/ou maquetter le circuit avant de le réaliser, afin d'itérer sur les valeurs et de valider les performances attendues avant tout engagement en fabrication."
+           data-en="Selecting a component is not enough — the chosen solution must be verified against the specification. This competency involves simulating and/or breadboarding the circuit before manufacture, iterating on component values and validating expected performance before any commitment to production.">
+          Choisir un composant ne suffit pas : encore faut-il vérifier que la solution retenue se comporte bien dans les conditions du cahier des charges. Cette compétence consiste à simuler et/ou maquetter le circuit avant de le réaliser, afin d'itérer sur les valeurs et de valider les performances attendues avant tout engagement en fabrication.
+        </p>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 1 — SLR
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="SLR — Système Sonore et Lumineux Rafale"
+                data-en="SLR — Sound and Light Rafale System">
+              SLR — Système Sonore et Lumineux Rafale
+            </h2>
+          </div>
+          <a href="projet-slr.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Pour le projet SLR, la fonction à affiner était le générateur de clignotement piloté par un NE555 en montage astable, soumis à l'exigence EXIG_CLIGNOTE : une période de 1,9 s (±20 %) et un temps d'allumage de 0,1 s (±20 %). À partir des formules du NE555 (period et T_L), j'ai calculé puis normalisé en série E6 les valeurs Ra = 22 kΩ, Rb = 1,5 kΩ et C = 100 µF, avant de lancer une simulation sous ISIS pour vérifier le chronogramme réel du signal « Clignote »."
+           data-en="For the SLR project, the function to refine was the NE555-based astable blink generator, governed by EXIG_CLIGNOTE: a period of 1.9 s (±20 %) and an on-time of 0.1 s (±20 %). From the NE555 formulae (period and T_L), I calculated and normalised in the E6 series the values Ra = 22 kΩ, Rb = 1.5 kΩ and C = 100 µF, then ran a simulation in ISIS to check the actual waveform of the 'Clignote' signal.">
+          Pour le projet SLR, la fonction à affiner était le générateur de clignotement piloté par un <strong>NE555</strong> en montage astable, soumis à l'exigence <strong>EXIG_CLIGNOTE</strong> : une période de 1,9 s (±20 %) et un temps d'allumage de 0,1 s (±20 %). À partir des formules du NE555, j'ai calculé puis normalisé en série E6 les valeurs Ra = 22 kΩ, Rb = 1,5 kΩ et C = 100 µF, avant de lancer une simulation sous <strong>ISIS</strong> pour vérifier le chronogramme réel du signal « Clignote ».
+        </p>
+
+        <p class="projet-text"
+           data-fr="La mesure sur le chronogramme simulé donne une période de 1,73 s et un temps d'allumage de 0,103 s, soit des écarts respectifs de -8,8 % et +3,0 % par rapport aux valeurs cibles du cahier des charges — bien dans la tolérance de ±20 % autorisée. Cette simulation a permis de valider les valeurs normalisées de Ra, Rb et C avant tout passage en fabrication."
+           data-en="The measurement on the simulated waveform gives a period of 1.73 s and an on-time of 0.103 s, i.e. deviations of -8.8 % and +3.0 % respectively from the specification target — well within the ±20 % tolerance allowed. This simulation validated the normalised Ra, Rb and C values before moving on to manufacturing.">
+          La mesure sur le chronogramme simulé donne une période de <strong>1,73 s</strong> et un temps d'allumage de <strong>0,103 s</strong>, soit des écarts respectifs de -8,8 % et +3,0 % par rapport aux valeurs cibles du cahier des charges — bien dans la tolérance de ±20 % autorisée. Cette simulation a permis de valider les valeurs normalisées de Ra, Rb et C avant tout passage en fabrication.
+        </p>
+
+        <!-- Figures SLR -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/slr-c3-chronogramme-theorique.jpg" alt="Chronogramme théorique du signal Clignote SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">slr-c3-chronogramme-theorique.jpg</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 1 : Chronogramme théorique attendu du signal « Clignote » — période 1,9 s, temps d'allumage 0,1 s (§EXIG_CLIGNOTE)"
+               data-en="Figure 1: Expected theoretical waveform of the 'Clignote' signal — period 1.9 s, on-time 0.1 s (§EXIG_CLIGNOTE)">
+              Figure 1 : Chronogramme théorique attendu du signal « Clignote » (§EXIG_CLIGNOTE)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/slr-c3-simulation-isis.jpg" alt="Simulation ISIS du NE555 SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">slr-c3-simulation-isis.jpg</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 2 : Mesure du chronogramme simulé sous ISIS avec Ra = 22 kΩ, Rb = 1,5 kΩ, C = 100 µF — période 1,73 s, T_L 0,103 s"
+               data-en="Figure 2: Measurement of the ISIS-simulated waveform with Ra = 22 kΩ, Rb = 1.5 kΩ, C = 100 µF — period 1.73 s, T_L 0.103 s">
+              Figure 2 : Mesure du chronogramme simulé sous ISIS (Ra = 22 kΩ, Rb = 1,5 kΩ, C = 100 µF)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 2 — TDB
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="TDB — Thermomètre De Bébé"
+                data-en="TDB — Baby Thermometer">
+              TDB — Thermomètre De Bébé
+            </h2>
+          </div>
+          <a href="projet-tdb.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Pour le TDB, la fonction à affiner était l'étage de comparaison des seuils froid (36 °C) et chaud (39 °C), piloté par deux amplificateurs opérationnels MCP6002 montés en comparateurs, soumis à l'exigence EXIG_COMPARAISONS. Après dimensionnement analytique du pont diviseur de tension fixant les seuils à 0,36 V et 0,39 V (R1 ≈ 23 kΩ, R2 = 150 Ω, R3 = 1,8 kΩ), j'ai simulé le pont sous ISIS pour vérifier les tensions obtenues avec les valeurs normalisées."
+           data-en="For the TDB, the function to refine was the cold (36 °C) and hot (39 °C) threshold comparison stage, driven by two MCP6002 op-amps used as comparators, governed by EXIG_COMPARAISONS. After analytically sizing the voltage divider setting the 0.36 V and 0.39 V thresholds (R1 ≈ 23 kΩ, R2 = 150 Ω, R3 = 1.8 kΩ), I simulated the divider in ISIS to check the resulting voltages with the normalised values.">
+          Pour le TDB, la fonction à affiner était l'étage de comparaison des seuils froid (36 °C) et chaud (39 °C), piloté par deux amplificateurs opérationnels <strong>MCP6002</strong> montés en comparateurs, soumis à l'exigence <strong>EXIG_COMPARAISONS</strong>. Après dimensionnement analytique du <strong>pont diviseur</strong> fixant les seuils à 0,36 V et 0,39 V (R1 ≈ 23 kΩ, R2 = 150 Ω, R3 = 1,8 kΩ), j'ai simulé le pont sous <strong>ISIS</strong> pour vérifier les tensions obtenues avec les valeurs normalisées.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Une simulation complémentaire de l'étage de traitement complet a ensuite permis de vérifier le bon fonctionnement de la logique de comparaison : pour trois valeurs simulées de la tension Vthermomètre (inférieure à 0,36 V, supérieure à 0,39 V, et intermédiaire), une seule des trois LED s'allume à chaque fois, conformément au cahier des charges. Cette double validation par simulation a confirmé que le montage était prêt avant le passage en fabrication."
+           data-en="A complementary simulation of the full processing stage then verified the correct operation of the comparison logic: for three simulated values of the Vthermometer voltage (below 0.36 V, above 0.39 V, and in between), only one of the three LEDs lights up each time, in line with the specification. This dual simulation-based validation confirmed the circuit was ready before moving to manufacturing.">
+          Une simulation complémentaire de l'<strong>étage de traitement complet</strong> a ensuite permis de vérifier la logique de comparaison : pour trois valeurs simulées de Vthermomètre (inférieure à 0,36 V, supérieure à 0,39 V, et intermédiaire), une seule des trois LED s'allume à chaque fois, conformément au cahier des charges. Cette double validation par simulation a confirmé que le montage était prêt avant le passage en fabrication.
+        </p>
+
+        <!-- Figures TDB -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/tdb-c3-pont-diviseur.jpg" alt="Simulation ISIS pont diviseur seuils TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-c3-pont-diviseur.jpg</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 3 : Simulation ISIS du pont diviseur — vérification des tensions de seuil froid (0,36 V) et chaud (0,39 V) avec résistances normalisées (§CDT_COMPARAISONS)"
+               data-en="Figure 3: ISIS simulation of the voltage divider — verification of cold (0.36 V) and hot (0.39 V) threshold voltages with normalised resistors (§CDT_COMPARAISONS)">
+              Figure 3 : Simulation ISIS du pont diviseur — seuils 0,36 V / 0,39 V (§CDT_COMPARAISONS)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/tdb-c3-simulation-traitement.jpg" alt="Simulation ISIS étage de traitement TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-c3-simulation-traitement.jpg</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 4 : Simulation ISIS de l'étage de traitement — comparateurs MCP6002 et porte OU inverseur 74HC02 (§CDT_COMPARAISONS)"
+               data-en="Figure 4: ISIS simulation of the processing stage — MCP6002 comparators and 74HC02 NOR gate (§CDT_COMPARAISONS)">
+              Figure 4 : Simulation ISIS de l'étage de traitement — comparateurs et porte OU inverseur (§CDT_COMPARAISONS)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 3 — KAH
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S2" data-en="BUT 1 · SAÉ S2">BUT 1 · SAÉ S2</p>
+            <h2 class="projet-section-title"
+                data-fr="KAH — Kart à Hélice"
+                data-en="KAH — Propeller Kart">
+              KAH — Kart à Hélice
+            </h2>
+          </div>
+          <a href="projet-kah.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Pour le KAH, le bloc traitement du récepteur (microcontrôleur ATmega328P) nécessitait le dimensionnement du circuit RESET, soumis à l'exigence EXIG_RCPT_TRAITEMENT. À partir du temps de reset minimal (2,5 µs) et du seuil logique bas donnés par la datasheet, le calcul analytique a imposé une résistance supérieure à 11,2 kΩ ; après normalisation en série E3, la valeur R = 22 kΩ a été retenue avec un condensateur C = 1 nF."
+           data-en="For the KAH, the receiver's processing block (ATmega328P microcontroller) required sizing the RESET circuit, governed by EXIG_RCPT_TRAITEMENT. From the minimum reset time (2.5 µs) and the low logic threshold given in the datasheet, the analytical calculation required a resistance above 11.2 kΩ; after normalisation in the E3 series, R = 22 kΩ was selected together with a 1 nF capacitor.">
+          Pour le KAH, le bloc traitement du récepteur (microcontrôleur <strong>ATmega328P</strong>) nécessitait le dimensionnement du circuit <strong>RESET</strong>, soumis à l'exigence <strong>EXIG_RCPT_TRAITEMENT</strong>. À partir du temps de reset minimal (2,5 µs) et du seuil logique bas donnés par la datasheet, le calcul analytique a imposé une résistance supérieure à 11,2 kΩ ; après normalisation en série E3, la valeur R = 22 kΩ a été retenue avec C = 1 nF.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Une simulation sous ISIS du circuit RC a permis de vérifier la constante de temps réelle obtenue : la mesure donne τ ≈ 4,94 s, largement supérieure au temps minimal de 2,5 µs exigé, validant ainsi le dimensionnement avant la fabrication de la carte réceptrice. Le placement du bloc RESET et du quartz à proximité immédiate du microcontrôleur a ensuite été vérifié sur l'implantation de la carte sous ARES."
+           data-en="An ISIS simulation of the RC circuit verified the actual time constant obtained: the measurement gives τ ≈ 4.94 s, well above the required minimum time of 2.5 µs, thereby validating the sizing before manufacturing the receiver board. The placement of the RESET block and the crystal close to the microcontroller was then checked on the board layout in ARES.">
+          Une simulation sous <strong>ISIS</strong> du circuit RC a permis de vérifier la constante de temps réelle obtenue : la mesure donne <strong>τ ≈ 4,94 s</strong>, largement supérieure au temps minimal de 2,5 µs exigé, validant ainsi le dimensionnement avant la fabrication de la carte réceptrice. Le placement du bloc RESET et du quartz à proximité immédiate du microcontrôleur a ensuite été vérifié sur l'implantation de la carte sous <strong>ARES</strong>.
+        </p>
+
+        <!-- Figures KAH -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/kah-c3-simulation-reset.jpg" alt="Simulation ISIS du circuit RESET KAH"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-c3-simulation-reset.jpg</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 5 : Schéma et simulation ISIS du circuit RESET (R = 22 kΩ, C = 1 nF) — constante de temps mesurée τ ≈ 4,94 s (§CDT_RCPT_TRAITEMENT)"
+               data-en="Figure 5: ISIS schematic and simulation of the RESET circuit (R = 22 kΩ, C = 1 nF) — measured time constant τ ≈ 4.94 s (§CDT_RCPT_TRAITEMENT)">
+              Figure 5 : Simulation ISIS du circuit RESET — τ ≈ 4,94 s mesuré (§CDT_RCPT_TRAITEMENT)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/kah-c3-implantation-carte.jpg" alt="Implantation de la carte récepteur KAH sous ARES"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-c3-implantation-carte.jpg</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 6 : Implantation de la carte récepteur sous ARES — placement du bloc RESET/quartz à proximité du microcontrôleur (§CDT_RCPT_DIMENSIONS)"
+               data-en="Figure 6: Receiver board layout in ARES — RESET/crystal block placed close to the microcontroller (§CDT_RCPT_DIMENSIONS)">
+              Figure 6 : Implantation de la carte récepteur sous ARES (§CDT_RCPT_DIMENSIONS)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Navigation bas de page ──────────────────── -->
+      <nav class="comp-nav-footer">
+        <a href="competences.html" class="comp-nav-btn back">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+        </a>
+        <a href="concevoir-c2.html" class="comp-nav-btn prev">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Compétence précédente : C.2" data-en="Previous competency: C.2">Compétence précédente : C.2</span>
+        </a>
+        <a href="concevoir-c4.html" class="comp-nav-btn next">
+          <span data-fr="Compétence suivante : C.4" data-en="Next competency: C.4">Compétence suivante : C.4</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy"
+            data-fr="© 2025 Simon Dartiguelongue"
+            data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact"
+         data-fr="simon.dartiguelongue@gmail.com"
+         data-en="simon.dartiguelongue@gmail.com">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

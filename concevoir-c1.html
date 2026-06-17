@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C.1 — Identifier les fonctions · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Wrapper ─────────────────────────────────────────────── */
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Retour ──────────────────────────────────────────────── */
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+      text-decoration: none;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    /* ── En-tête page ────────────────────────────────────────── */
+    .comp-page-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-page-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .comp-page-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .comp-page-badge.highlight {
+      background: #181818; color: #fff;
+    }
+    .comp-page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--text-main); margin-bottom: 0.8rem;
+    }
+    .comp-page-subtitle {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.75; max-width: 620px;
+    }
+
+    /* ── Section projet ──────────────────────────────────────── */
+    .projet-section {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .projet-section:last-of-type { border-bottom: none; }
+
+    .projet-section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .projet-section-header-left { flex: 1; min-width: 0; }
+
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.35rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 0;
+    }
+
+    .projet-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      border: 1px solid var(--border); border-radius: 50px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap; flex-shrink: 0; margin-top: 4px;
+    }
+    .projet-link:hover { color: var(--text-main); border-color: var(--text-main); }
+
+    /* ── Texte ───────────────────────────────────────────────── */
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem;
+    }
+    .projet-text:last-of-type { margin-bottom: 0; }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── Figures ─────────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #f5f4f0;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-placeholder {
+      height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .fig-placeholder-icon { font-size: 24px; opacity: 0.25; }
+    .fig-placeholder-text {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      color: var(--text-muted); opacity: 0.5;
+    }
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.55rem; border-top: 1px solid var(--border);
+      line-height: 1.55;
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.5rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fig-full { margin: 1.5rem 0; }
+
+    /* ── Navigation bas de page ──────────────────────────────── */
+    .comp-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .comp-nav-btn {
+      font-family: var(--font-display);
+      font-size: 13px; font-weight: 600;
+      padding: 10px 24px; border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+      letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .comp-nav-btn.back {
+      background: var(--text-main); color: #fff;
+      border: 1px solid var(--text-main);
+    }
+    .comp-nav-btn.back:hover { opacity: 0.82; }
+    .comp-nav-btn.next {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.next:hover { border-color: var(--text-main); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .fig-row.col-2,
+      .fig-row.col-3 { grid-template-columns: 1fr; }
+      .projet-section-header { flex-direction: column; gap: 0.6rem; }
+      .comp-nav-footer { flex-direction: column; align-items: stretch; }
+      .comp-nav-btn { justify-content: center; text-align: center; }
+    }
+
+  </style>
+</head>
+<body class="page-inner">
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link" data-fr="Projets"     data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link active" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <!-- ── Retour ──────────────────────────────────────── -->
+      <a href="competences.html" class="projet-back anim-1">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10 12L6 8l4-4"/>
+        </svg>
+        <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+      </a>
+
+      <!-- ── En-tête ─────────────────────────────────────── -->
+      <header class="comp-page-header anim-2">
+        <div class="comp-page-meta-row">
+          <span class="comp-page-badge highlight" data-fr="Compétence C" data-en="Competency C">Compétence C</span>
+          <span class="comp-page-badge" data-fr="Concevoir" data-en="Design">Concevoir</span>
+          <span class="comp-page-badge" data-fr="C.1" data-en="C.1">C.1</span>
+          <span class="comp-page-badge" data-fr="BUT 1 — S1 &amp; S2" data-en="BUT 1 — S1 &amp; S2">BUT 1 — S1 &amp; S2</span>
+        </div>
+        <h1 class="comp-page-title"
+            data-fr="J'identifie les fonctions demandées à la lecture du cahier des charges"
+            data-en="I identify the required functions from the specification">
+          J'identifie les fonctions demandées<br>à la lecture du cahier des charges
+        </h1>
+        <p class="comp-page-subtitle"
+           data-fr="Au cœur de toute conception en GEII, la lecture du cahier des charges est le point de départ incontournable. Cette compétence consiste à extraire, depuis un document client structuré, l'ensemble des exigences fonctionnelles d'un produit — et à les organiser en une architecture cohérente qui guidera toute la conception."
+           data-en="At the heart of every GEII design project, reading the specification is the essential starting point. This competency involves extracting all functional requirements from a structured client document and organising them into a coherent architecture that guides the entire design process.">
+          Au cœur de toute conception en GEII, la lecture du cahier des charges est le point de départ incontournable. Cette compétence consiste à extraire, depuis un document client structuré, l'ensemble des exigences fonctionnelles d'un produit — et à les organiser en une architecture cohérente qui guidera toute la conception.
+        </p>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 1 — SLR
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label" data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="SLR — Son et Lumière pour Rafale"
+                data-en="SLR — Sound and Light for Rafale">
+              SLR — Son et Lumière pour Rafale
+            </h2>
+          </div>
+          <a href="projet-slr.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Pour ce premier projet, j'ai découvert ce qu'est un cahier des charges industriel structuré. Le client fictif Toy Corporation décrivait un système sonore et lumineux à intégrer dans une miniature de Rafale, avec des exigences numérotées (EXIG_XXX). J'ai lu ce document en intégralité pour en extraire toutes les fonctions à remplir."
+           data-en="In this first project, I discovered what a structured industrial specification looks like. The fictional client Toy Corporation described a sound-and-light system for a Rafale scale model, with numbered requirements (EXIG_XXX). I read the full document to extract all the functions the product had to fulfil.">
+          Pour ce premier projet, j'ai découvert ce qu'est un cahier des charges industriel structuré. Le client fictif <strong>Toy Corporation</strong> décrivait un système sonore et lumineux à intégrer dans une miniature de Rafale, avec des exigences numérotées (<strong>EXIG_XXX</strong>). J'ai lu ce document en intégralité pour en extraire toutes les fonctions à remplir.
+        </p>
+
+        <p class="projet-text"
+           data-fr="J'ai identifié trois grandes familles de fonctions : alimentation (EXIG_AUTONOMIE), fonctions lumineuses (EXIG_ALLUMAGES, EXIG_INTENSITES) et fonctions sonores (EXIG_RETENTISSEMENT). Cette lecture m'a conduit à partitionner le système en deux sous-cartes distinctes — une carte son et une carte lumière — reflétant directement la séparation des exigences dans le CdC."
+           data-en="I identified three main function families: power (EXIG_AUTONOMIE), light functions (EXIG_ALLUMAGES, EXIG_INTENSITES), and sound functions (EXIG_RETENTISSEMENT). This reading led me to split the system into two sub-boards — a sound board and a light board — directly reflecting the separation of requirements in the specification.">
+          J'ai identifié trois grandes familles de fonctions : <strong>alimentation</strong> (EXIG_AUTONOMIE), fonctions <strong>lumineuses</strong> (EXIG_ALLUMAGES, EXIG_INTENSITES) et fonctions <strong>sonores</strong> (EXIG_RETENTISSEMENT). Cette lecture m'a conduit à partitionner le système en deux sous-cartes — <strong>carte son</strong> et <strong>carte lumière</strong> — reflétant directement la séparation des exigences.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Le synoptique fonctionnel que j'ai produit fait apparaître quatre blocs principaux : acquisition d'informations (microcontrôleur ATtiny45V, référence de tension LM385BZ), traitement, actions (LEDs rouge, jaune, verte et buzzer piézoélectrique), et énergie (supercondensateur 5V-1F). C'est sur ce projet que j'ai acquis la méthode fondamentale : repérer une exigence client et la relier à un bloc fonctionnel concret, traçable dans le DDC."
+           data-en="The functional block diagram I produced reveals four main blocks: information acquisition (ATtiny45V microcontroller, LM385BZ voltage reference), processing, actions (red, yellow, green LEDs and piezoelectric buzzer), and energy (5V-1F supercapacitor). This project is where I learned the core method: spotting a client requirement and mapping it to a concrete, traceable functional block in the DDC.">
+          Le synoptique que j'ai produit fait apparaître quatre blocs : <strong>acquisition</strong> (microcontrôleur ATtiny45V, référence LM385BZ), <strong>traitement</strong>, <strong>actions</strong> (LEDs rouge, jaune, verte et buzzer piézoélectrique) et <strong>énergie</strong> (supercondensateur 5V-1F). C'est sur ce projet que j'ai acquis la méthode fondamentale : relier une exigence client à un bloc fonctionnel tracé dans le DDC.
+        </p>
+
+        <!-- Figures SLR -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/slr-c1-synoptique.png" alt="Synoptique architectural SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">slr-c1-synoptique.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 1 : Synoptique fonctionnel du SLR — quatre blocs (acquisition, traitement, actions, énergie) issus de la lecture du cahier des charges"
+               data-en="Figure 1: SLR functional block diagram — four blocks (acquisition, processing, actions, power) derived from the specification">
+              Figure 1 : Synoptique fonctionnel du SLR — décomposition en blocs issue du cahier des charges
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/slr-c1-archi3d.png" alt="Vue 3D cartes son et lumière SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">slr-c1-archi3d.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 2 : Vue 3D préliminaire des cartes son et lumière — partition architecturale découlant directement des exigences du CdC"
+               data-en="Figure 2: Preliminary 3D view of the sound and light boards — architectural split directly derived from the specification requirements">
+              Figure 2 : Vue 3D préliminaire — carte son et carte lumière résultant de la partition fonctionnelle
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 2 — TDB
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label" data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="TDB — Thermomètre de Bain pour Bébé"
+                data-en="TDB — Baby Bath Thermometer">
+              TDB — Thermomètre de Bain pour Bébé
+            </h2>
+          </div>
+          <a href="projet-tdb.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Avec le TDB, j'ai travaillé sur un cahier des charges plus dense : le client Baby Corporation décrivait un thermomètre électronique pour bain de bébé avec des exigences précises de mesure (EXIG_MESURE : 0–50 °C), de seuils (EXIG_SEUILS : froid à 36 °C, chaud à 39 °C) et d'affichage par LEDs colorées (EXIG_ALLUMAGES). Ma première tâche a été de lire ce CdC pour en dégager une architecture fonctionnelle complète."
+           data-en="With the TDB, I worked on a denser specification: client Baby Corporation described an electronic baby bath thermometer with precise measurement requirements (EXIG_MESURE: 0–50 °C), threshold requirements (EXIG_SEUILS: cold at 36 °C, hot at 39 °C), and LED display requirements (EXIG_ALLUMAGES). My first task was to read this specification and derive a complete functional architecture.">
+          Avec le TDB, j'ai travaillé sur un cahier des charges plus dense : le client <strong>Baby Corporation</strong> décrivait un thermomètre électronique pour bain de bébé avec des exigences précises de mesure (<strong>EXIG_MESURE</strong> : 0–50 °C), de seuils (<strong>EXIG_SEUILS</strong> : froid 36 °C, chaud 39 °C) et d'allumage de LEDs (<strong>EXIG_ALLUMAGES</strong>). Ma première tâche a été de lire ce CdC pour en dégager une architecture complète.
+        </p>
+
+        <p class="projet-text"
+           data-fr="J'ai travaillé avec Baptiste Masiero sur les paragraphes CPR_ARCHITECTURE et CPR_COMPARAISONS du DDC. Nous avons identifié quatre étages distincts : acquisition (capteur LM35DZ plongé dans l'eau du bain), génération des seuils de référence (pont diviseur de tension à deux sorties), comparaison (AOP MCP6002 et porte NON OU 74HC02) et action (LEDs bleue, rouge et verte avec résistances). L'exigence EXIG_SEUILS nous a conduits à dimensionner un pont diviseur produisant deux tensions de référence distinctes, une par seuil de température."
+           data-en="I worked with Baptiste Masiero on the CPR_ARCHITECTURE and CPR_COMPARAISONS sections of the DDC. We identified four distinct stages: acquisition (LM35DZ sensor immersed in the bath water), threshold reference generation (dual-output voltage divider), comparison (MCP6002 op-amp and 74HC02 NOR gate), and action (blue, red and green LEDs with resistors). The EXIG_SEUILS requirement led us to design a voltage divider producing two distinct reference voltages, one per temperature threshold.">
+          J'ai co-rédigé les paragraphes <strong>CPR_ARCHITECTURE</strong> et <strong>CPR_COMPARAISONS</strong> du DDC avec Baptiste Masiero. Nous avons identifié quatre étages : <strong>acquisition</strong> (LM35DZ dans l'eau du bain), <strong>génération des seuils</strong> (pont diviseur à deux sorties), <strong>comparaison</strong> (AOP MCP6002 et porte NON OU 74HC02) et <strong>action</strong> (LEDs bleue, rouge, verte). L'exigence EXIG_SEUILS nous a conduits à concevoir un pont produisant deux tensions de référence distinctes.
+        </p>
+
+        <p class="projet-text"
+           data-fr="C'est le projet où la compétence C.1 s'est vraiment structurée pour moi : passer d'un texte client à un synoptique rigoureux, où chaque exigence est reliée à un étage technique traçable, et où le choix de chaque composant se justifie par une lecture précise du CdC."
+           data-en="This is the project where competency C.1 truly crystallised: moving from a client document to a rigorous block diagram where every requirement maps to a traceable technical stage, and every component choice is justified by a precise reading of the specification.">
+          C'est le projet où la compétence C.1 s'est vraiment structurée pour moi : passer d'un texte client à un <strong>synoptique rigoureux</strong>, où chaque exigence est reliée à un étage technique traçable et où le choix de chaque composant se justifie par une lecture précise du CdC.
+        </p>
+
+        <!-- Figures TDB -->
+        <div class="fig-row col-3">
+          <div class="fig">
+            <img src="img/tdb-c1-synoptique.png" alt="Synoptique architectural TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-c1-synoptique.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 3 : Synoptique fonctionnel du TDB — quatre blocs (acquisition LM35DZ, seuils, comparaison AOP, action LEDs) identifiés depuis le CdC"
+               data-en="Figure 3: TDB functional block diagram — four blocks (LM35DZ acquisition, thresholds, op-amp comparison, LED action) identified from the specification">
+              Figure 3 : Synoptique fonctionnel du TDB — décomposition issue du cahier des charges (§CPR_ARCHITECTURE)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/tdb-c1-schema-mesure.png" alt="Capteur LM35DZ TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-c1-schema-mesure.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 4 : Capteur de température LM35DZ simulé à 55 °C — étage d'acquisition identifié depuis EXIG_MESURE"
+               data-en="Figure 4: LM35DZ temperature sensor simulated at 55 °C — acquisition stage identified from EXIG_MESURE">
+              Figure 4 : Capteur LM35DZ (simulation à 55 °C) — étage d'acquisition issu de EXIG_MESURE
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/tdb-c1-schema-seuils.png" alt="Pont diviseur seuils TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-c1-schema-seuils.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 5 : Pont diviseur de tension à deux sorties — génère les seuils de référence Froid (36 °C) et Chaud (39 °C) identifiés dans EXIG_SEUILS"
+               data-en="Figure 5: Dual-output voltage divider — generates the Cold (36 °C) and Hot (39 °C) reference thresholds identified in EXIG_SEUILS">
+              Figure 5 : Pont diviseur — seuils Froid/Chaud issus de EXIG_SEUILS (§CPR_COMPARAISONS)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 3 — KAH
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label" data-fr="BUT 1 · SAÉ S2" data-en="BUT 1 · SAÉ S2">BUT 1 · SAÉ S2</p>
+            <h2 class="projet-section-title"
+                data-fr="KAH — Kart à Hélice"
+                data-en="KAH — Propeller Kart">
+              KAH — Kart à Hélice
+            </h2>
+          </div>
+          <a href="projet-kah.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Le projet KAH marque une montée en complexité décisive : le système comprend deux sous-systèmes distincts — un émetteur (la télécommande) et un récepteur (le kart) — chacun avec ses propres fonctions mécaniques, électroniques et informatiques. J'ai dû produire deux synoptiques fonctionnels complets, un par sous-système, en partant d'une lecture rigoureuse du CdC."
+           data-en="The KAH project marks a decisive step up in complexity: the system comprises two distinct sub-systems — a transmitter (remote control) and a receiver (the kart) — each with its own mechanical, electronic, and software functions. I had to produce two complete functional diagrams, one per sub-system, from a rigorous reading of the specification.">
+          Le projet KAH marque une <strong>montée en complexité décisive</strong> : le système comprend deux sous-systèmes distincts — un <strong>émetteur</strong> (télécommande) et un <strong>récepteur</strong> (le kart) — chacun avec ses propres fonctions mécaniques, électroniques et informatiques. J'ai dû produire deux synoptiques complets depuis une lecture rigoureuse du CdC.
+        </p>
+
+        <p class="projet-text"
+           data-fr="J'ai co-rédigé le paragraphe CPR_RCPT_DIMENSIONS du DDC avec Mathis Raclet, en définissant le gabarit mécanique de la carte récepteur (100 × 75 mm, quatre trous de fixation Ø 3 mm) et le placement stratégique des composants : connecteurs moteur et servomoteur côté droit, récepteur infrarouge côté helice, LEDs centrées pour garantir leur visibilité. Sur le récepteur, j'ai également co-rédigé les paragraphes de traitement (CPR/CDT_RCPT_TRAITEMENT) et de sécurité (CPR_RCPT_SECURITE), identifiant le rôle du microcontrôleur ATmega328P dans le décodage des trames NEC et la gestion de l'arrêt moteur en l'absence de signal."
+           data-en="I co-wrote the CPR_RCPT_DIMENSIONS DDC section with Mathis Raclet, defining the receiver board mechanical envelope (100 × 75 mm, four Ø 3 mm mounting holes) and the strategic component placement: motor and servo connectors on the right side, IR receiver on the propeller side, centred LEDs for maximum visibility. On the receiver side, I also co-wrote the processing (CPR/CDT_RCPT_TRAITEMENT) and safety (CPR_RCPT_SECURITE) sections, identifying the ATmega328P's role in decoding NEC frames and cutting motor power when no signal is received.">
+          J'ai co-rédigé <strong>CPR_RCPT_DIMENSIONS</strong> avec Mathis Raclet : gabarit de la carte récepteur (100 × 75 mm, quatre trous Ø 3 mm), placement des connecteurs moteur/servo côté droit, récepteur IR côté hélice, LEDs centrées pour leur visibilité. J'ai également co-rédigé <strong>CPR/CDT_RCPT_TRAITEMENT</strong> et <strong>CPR_RCPT_SECURITE</strong>, identifiant le rôle de l'ATmega328P dans le décodage NEC et l'arrêt moteur en l'absence de signal.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Côté énergie et interrupteur récepteur, j'ai co-rédigé les paragraphes CDT_RCPT_ENERGIE et CDT_RCPT_INTERRUPTEUR avec Baptiste Masiero : dimensionnement de la batterie LiPo 2S 1000 mAh à partir de la consommation totale calculée (2,673 A à mi-puissance), et câblage de l'interrupteur en série entre l'accumulateur et le régulateur linéaire intégré au brushless. J'ai également rédigé seul le schéma électrique détaillé du récepteur (CDT_RCPT_SCHEMA). Ce projet conclut mon apprentissage de la C.1 en BUT 1 avec une traçabilité complète entre exigences et paragraphes DDC (CPR_EMTT_XXX / CPR_RCPT_XXX) sur un système bi-cartes."
+           data-en="On the receiver power and switch side, I co-wrote CDT_RCPT_ENERGIE and CDT_RCPT_INTERRUPTEUR with Baptiste Masiero: sizing the LiPo 2S 1000 mAh battery from the calculated total current draw (2.673 A at half power), and wiring the switch in series between the accumulator and the brushless's built-in linear regulator. I also wrote the detailed receiver electrical schematic (CDT_RCPT_SCHEMA) on my own. This project concludes my C.1 learning in year one with full traceability between requirements and DDC sections (CPR_EMTT_XXX / CPR_RCPT_XXX) across a two-board system.">
+          J'ai également co-rédigé <strong>CDT_RCPT_ENERGIE</strong> et <strong>CDT_RCPT_INTERRUPTEUR</strong> avec Baptiste Masiero : dimensionnement de la batterie LiPo 2S 1000 mAh depuis la consommation totale calculée (2,673 A à mi-puissance), câblage de l'interrupteur en série. J'ai rédigé seul <strong>CDT_RCPT_SCHEMA</strong>. Ce projet conclut la C.1 en BUT 1 avec une traçabilité complète sur un système bi-cartes.
+        </p>
+
+        <!-- Figures KAH -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/kah-c1-archi-emtt.png" alt="Architecture fonctionnelle émetteur KAH"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-c1-archi-emtt.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 6 : Architecture fonctionnelle de l'émetteur KAH — fonctions IHM, traitement, puissance IR et énergie identifiées depuis le CdC (§CPR_EMTT_ARCHI_ELEC)"
+               data-en="Figure 6: KAH transmitter functional architecture — HMI, processing, IR power, and energy functions identified from the specification (§CPR_EMTT_ARCHI_ELEC)">
+              Figure 6 : Architecture fonctionnelle de l'émetteur KAH (§CPR_EMTT_ARCHI_ELEC)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/kah-c1-archi-rcpt.png" alt="Architecture fonctionnelle récepteur KAH"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-c1-archi-rcpt.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 7 : Architecture fonctionnelle du récepteur KAH — capteur IR, traitement ATmega328P, moteur brushless, servomoteur et indicateurs (§CPR_RCPT_ARCHI_ELEC)"
+               data-en="Figure 7: KAH receiver functional architecture — IR sensor, ATmega328P processing, brushless motor, servo, and indicators (§CPR_RCPT_ARCHI_ELEC)">
+              Figure 7 : Architecture fonctionnelle du récepteur KAH (§CPR_RCPT_ARCHI_ELEC)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Navigation bas de page ──────────────────── -->
+      <nav class="comp-nav-footer">
+        <a href="competences.html" class="comp-nav-btn back">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+        </a>
+        <a href="concevoir-c2.html" class="comp-nav-btn next">
+          <span data-fr="Compétence suivante : C.2" data-en="Next competency: C.2">Compétence suivante : C.2</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy"
+            data-fr="© 2025 Simon Dartiguelongue"
+            data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

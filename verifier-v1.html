@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V.1 — Rédiger un dossier de vérification · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Wrapper ─────────────────────────────────────────────── */
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Retour ──────────────────────────────────────────────── */
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+      text-decoration: none;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    /* ── En-tête page ────────────────────────────────────────── */
+    .comp-page-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-page-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .comp-page-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .comp-page-badge.highlight {
+      background: #181818; color: #fff;
+    }
+    .comp-page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--text-main); margin-bottom: 0.8rem;
+    }
+    .comp-page-subtitle {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.75; max-width: 620px;
+    }
+
+    /* ── Section projet ──────────────────────────────────────── */
+    .projet-section {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .projet-section:last-of-type { border-bottom: none; }
+
+    .projet-section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .projet-section-header-left { flex: 1; min-width: 0; }
+
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.35rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 0;
+    }
+
+    .projet-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      border: 1px solid var(--border); border-radius: 50px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap; flex-shrink: 0; margin-top: 4px;
+    }
+    .projet-link:hover { color: var(--text-main); border-color: var(--text-main); }
+
+    /* ── Texte ───────────────────────────────────────────────── */
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem;
+    }
+    .projet-text:last-of-type { margin-bottom: 0; }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── Figures ─────────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #f5f4f0;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-placeholder {
+      height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .fig-placeholder-icon { font-size: 24px; opacity: 0.25; }
+    .fig-placeholder-text {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      color: var(--text-muted); opacity: 0.5;
+    }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.55rem; border-top: 1px solid var(--border);
+      line-height: 1.55;
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.5rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fig-full { margin: 1.5rem 0; }
+
+    /* ── Navigation bas de page ──────────────────────────────── */
+    .comp-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .comp-nav-btn {
+      font-family: var(--font-display);
+      font-size: 13px; font-weight: 600;
+      padding: 10px 24px; border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+      letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .comp-nav-btn.back {
+      background: var(--text-main); color: #fff;
+      border: 1px solid var(--text-main);
+    }
+    .comp-nav-btn.back:hover { opacity: 0.82; }
+    .comp-nav-btn.prev {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.prev:hover { border-color: var(--text-main); }
+    .comp-nav-btn.next {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.next:hover { border-color: var(--text-main); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .fig-row.col-2,
+      .fig-row.col-3 { grid-template-columns: 1fr; }
+      .projet-section-header { flex-direction: column; gap: 0.6rem; }
+      .comp-nav-footer { flex-direction: column; align-items: stretch; }
+      .comp-nav-btn { justify-content: center; text-align: center; }
+    }
+
+  </style>
+</head>
+<body class="page-inner">
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link" data-fr="Projets"     data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link active" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <!-- ── Retour ──────────────────────────────────────── -->
+      <a href="competences.html" class="projet-back anim-1">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10 12L6 8l4-4"/>
+        </svg>
+        <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+      </a>
+
+      <!-- ── En-tête ─────────────────────────────────────── -->
+      <header class="comp-page-header anim-2">
+        <div class="comp-page-meta-row">
+          <span class="comp-page-badge highlight"
+                data-fr="Compétence V" data-en="Competency V">Compétence V</span>
+          <span class="comp-page-badge"
+                data-fr="Vérifier" data-en="Verify">Vérifier</span>
+          <span class="comp-page-badge"
+                data-fr="V.1" data-en="V.1">V.1</span>
+          <span class="comp-page-badge"
+                data-fr="BUT 1 — S1 &amp; S2" data-en="BUT 1 — S1 &amp; S2">BUT 1 — S1 &amp; S2</span>
+        </div>
+        <h1 class="comp-page-title"
+            data-fr="Je rédige un dossier<br>de vérification"
+            data-en="I write a verification file">
+          Je rédige un dossier<br>de vérification
+        </h1>
+        <p class="comp-page-subtitle"
+           data-fr="Concevoir un produit, c'est aussi prouver qu'il fonctionne. Cette compétence consiste à rédiger le Dossier De Vérification (DDV) — un document qui formalise des essais, consigne les résultats mesurés et les compare aux exigences du cahier des charges. Chaque paragraphe d'essai suit une structure rigoureuse : but, moyens, procédure, résultats attendus, résultats obtenus, statut de conformité."
+           data-en="Designing a product also means proving it works. This competency involves writing the Verification File (DDV) — a document that formalises tests, records measured results and compares them against specification requirements. Each test paragraph follows a strict structure: purpose, equipment, procedure, expected results, obtained results, conformance status.">
+          Concevoir un produit, c'est aussi prouver qu'il fonctionne. Cette compétence consiste à rédiger le <strong>Dossier De Vérification (DDV)</strong> — un document qui formalise des essais, consigne les résultats mesurés et les compare aux exigences du cahier des charges. Chaque paragraphe d'essai suit une structure rigoureuse : but, moyens, procédure, résultats attendus, résultats obtenus, statut de conformité.
+        </p>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 1 — SLR
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="SLR — Système Sonore et Lumineux Rafale"
+                data-en="SLR — Sound and Light Rafale System">
+              SLR — Système Sonore et Lumineux Rafale
+            </h2>
+          </div>
+          <a href="projet-slr.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Le DDV du projet SLR a été ma première rédaction complète d'un dossier de vérification. J'ai rédigé les deux essais principaux — ESS_CLIGNOTE et ESS_INTENSITES — ainsi que la conclusion et la matrice de conformité finale. Cette première expérience m'a appris à structurer un protocole d'essai reproductible : but précis, liste du matériel, procédure pas à pas, tableau de résultats attendus."
+           data-en="The SLR DDV was my first full verification file. I wrote both main tests — ESS_CLIGNOTE and ESS_INTENSITES — as well as the conclusion and the final compliance matrix. This first experience taught me to structure a reproducible test protocol: a precise purpose, equipment list, step-by-step procedure, and expected results table.">
+          Le DDV du projet SLR a été ma première rédaction complète d'un dossier de vérification. J'ai rédigé les deux essais principaux — <strong>ESS_CLIGNOTE</strong> et <strong>ESS_INTENSITES</strong> — ainsi que la conclusion et la matrice de conformité finale. Cette première expérience m'a appris à structurer un protocole d'essai reproductible : but précis, liste du matériel, procédure pas à pas, tableau de résultats attendus.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Pour ESS_CLIGNOTE, j'ai mis en place le banc de test : la carte lumière SLR alimentée en 5V, la sonde de l'oscilloscope positionnée sur la piste de la résistance R4. Réglé à 250ms/div puis 25ms/div, l'oscilloscope m'a permis de mesurer une période de 1,8s et un temps actif de 108ms — deux valeurs conformes à la fenêtre ±20% du cahier des charges. J'ai aussi documenté un problème concret rencontré : un NE555 monté à l'envers, détecté lors des tests et remplacé rapidement."
+           data-en="For ESS_CLIGNOTE, I set up the test bench: the SLR light board powered at 5V, the oscilloscope probe placed on the R4 resistor trace. Set to 250ms/div then 25ms/div, the oscilloscope let me measure a period of 1.8s and an active time of 108ms — both values within the ±20% specification window. I also documented a real problem encountered: an NE555 mounted backwards, caught during testing and quickly replaced.">
+          Pour <strong>ESS_CLIGNOTE</strong>, j'ai mis en place le banc de test : la carte lumière SLR alimentée en 5V, la sonde de l'oscilloscope positionnée sur la piste de la résistance R4. Réglé à 250ms/div puis 25ms/div, l'oscilloscope m'a permis de mesurer une <strong>période de 1,8s</strong> et un temps actif de 108ms — deux valeurs conformes à la fenêtre ±20% du cahier des charges. J'ai aussi documenté un problème concret rencontré : un NE555 monté à l'envers, détecté lors des tests et remplacé rapidement.
+        </p>
+
+        <p class="projet-text"
+           data-fr="La rédaction de la matrice de conformité finale m'a appris la valeur de la traçabilité : pour chaque exigence, on inscrit la méthode de vérification utilisée et le statut obtenu. Ce tableau devient la preuve formelle, transmissible au client, que chaque point du cahier des charges a bien été contrôlé."
+           data-en="Writing the final compliance matrix taught me the value of traceability: for each requirement, you record the verification method used and the conformance status obtained. This table becomes the formal proof, transmissible to the client, that every specification point has been checked.">
+          La rédaction de la <strong>matrice de conformité finale</strong> m'a appris la valeur de la traçabilité : pour chaque exigence, on inscrit la méthode de vérification utilisée et le statut obtenu. Ce tableau devient la preuve formelle, transmissible au client, que chaque point du cahier des charges a bien été contrôlé.
+        </p>
+
+        <!-- Figures SLR -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/schema_montage_slr.png" alt="Schéma du montage de test ESS_CLIGNOTE"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📷</span>
+              <span class="fig-placeholder-text">schema_montage_slr.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 1 : Schéma du montage de test ESS_CLIGNOTE — alimentation 5V, carte lumière SLR, sonde oscilloscope sur R4"
+               data-en="Figure 1: ESS_CLIGNOTE test bench diagram — 5V supply, SLR light board, oscilloscope probe on R4">
+              Figure 1 : Montage de test ESS_CLIGNOTE — alimentation 5V, carte lumière SLR, sonde oscilloscope sur R4
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/oscilo_periode_slr.png" alt="Mesure de la période du signal CLIGNOTE à l'oscilloscope"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📷</span>
+              <span class="fig-placeholder-text">oscilo_periode_slr.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 2 : Mesure de la période du signal CLIGNOTE à l'oscilloscope (250ms/div, 2V/div) — période mesurée : 1,8s, conforme"
+               data-en="Figure 2: CLIGNOTE signal period measured at oscilloscope (250ms/div, 2V/div) — measured period: 1.8s, conformant">
+              Figure 2 : Période du signal CLIGNOTE mesurée à l'oscilloscope (250ms/div) — 1,8s, conforme
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 2 — TDB
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="TDB — Thermomètre De Bébé"
+                data-en="TDB — Baby Thermometer">
+              TDB — Thermomètre De Bébé
+            </h2>
+          </div>
+          <a href="projet-tdb.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Sur le projet TDB, j'ai co-rédigé plusieurs essais couvrant des exigences variées : les dimensions mécaniques de la carte, l'autonomie de la batterie, le fonctionnement de l'interrupteur, et les tensions de seuil générées par le pont diviseur. Cette diversité d'essais m'a confronté à des méthodes de mesure différentes — pied à coulisse, voltmètre, ampèremètre — et à la nécessité d'adapter le protocole à chaque grandeur à vérifier."
+           data-en="On the TDB project, I co-wrote several tests covering various requirements: the board's mechanical dimensions, battery autonomy, switch operation, and threshold voltages generated by the voltage divider. This variety of tests exposed me to different measurement methods — callipers, voltmeter, ammeter — and the need to adapt the protocol to each measured quantity.">
+          Sur le projet TDB, j'ai co-rédigé plusieurs essais couvrant des exigences variées : les dimensions mécaniques de la carte, l'autonomie de la batterie, le fonctionnement de l'interrupteur, et les <strong>tensions de seuil</strong> générées par le pont diviseur. Cette diversité m'a confronté à des méthodes de mesure différentes — pied à coulisse, voltmètre, ampèremètre — et à la nécessité d'adapter le protocole à chaque grandeur à vérifier.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Pour ESS_SEUILS, j'ai mesuré au voltmètre les deux tensions générées par le pont diviseur : 0,362V pour le seuil froid et 0,392V pour le seuil chaud, toutes deux conformes à ±5%. Pour ESS_AUTONOMIE, en mesurant le courant total consommé (51,6mA au pire cas) et en appliquant la formule t=E/I sur les 80% exploitables de la batterie 350mAh, j'ai calculé une autonomie de 42,73h — bien au-delà des 24h exigées."
+           data-en="For ESS_SEUILS, I measured the two voltages generated by the voltage divider with a voltmeter: 0.362V for the cold threshold and 0.392V for the warm threshold, both conformant to ±5%. For ESS_AUTONOMIE, by measuring the total current draw (51.6mA worst case) and applying the formula t=E/I to the exploitable 80% of the 350mAh battery, I calculated an autonomy of 42.73h — well above the 24h requirement.">
+          Pour <strong>ESS_SEUILS</strong>, j'ai mesuré au voltmètre les deux tensions générées par le pont diviseur : 0,362V pour le seuil froid et 0,392V pour le seuil chaud, conformes à ±5%. Pour <strong>ESS_AUTONOMIE</strong>, en mesurant le courant consommé (51,6mA au pire cas) et en appliquant t=E/I sur les 80% exploitables de la batterie 350mAh, j'ai calculé une autonomie de <strong>42,73h</strong> — bien au-delà des 24h exigées.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Ce projet m'a confronté à ma première non-conformité documentée : les trous de fixation mesuraient 3,21mm au lieu de 4mm, faute d'un foret adapté. J'ai appris qu'un DDV honnête inclut les problèmes rencontrés et les solutions envisagées — transparence envers le client, mais aussi traçabilité des contraintes de production pour les prochaines réalisations."
+           data-en="This project confronted me with my first documented non-conformance: the fixing holes measured 3.21mm instead of 4mm, due to a lack of the right drill bit. I learned that an honest DDV includes problems encountered and proposed solutions — transparency towards the client, but also production constraint traceability for future builds.">
+          Ce projet m'a confronté à ma première <strong>non-conformité documentée</strong> : les trous de fixation mesuraient 3,21mm au lieu de 4mm, faute d'un foret adapté. J'ai appris qu'un DDV honnête inclut les problèmes rencontrés et les solutions envisagées — transparence envers le client, mais aussi traçabilité des contraintes de production pour les prochaines réalisations.
+        </p>
+
+        <!-- Figures TDB -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/seuil_tdb.png" alt="Mesure des tensions de seuil du pont diviseur"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📷</span>
+              <span class="fig-placeholder-text">seuil_tdb.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 3 : Mesure des tensions de seuil froid et chaud générées par le pont diviseur — 0,362V et 0,392V, conformes à ±5%"
+               data-en="Figure 3: Cold and warm threshold voltages measured from the voltage divider — 0.362V and 0.392V, conformant to ±5%">
+              Figure 3 : Mesure au voltmètre des tensions de seuil du pont diviseur — 0,362V et 0,392V, conformes à ±5%
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/etuve_essai_tdb.png" alt="Test de la carte TDB dans l'étuve thermostatée"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📷</span>
+              <span class="fig-placeholder-text">etuve_essai_tdb.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 4 : Test de la carte TDB dans l'étuve thermostatée — vérification des transitions de voyant en fonction des paliers de température"
+               data-en="Figure 4: TDB board tested in the temperature chamber — indicator light transitions verified against temperature thresholds">
+              Figure 4 : Carte TDB dans l'étuve thermostatée — vérification des transitions de voyant selon les paliers de température
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 3 — KAH
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S2" data-en="BUT 1 · SAÉ S2">BUT 1 · SAÉ S2</p>
+            <h2 class="projet-section-title"
+                data-fr="KAH — Kart à Hélice"
+                data-en="KAH — Propeller Kart">
+              KAH — Kart à Hélice
+            </h2>
+          </div>
+          <a href="projet-kah.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Le DDV KAH représente mon apport le plus complet en vérification : j'ai co-rédigé six essais sur la partie émetteur, couvrant les exigences mécaniques, le traitement des trames infrarouge, la répétitivité de l'émission, l'énergie et le fonctionnement de l'interrupteur. La complexité du système — deux cartes communicant en infrarouge — exigeait des procédures d'essai plus élaborées que les projets précédents."
+           data-en="The KAH DDV represents my most complete verification contribution: I co-wrote six tests on the transmitter side, covering mechanical requirements, infrared frame processing, emission repeatability, energy, and switch operation. The system's complexity — two boards communicating over infrared — demanded more elaborate test procedures than in previous projects.">
+          Le DDV KAH représente mon apport le plus complet en vérification : j'ai co-rédigé <strong>six essais</strong> sur la partie émetteur, couvrant les exigences mécaniques, le traitement des trames infrarouge, la répétitivité de l'émission, l'énergie et le fonctionnement de l'interrupteur. La complexité du système — deux cartes communicant en infrarouge — exigeait des procédures d'essai plus élaborées que dans les projets précédents.
+        </p>
+
+        <p class="projet-text"
+           data-fr="L'essai ESS_EXIG_EMTT_TRAITEMENT m'a demandé de concevoir une procédure rigoureuse de décodage de trames infrarouge à l'oscilloscope : six configurations de potentiomètres et du bouton klaxon, chacune associée à une trame NEC attendue bit à bit. Chaque acquisition devait être figée, lue et comparée au tableau de résultats attendus. C'est la première fois que je vérifiait non pas une grandeur analogique, mais une information numérique encodée."
+           data-en="The ESS_EXIG_EMTT_TRAITEMENT test required me to design a rigorous infrared frame decoding procedure at the oscilloscope: six potentiometer and klaxon button configurations, each associated with an expected NEC frame bit by bit. Each acquisition had to be frozen, read and compared against the expected results table. It was the first time I verified not an analogue quantity, but an encoded digital piece of information.">
+          L'essai <strong>ESS_EXIG_EMTT_TRAITEMENT</strong> m'a demandé de concevoir une procédure rigoureuse de décodage de trames infrarouge à l'oscilloscope : six configurations de potentiomètres et du bouton klaxon, chacune associée à une trame NEC attendue bit à bit. C'est la première fois que je vérifiait non pas une grandeur analogique, mais une <strong>information numérique encodée</strong>.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Pour ESS_EXIG_EMTT_REPETITIVITE, j'ai mesuré à l'oscilloscope les délais entre deux trames successives : 116ms lorsque les paramètres varient (attendu 108ms ±10%), 334ms lorsqu'ils sont identiques (attendu 333ms ±10%). Les deux valeurs sont conformes. Ce niveau de précision, obtenu par placement de curseurs sur des trames capturées, m'a appris à exploiter de façon méthodique les outils de mesure temporelle de l'oscilloscope."
+           data-en="For ESS_EXIG_EMTT_REPETITIVITE, I measured inter-frame delays at the oscilloscope: 116ms when parameters vary (expected 108ms ±10%), 334ms when identical (expected 333ms ±10%). Both values are conformant. This level of precision, achieved by placing cursors on captured frames, taught me to use the oscilloscope's time measurement tools methodically.">
+          Pour <strong>ESS_EXIG_EMTT_REPETITIVITE</strong>, j'ai mesuré les délais entre deux trames successives : <strong>116ms</strong> lorsque les paramètres varient (attendu 108ms ±10%) et <strong>334ms</strong> lorsqu'ils sont identiques (attendu 333ms ±10%). Les deux valeurs sont conformes. Ce résultat m'a appris à exploiter méthodiquement les outils de mesure temporelle de l'oscilloscope.
+        </p>
+
+        <!-- Figures KAH -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/resultat_kah.png" alt="Tableau des résultats attendus de l'essai ESS_EXIG_EMTT_TRAITEMENT"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📷</span>
+              <span class="fig-placeholder-text">resultat_kah.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 5 : Tableau des résultats attendus de l'essai ESS_EXIG_EMTT_TRAITEMENT — 6 configurations de trame NEC à vérifier bit à bit"
+               data-en="Figure 5: Expected results table for ESS_EXIG_EMTT_TRAITEMENT — 6 NEC frame configurations to verify bit by bit">
+              Figure 5 : Résultats attendus de l'essai traitement — 6 configurations de trame NEC à vérifier bit à bit
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/schema_kah.png" alt="Montage de vérification de la trame NEC à l'oscilloscope"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📷</span>
+              <span class="fig-placeholder-text">schema_kah.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 6 : Montage réel de vérification de la trame NEC à l'oscilloscope — alimentation de table, carte émetteur et oscilloscope"
+               data-en="Figure 6: Real test bench for NEC frame verification at oscilloscope — bench supply, transmitter board and oscilloscope">
+              Figure 6 : Montage de vérification de la trame NEC — alimentation de table, carte émetteur et oscilloscope
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Navigation bas de page ──────────────────── -->
+      <nav class="comp-nav-footer">
+        <a href="competences.html" class="comp-nav-btn back">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+        </a>
+        <a href="verifier-v2.html" class="comp-nav-btn next">
+          <span data-fr="Compétence suivante : V.2" data-en="Next competency: V.2">Compétence suivante : V.2</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy"
+            data-fr="© 2025 Simon Dartiguelongue"
+            data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact"
+         data-fr="simon.dartiguelongue@gmail.com"
+         data-en="simon.dartiguelongue@gmail.com">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

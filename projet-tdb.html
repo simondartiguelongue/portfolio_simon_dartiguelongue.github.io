@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TDB — Thermomètre De Bain · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    .projet-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .projet-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 0.9rem; flex-wrap: wrap; }
+    .projet-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .projet-badge.done { background: #181818; color: #fff; }
+    .projet-title {
+      font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
+      color: var(--text-main); margin-bottom: 0.6rem;
+    }
+    .projet-subtitle { font-family: var(--font-body); font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.6; }
+
+    .projet-section { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+    .projet-section:last-of-type { border-bottom: none; }
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 1.5rem;
+    }
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem;
+    }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* Liste à puces de description */
+    .projet-list {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin: 1rem 0 1.5rem 1.5rem;
+      padding: 0;
+    }
+    .projet-list li {
+      margin-bottom: 0.75rem;
+    }
+    .projet-list strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── FIGURES ────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #fff;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-img.h-160   { height: 160px; }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.5rem; border-top: 1px solid var(--border);
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.25rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .fig-full { margin: 1.25rem 0; }
+
+    /* ── COMPÉTENCES ────────────────────────────────────── */
+    .comp-list { display: flex; flex-direction: column; gap: 16px; margin-top: 1.5rem; }
+    .comp-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .comp-header { display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: start; padding: 1rem 1.25rem; }
+    .comp-badge {
+      font-family: var(--font-display); font-size: 13px; font-weight: 700;
+      color: var(--text-main); background: var(--tag-bg); border-radius: 8px;
+      padding: 6px 0; text-align: center; margin-top: 2px; flex-shrink: 0;
+    }
+    .comp-content-title { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 0.3rem; }
+    .comp-content-text { font-family: var(--font-body); font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.7; }
+    .comp-figures { padding: 0 1.25rem 1.25rem; }
+    .comp-figures .fig-row { margin: 0; }
+    .comp-figures .fig-full { margin: 0; }
+    .comp-link-row { margin-top: 1.25rem; }
+
+    /* ── MATRICE DE CONFORMITÉ ──────────────────────────── */
+    .conformite-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 8px; margin-top: 1.5rem;
+    }
+    .conformite-item {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.65rem 0.9rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; min-width: 0;
+    }
+    .conformite-label {
+      font-family: var(--font-body); font-size: 12px; font-weight: 400;
+      color: var(--text-muted); min-width: 0; overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap;
+    }
+    .conformite-status {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 2px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+    }
+    .conformite-status.ok  { background: #e8f5e8; color: #2d7a2d; }
+    .conformite-status.nok { background: #fdecea; color: #c0392b; }
+
+    /* ── DOCUMENTS ──────────────────────────────────────── */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 1.5rem;
+    }
+    .doc-block { display: flex; flex-direction: column; gap: 0.6rem; }
+    .doc-block-header {
+      display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .doc-block-label { font-family: var(--font-body); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .doc-block-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text-main); }
+    .doc-open-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 6px 14px; background: var(--text-main); color: #fff;
+      border-radius: 50px; transition: opacity 0.2s, transform 0.2s; text-decoration: none;
+    }
+    .doc-open-btn:hover { opacity: 0.82; transform: translateY(-1px); }
+    .doc-frame-wrapper {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .doc-iframe { width: 100%; height: 660px; border: none; display: block; }
+
+    @media (max-width: 640px) {
+      .fig-row.col-2, .fig-row.col-3 { grid-template-columns: 1fr; }
+      .comp-header { grid-template-columns: 52px 1fr; }
+      .docs-grid { grid-template-columns: 1fr !important; }
+      .conformite-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="page-inner">
+
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link active" data-fr="Projets" data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <a href="projets.html" class="projet-back">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 12L6 8l4-4"/></svg>
+        <span data-fr="Retour aux projets" data-en="Back to projects">Retour aux projets</span>
+      </a>
+
+      <header class="projet-header anim-1">
+        <div class="projet-meta-row">
+          <span class="projet-badge done">Terminé</span>
+          <span class="projet-badge">SAÉ BUT1 — S1</span>
+          <span class="projet-badge">Baby Corporation</span>
+          <span class="projet-badge">Oct. 2025 — Jan. 2026</span>
+        </div>
+        <h1 class="projet-title">Thermomètre<br>De Bain</h1>
+        <p class="projet-subtitle">Conception et vérification d'une carte électronique de mesure de température pour bébé — IUT GEII Bordeaux</p>
+      </header>
+
+      <section class="projet-section anim-2">
+        <p class="projet-section-label">Le projet</p>
+        <h2 class="projet-section-title">Présentation</h2>
+
+        <p class="projet-text">
+          Dans le cadre de la SAÉ de première année de BUT GEII, j'ai conçu et vérifié une <strong>carte électronique de thermomètre de bain pour bébé</strong>, commandée par le client fictif Baby Corporation. L'objectif était de réaliser un dispositif capable de mesurer la température de l'eau d'un bain et de la signaler visuellement à l'aide de trois LED colorées : bleue (&lt; 36 °C), verte (36–39 °C) et rouge (&gt; 39 °C).
+        </p>
+        <p class="projet-text">
+          La carte intègre un capteur analogique LM35DZ (10 mV/°C, plage 0–500 mV), un pont diviseur de tension à trois résistances générant les seuils à 360 mV et 390 mV, un AOP double MCP6002 utilisé en mode comparateur, une porte NOR 74HC02 pour la logique d'allumage, et une alimentation régulée à 5 V par un LM78L05 depuis une batterie LiPo 2S 7,4 V / 350 mAh. Le coût total des composants s'élève à <strong>6,71 € TTC</strong>, pour un boîtier de 100 × 60 mm.
+        </p>
+
+        <div class="fig-full fig">
+          <img class="fig-img h-auto" src="img/DDC_img00.png" alt="Synoptique architecture fonctionnelle — DDC Fig. 1" />
+          <p class="fig-caption">Fig. 1 (DDC) — Synoptique architecture fonctionnelle : 4 blocs Énergie · Acquisition · Traitement · Action</p>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Phase 1</p>
+        <h2 class="projet-section-title">Ce que j'ai fait — Conception</h2>
+
+        <p class="projet-text">
+          <strong>Spécifications et solutions techniques globales :</strong> Le projet impose la réalisation d'un système embarqué autonome de mesure thermique temps réel, fonctionnant sans microcontrôleur. L'acquisition repose sur un capteur analogique LM35DZ délivrant une tension linéaire de 10 mV/°C. La définition des seuils critiques (36 °C et 39 °C) est matérialisée par un pont diviseur de tension à résistances en série calibré pour générer des tensions de référence fixes de 360 mV et 390 mV. Le traitement de ces signaux est confié à un double amplificateur opérationnel MCP6002 monté en comparateur, dont les sorties logiques attaquent un circuit de portes NON-OU 74HC02 pour assurer le décodage. L'affichage exclusif est réalisé par trois LED (bleue, verte, rouge) alimentées via un régulateur de tension LM78L05 qui stabilise le bus d'énergie à 5 V. Mon travail s'est concentré sur la conception et la justification technique des blocs Traitement et Action .
+        </p>
+        
+        <ul class="projet-list">
+          <li><strong>Solutions proposées pour le Traitement :</strong> J'ai opté pour un double amplificateur opérationnel MCP6002 configuré en comparateur analogique de tension. Ce choix se justifie par sa technologie Rail-to-Rail en entrée et en sortie, indispensable sous une faible alimentation de 5 V pour éviter les tensions de déchet et garantir une comparaison fiable des seuils face au signal du LM35DZ. Pour décoder ces signaux sans microcontrôleur, j'ai proposé l'intégration d'un circuit logique de portes NON-OU (74HC02). Ce circuit CMOS offre une excellente immunité aux bruits et permet, par combinaison logique issue de ma table de vérité, d'isoler mathématiquement les trois plages de température.</li>
+          <li><strong>Solutions proposées pour l'Action :</strong> J'ai conçu un étage à trois LED (Bleue, Verte, Rouge) configurées en logique exclusive pour assurer l'affichage visuel de l'état de l'eau (trop froide, idéale, trop chaude). Pour garantir qu'une seule LED ne s'allume à la fois, j'ai interfacé les sorties des portes logiques avec des transistors bipolaires montés en commutation, agissant comme des interrupteurs commandés. Chaque branche intègre une résistance de limitation de courant calculée pour fixer l'intensité à 10 mA, assurant une luminosité optimale sans surcharger les sorties du circuit intégré.</li>
+        </ul>
+
+        <p class="projet-text" style="font-style:italic;">C'est à travers ces choix techniques que j'ai développé les compétences suivantes.</p>
+
+        <div class="comp-list">
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.1</div>
+              <div>
+                <p class="comp-content-title">J'identifie les fonctions demandées à la lecture du cahier des charges</p>
+                <p class="comp-content-text">
+                  J'ai décomposé le besoin en fonctions techniques réparties dans une architecture à quatre blocs : Énergie, Acquisition, Traitement et Action. Cette décomposition m'a permis d'identifier que le système devait rester entièrement analogique — sans microcontrôleur — et que chaque bloc devait répondre à des fonctions précises et indépendantes. Le LM35DZ a été affecté au bloc Acquisition (10 mV/°C, 0–500 mV), le pont diviseur et les comparateurs au bloc Traitement, les trois LED au bloc Action, et le régulateur LM78L05 avec la batterie LiPo 2S au bloc Énergie.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig fig-full">
+                <img class="fig-img h-auto" src="img/DDC_img01.png" alt="Schéma électrique capteur LM35DZ — DDC Fig. 2" loading="lazy" />
+                <p class="fig-caption">Fig. 2 (DDC) — Schéma électrique du capteur LM35DZ (CPR_MESURE) : sortie 10 mV/°C, plage 0–500 mV pour 0–50 °C</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.2</div>
+              <div>
+                <p class="comp-content-title">Je propose une solution technique pour répondre à une fonction</p>
+                <p class="comp-content-text">
+                  Pour le bloc Traitement, j'ai argumenté le choix du MCP6002 en mode comparateur : compatible avec l'alimentation régulée à 5 V, encombrement réduit par rapport au comparateur dédié. J'ai construit la table de vérité de la porte NOR 74HC02 pour démontrer qu'une sortie haute n'est obtenue que lorsque les deux AOP sont simultanément à 0 — condition exclusive à la plage 36–39 °C. Pour le bloc Action, j'ai calculé les résistances de limitation R4, R5, R6 à partir des courbes datasheet de chaque LED pour obtenir 910 Ω, 4 700 Ω et 680 Ω après normalisation série E24.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDC_img02.png" alt="Schéma pont diviseur — DDC Fig. 3" loading="lazy" />
+                  <p class="fig-caption">Fig. 3 (DDC) — Pont diviseur : V_seuil_chaud = 390 mV, V_seuil_froid = 360 mV</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDC_img03.png" alt="Table de vérité NOR — DDC Fig. 4" loading="lazy" />
+                  <p class="fig-caption">Fig. 4 (DDC) — Table de vérité NOR 74HC02 : sortie = 1 si T1 = T2 = 0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.3</div>
+              <div>
+                <p class="comp-content-title">J'affine une solution technique en m'appuyant sur un maquettage numérique et/ou matériel</p>
+                <p class="comp-content-text">
+                  J'ai simulé l'étage Traitement sur ISIS avec trois générateurs de tension (0,36 V, 0,39 V et tension variable simulant le capteur) et trois voltmètres en sortie, validant les trois états de commutation avant tout perçage. Les simulations ont confirmé les valeurs de R4, R5, R6 et la logique d'allumage exclusive des LED. En parallèle, j'ai affiné le routage ARES : placement aligné et équidistant des trois LED en façade, condensateurs de découplage positionnés au plus près du LM78L05.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig fig-full">
+                <img class="fig-img h-auto" src="img/DDC_led_sim.png" alt="Simulation ISIS — vérification numérique LED" loading="lazy" />
+                <p class="fig-caption">DDC — Simulation ISIS : vérification numérique des trois états de commutation LED</p>
+              </div>
+              <div class="fig-row col-2" style="margin-top:12px;">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDC_img09.png" alt="Implantation ARES — DDC Fig. 9" loading="lazy" />
+                  <p class="fig-caption">Fig. 9 (DDC) — Vérification dimensions et implantation ARES : 100 × 60 mm</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDC_img34.jpeg" alt="Schéma électrique final — DDC Fig. 24" loading="lazy" />
+                  <p class="fig-caption">Fig. 24 (DDC) — Schéma électrique détaillé final : quatre étages</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">C.4</div>
+              <div>
+                <p class="comp-content-title">Je rédige un dossier de conception et de fabrication</p>
+                <p class="comp-content-text">
+                  J'ai rédigé les paragraphes CPR_COMPARAISONS, CPR_ALLUMAGES, CPR_INTENSITES et leurs équivalents en conception détaillée, en respectant la structure documentaire imposée : rédacteur/relecteur, figures numérotées exportées à 600 DPI, référencement explicite des exigences. J'ai également contribué au DDF en fournissant le typon et le plan de perçage.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDF_img01.jpeg" alt="Typon top — DDF" loading="lazy" />
+                  <p class="fig-caption">DDF — Typon face supérieure de la carte EQ24</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDF_img03.jpeg" alt="Plan de perçage — DDF" loading="lazy" />
+                  <p class="fig-caption">DDF — Plan de perçage : 4 trous Ø 4 mm à 5 mm des bords</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><div class="comp-link-row" style="margin-top:1.5rem;">
+          <a href="competences.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:12px;font-weight:600;padding:9px 20px;background:#181818;color:#fff;border-radius:50px;text-decoration:none;transition:opacity 0.2s,transform 0.2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+            En savoir plus sur ces compétences →
+          </a>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Phase 2</p>
+        <h2 class="projet-section-title">Ce que j'ai fait — Vérification</h2>
+
+        <p class="projet-text">
+          La phase de vérification a consisté à dérouler les protocoles de tests du DDV afin de valider la conformité électrique du prototype <strong>EQ24</strong>. Le travail de groupe a notamment inclus la mise en place des bancs de mesure pour évaluer la puissance totale dissipée par la carte, tester la bonne intensité lumineuse de chaque LED, relever les seuils de basculement des comparateurs et caractériser les signaux d'interface en fonction de la température.
+        </p>
+
+        <ul class="projet-list">
+          <li>
+            <strong>Vérification du bloc Énergie :</strong> J'ai qualifié expérimentalement la gestion de l'alimentation. En insérant un ampèremètre en série sous une tension nominale de 7,4 V, j'ai mesuré le courant consommé dans chaque mode opérationnel. Le courant maximal relevé valide par le calcul une autonomie théorique de <strong>42,73 heures</strong>, dépassant l'exigence minimale de 24 heures (EXIG_AUTONOMIE). J'ai également testé l'interrupteur JS202011, confirmant l'absence totale de courant résiduel en position OFF.
+          </li>
+          <li>
+            <strong>Vérification du bloc Acquisition :</strong> J'ai mené les essais de caractérisation de la chaîne de capture thermique. En mesurant au voltmètre de précision la tension issue du pont diviseur, j'ai relevé un seuil bas de <strong>0,362 V</strong> (écart de 0,6 % par rapport à la théorie) et un seuil haut de <strong>0,392 V</strong> (écart de 0,5 %). Ces mesures valident la précision du décodage des seuils à l'intérieur de la tolérance de ±5 % requise par le cahier des charges.
+          </li>
+        </ul>
+
+        <p class="projet-text" style="font-style:italic;">La conduite de ces essais m'a amené à travailler les compétences suivantes.</p>
+
+        <div class="comp-list">
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">V.1</div>
+              <div>
+                <p class="comp-content-title">J'applique, j'élabore, je rédige une procédure d'essais</p>
+                <p class="comp-content-text">
+                  J'ai rédigé et appliqué les protocoles ESS_AUTONOMIE et ESS_MARCHE_ARRET : but de l'essai, moyens (références appareils, câblage), procédure numérotée, résultats attendus avec tolérance et statut de conformité. Pour ESS_AUTONOMIE, la procédure inclut la chauffe progressive du capteur pour commuter les trois états LED et relever le courant maximal — 8,19 mA — permettant de calculer une autonomie de 42,73 h, supérieure aux 24 h imposées. J'ai également conduit ESS_SEUILS : mesure au voltmètre des tensions du pont diviseur, avec 0,362 V et 0,392 V relevés, soit des écarts de 0,6 % et 0,5 % par rapport aux valeurs théoriques.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDV_img09.png" alt="Schéma câblage ESS_AUTONOMIE — DDV Fig. 5" loading="lazy" />
+                  <p class="fig-caption">Fig. 5 (DDV) — Plan de câblage ESS_AUTONOMIE : générateur 7,4 V → ampèremètre en série → carte EQ24</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDV_img10.jpeg" alt="Photo ampèremètre — DDV Fig. 6" loading="lazy" />
+                  <p class="fig-caption">Fig. 6 (DDV) — Mesure du courant consommé (un des trois états LED)</p>
+                </div>
+              </div>
+              <div class="fig fig-full" style="margin-top:12px;">
+                <img class="fig-img h-auto" src="img/DDV_img22.jpeg" alt="Carte EQ24 dans l'étuve — DDV Fig. 13" loading="lazy" />
+                <p class="fig-caption">Fig. 13 (DDV) — Carte EQ24 dans l'étuve thermostatée lors de ESS_COMPARAISONS : voyant vert allumé à 37,5 °C</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-item">
+            <div class="comp-header">
+              <div class="comp-badge">V.2</div>
+              <div>
+                <p class="comp-content-title">J'identifie, je corrige les non-conformités d'un prototype</p>
+                <p class="comp-content-text">
+                  Lors de ESS_DIMENSIONS, j'ai mesuré le diamètre des trous de fixation au pied à coulisse (becs intérieurs) : 3,21 mm — en deçà du minimum autorisé de 3,80 mm (4 mm − 0,2 mm). J'ai documenté la cause racine : le foret disponible en atelier ne permettait pas d'atteindre le diamètre requis, contrainte matérielle et non erreur de conception. J'ai évalué que la non-conformité était purement dimensionnelle sans impact fonctionnel, et proposé la solution corrective : approvisionnement d'un foret Ø 4 mm avant tout lancement série.
+                </p>
+              </div>
+            </div>
+            <div class="comp-figures">
+              <div class="fig-row col-2">
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDV_img03.jpeg" alt="Mesure trous non conformes — DDV Fig. 3" loading="lazy" />
+                  <p class="fig-caption">Fig. 3 (DDV) — Diamètre des trous : 3,21 mm au lieu de 4,00 mm (non conforme)</p>
+                </div>
+                <div class="fig">
+                  <img class="fig-img h-200" src="img/DDV_img23.png" alt="Tableau résultats DDV" loading="lazy" />
+                  <p class="fig-caption">DDV — Tableau récapitulatif des résultats de vérification</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="margin-top:1.5rem; margin-bottom:2rem;">
+          <a href="competences.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:12px;font-weight:600;padding:9px 20px;background:#181818;color:#fff;border-radius:50px;text-decoration:none;transition:opacity 0.2s,transform 0.2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+            En savoir plus sur ces compétences →
+          </a>
+        </div>
+
+        <p class="projet-section-label" style="margin-top:2rem; margin-bottom:0.4rem;">Matrice de conformité</p>
+        <div class="conformite-grid">
+          <div class="conformite-item"><span class="conformite-label">EXIG_DIMENSIONS</span><span class="conformite-status nok">Non conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_AUTONOMIE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_MARCHE/ARRET</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_SEUILS</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_COMPARAISONS</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_INTENSITE</span><span class="conformite-status ok">Conforme</span></div>
+          <div class="conformite-item"><span class="conformite-label">EXIG_DELAI</span><span class="conformite-status ok">Conforme</span></div>
+        </div>
+      </section>
+
+      <section class="projet-section">
+        <p class="projet-section-label">Livrables</p>
+        <h2 class="projet-section-title">Documents du projet</h2>
+
+        <div class="docs-grid">
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">CDC</p>
+                <p class="doc-block-title">Cahier des Charges</p>
+              </div>
+              <a href="documents/TDB_CDC.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/TDB_CDC.pdf#toolbar=0&navpanes=0" title="Cahier des Charges TDB"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDC</p>
+                <p class="doc-block-title">Dossier De Conception</p>
+              </div>
+              <a href="documents/TDB_DDC.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/TDB_DDC.pdf#toolbar=0&navpanes=0" title="Dossier De Conception TDB"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDF</p>
+                <p class="doc-block-title">Dossier De Fabrication</p>
+              </div>
+              <a href="documents/TDB_DDF.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/TDB_DDF.pdf#toolbar=0&navpanes=0" title="Dossier De Fabrication TDB"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">DDV</p>
+                <p class="doc-block-title">Dossier De Vérification</p>
+              </div>
+              <a href="documents/TDB_DDV.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/TDB_DDV.pdf#toolbar=0&navpanes=0" title="Dossier De Vérification TDB"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">Soutenance</p>
+                <p class="doc-block-title">Exposé Conception</p>
+              </div>
+              <a href="documents/TDB_EXP_CONCEPTION.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/TDB_EXP_CONCEPTION.pdf#toolbar=0&navpanes=0" title="Exposé Conception TDB"></iframe>
+            </div>
+          </div>
+
+          <div class="doc-block">
+            <div class="doc-block-header">
+              <div>
+                <p class="doc-block-label">Soutenance</p>
+                <p class="doc-block-title">Exposé Vérification</p>
+              </div>
+              <a href="documents/TDB_EXP_VERIFICATION.pdf" target="_blank" class="doc-open-btn">Ouvrir ↗</a>
+            </div>
+            <div class="doc-frame-wrapper">
+              <iframe class="doc-iframe" src="documents/TDB_EXP_VERIFICATION.pdf#toolbar=0&navpanes=0" title="Exposé Vérification TDB"></iframe>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simon Dartiguelongue — Ingénieur GEII</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Sections supplémentaires ─────────────────────────────────── */
+    .home-sections {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .home-section {
+      border-top: 1px solid var(--border);
+      padding: 4rem 0;
+    }
+
+    /* Pedagogie cards */
+    .peda-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+      margin-top: 0;
+    }
+
+    .peda-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      padding: 0.5rem 0;
+      grid-column: 1 / -1;
+      order: 2;
+    }
+
+    .peda-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .peda-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    }
+
+    .peda-icon { font-size: 22px; }
+
+    .peda-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .peda-desc {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .peda-link {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+    .peda-link:hover { opacity: 0.6; }
+
+    /* Projects grid on home */
+    .home-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 280px));
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .home-project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      color: inherit;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .home-project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    }
+
+    .home-project-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      background: #E0DFDA;
+      display: block;
+    }
+
+    /* Skills on home */
+    .home-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 380px));
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .home-skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      color: inherit;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .home-skill-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    }
+
+    .home-skill-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      background: #E0DFDA;
+      display: block;
+    }
+
+    /* "Voir tous" CTA sous les sections */
+    .section-cta {
+      margin-top: 1.75rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    @media (max-width: 640px) {
+      .peda-grid { grid-template-columns: 1fr; }
+      .peda-connector { grid-column: 1; }
+      .home-projects-grid { grid-template-columns: 1fr; }
+      .home-skills-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .home-projects-grid { grid-template-columns: repeat(2, minmax(0, 280px)); }
+    }
+
+    /* ── Photo de profil dans le hero ── */
+    .deco-photo-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+      height: 290px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      z-index: 2;
+    }
+    .deco-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 10%;
+      filter: grayscale(15%);
+      transition: filter 0.4s ease;
+    }
+    .deco-photo-wrap:hover .deco-photo { filter: grayscale(0%); }
+
+    /* ── Bouton Voir mon CV ── */
+    .btn-cv {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 10px 22px;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, border-color 0.2s, background 0.2s, color 0.2s;
+      margin-top: 1.5rem;
+      display: inline-flex;
+    }
+    .btn-cv:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-main);
+      background: var(--text-main);
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="page-home">
+
+  <!-- DOCK NAVIGATION -->
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link active" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link"        data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link"        data-fr="Projets"     data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link"        data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link"        data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <!-- ① HERO -->
+  <main class="home-main">
+    <div class="home-content">
+      <div class="home-tag anim-1"
+           data-fr="Étudiant GEII — disponible pour stage / alternance"
+           data-en="GEII Student — open to internship / apprenticeship">
+        Étudiant GEII — disponible pour stage / alternance
+      </div>
+
+      <h1 class="home-name anim-2">Simon<br><span>Dartiguelongue</span></h1>
+
+      <p class="home-tagline anim-3"
+         data-fr="Électronique, automatisme, énergie : trois disciplines, une formation, une approche globale des systèmes industriels."
+         data-en="Electronics, automation, energy: three disciplines, one degree, a global approach to industrial systems.">
+        Électronique, automatisme, énergie : trois disciplines,<br>une formation, une approche globale des systèmes industriels.
+      </p>
+
+      <a href="contact.html#cv" class="btn-cv anim-3"
+         data-fr="Voir mon CV →" data-en="View my résumé →">
+        Voir mon CV →
+      </a>
+    </div>
+
+    <!-- Déco droite -->
+    <div class="home-deco anim-4">
+      <div class="deco-ring ring-1"></div>
+      <div class="deco-ring ring-2"></div>
+      <div class="deco-ring ring-3"></div>
+      <div class="deco-grid"></div>
+      <div class="deco-photo-wrap">
+        <img src="img/photo.jpg" alt="Simon Dartiguelongue" class="deco-photo" />
+      </div>
+    </div>
+  </main>
+
+  <!-- BANDE DÉFILANTE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Arduino</span><span>·</span>
+      <span>Python</span><span>·</span>
+      <span>C / C++</span><span>·</span>
+      <span>Automates PLC</span><span>·</span>
+      <span>Grafcet</span><span>·</span>
+      <span>KiCad</span><span>·</span>
+      <span>HTML / CSS</span><span>·</span>
+      <span>Git</span><span>·</span>
+      <span>Électronique analogique</span><span>·</span>
+      <span>Arduino</span><span>·</span>
+      <span>Python</span><span>·</span>
+      <span>C / C++</span><span>·</span>
+      <span>Automates PLC</span><span>·</span>
+      <span>Grafcet</span><span>·</span>
+      <span>KiCad</span><span>·</span>
+      <span>HTML / CSS</span><span>·</span>
+      <span>Git</span><span>·</span>
+      <span>Électronique analogique</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- Sections supplémentaires -->
+  <div class="home-sections">
+
+    <!-- ② SECTION PÉDAGOGIE BUT -->
+    <section class="home-section" id="pedagogie">
+      <p class="section-label" data-fr="Formation" data-en="Degree">Formation</p>
+      <h2 class="section-title" data-fr="Comment ça marche ?" data-en="How does it work?">Comment ça marche ?</h2>
+
+      <div class="peda-grid">
+        <!-- Card SAÉ -->
+        <div class="peda-card card-stagger">
+          <div class="peda-icon">🎯</div>
+          <div class="peda-title"
+               data-fr="SAÉ — Situation d'Apprentissage et d'Évaluation"
+               data-en="SAÉ — Learning and Assessment Situation">
+            SAÉ — Situation d'Apprentissage et d'Évaluation
+          </div>
+          <p class="peda-desc"
+             data-fr="Une SAÉ est un projet concret réalisé en équipe, qui place l'étudiant face à une problématique technique réelle. Elle mobilise plusieurs compétences du référentiel BUT GEII et donne lieu à une évaluation. C'est le cœur de la pédagogie par projet de l'IUT."
+             data-en="A SAÉ is a concrete team project that places students in front of a real technical problem. It mobilises several BUT GEII competencies and leads to an assessment. It is the core of the IUT's project-based learning.">
+            Une SAÉ est un projet concret réalisé en équipe, qui place l'étudiant face à une problématique technique réelle. Elle mobilise plusieurs compétences du référentiel BUT GEII et donne lieu à une évaluation. C'est le cœur de la pédagogie par projet de l'IUT.
+          </p>
+          <a href="projets.html" class="peda-link"
+             data-fr="Voir mes projets SAÉ →"
+             data-en="See my SAÉ projects →">
+            Voir mes projets SAÉ →
+          </a>
+        </div>
+
+        <!-- Card HTUT -->
+        <div class="peda-card card-stagger">
+          <div class="peda-icon">📺</div>
+          <div class="peda-title"
+               data-fr="HTUT — Heures Tutorées"
+               data-en="HTUT — Tutored Hours">
+            HTUT — Heures Tutorées
+          </div>
+          <p class="peda-desc"
+             data-fr="Les HTUT sont des heures de formation sous forme de vidéos pédagogiques. Elles permettent d'acquérir la maîtrise d'outils, de logiciels et de méthodologies techniques — des compétences directement mobilisées lors des SAÉ. Elles constituent la brique d'apprentissage qui alimente le travail en projet."
+             data-en="HTUT are training hours delivered as educational videos. They provide mastery of tools, software and technical methodologies — skills directly applied during SAÉ projects. They form the learning foundation that feeds into project work.">
+            Les HTUT sont des heures de formation sous forme de vidéos pédagogiques. Elles permettent d'acquérir la maîtrise d'outils, de logiciels et de méthodologies techniques — des compétences directement mobilisées lors des SAÉ. Elles constituent la brique d'apprentissage qui alimente le travail en projet.
+          </p>
+        </div>
+
+
+      </div>
+    </section>
+
+    <!-- ③ SECTION PROJETS -->
+    <section class="home-section" id="projets">
+      <p class="section-label" data-fr="Réalisations SAÉ" data-en="SAÉ Projects">Réalisations SAÉ</p>
+      <h2 class="section-title" data-fr="Mes projets" data-en="My projects">Mes projets</h2>
+
+      <div class="home-projects-grid">
+
+        <!-- KAH -->
+        <a href="projets.html" class="home-project-card card-stagger">
+          <img src="img/kah.jpg" alt="Kart à Hélice — modélisation SolidWorks" />
+          <div class="project-title"
+               data-fr="KAH — Kart à Hélice"
+               data-en="KAH — Propeller Kart">
+            KAH — Kart à Hélice
+          </div>
+          <p class="project-desc"
+             data-fr="Conception et modélisation d'un kart propulsé par hélice. Travail sur la chaîne d'énergie, la transmission et la commande."
+             data-en="Design and modelling of a propeller-driven kart. Work on the energy chain, transmission and control.">
+            Conception et modélisation d'un kart propulsé par hélice. Travail sur la chaîne d'énergie, la transmission et la commande.
+          </p>
+        </a>
+
+        <!-- TDB -->
+        <a href="projets.html" class="home-project-card card-stagger">
+          <img src="img/tdb.jpg" alt="Thermomètre de Bain" />
+          <div class="project-title"
+               data-fr="TDB — Thermomètre de Bain"
+               data-en="TDB — Bath Thermometer">
+            TDB — Thermomètre de Bain
+          </div>
+          <p class="project-desc"
+             data-fr="Conception d'un thermomètre électronique pour bain de bébé. Schématique, routage PCB et validation des mesures."
+             data-en="Design of an electronic thermometer for baby baths. Schematic, PCB routing and measurement validation.">
+            Conception d'un thermomètre électronique pour bain de bébé. Schématique, routage PCB et validation des mesures.
+          </p>
+        </a>
+
+        <!-- SLR -->
+        <a href="projets.html" class="home-project-card card-stagger">
+          <img src="img/slr.jpg" alt="Son et Lumière Rafale" />
+          <div class="project-title"
+               data-fr="SLR — Son et Lumière Rafale"
+               data-en="SLR — Sound and Light Burst">
+            SLR — Son et Lumière Rafale
+          </div>
+          <p class="project-desc"
+             data-fr="Système son et lumière synchronisé inspiré du guidage d'avions sur pont d'envol. Programmation et gestion des signaux."
+             data-en="Synchronised sound and light system inspired by aircraft guidance on a flight deck. Programming and signal management.">
+            Système son et lumière synchronisé inspiré du guidage d'avions sur pont d'envol. Programmation et gestion des signaux.
+          </p>
+        </a>
+
+      </div>
+
+      <!-- CTA "Voir tous les projets" -->
+      <div class="section-cta">
+        <a href="projets.html" class="btn-ghost"
+           data-fr="Voir tous les projets →"
+           data-en="See all projects →">
+          Voir tous les projets →
+        </a>
+      </div>
+    </section>
+
+    <!-- ④ SECTION COMPÉTENCES -->
+    <section class="home-section" id="competences">
+      <p class="section-label" data-fr="Référentiel BUT GEII" data-en="BUT GEII Framework">Référentiel BUT GEII</p>
+      <h2 class="section-title" data-fr="Compétences" data-en="Skills">Compétences</h2>
+
+      <div class="home-skills-grid">
+
+        <!-- Concevoir -->
+        <a href="competences.html" class="home-skill-card card-stagger">
+          <img src="img/concevoir.jpg" alt="Compétence Concevoir" />
+          <div class="project-title"
+               data-fr="Concevoir"
+               data-en="Design">
+            Concevoir
+          </div>
+          <p class="project-desc"
+             data-fr="Analyser un besoin, produire un schéma fonctionnel, concevoir la partie GEII d'un système."
+             data-en="Analyse a need, produce a functional diagram, design the GEII part of a system.">
+            Analyser un besoin, produire un schéma fonctionnel, concevoir la partie GEII d'un système.
+          </p>
+        </a>
+
+        <!-- Vérifier -->
+        <a href="competences.html" class="home-skill-card card-stagger">
+          <img src="img/verifier.jpg" alt="Compétence Vérifier" />
+          <div class="project-title"
+               data-fr="Vérifier"
+               data-en="Verify">
+            Vérifier
+          </div>
+          <p class="project-desc"
+             data-fr="Mettre en œuvre un plan d'essais, mesurer, identifier les non-conformités et valider un système."
+             data-en="Implement a test plan, measure, identify non-conformities and validate a system.">
+            Mettre en œuvre un plan d'essais, mesurer, identifier les non-conformités et valider un système.
+          </p>
+        </a>
+
+      </div>
+
+      <!-- CTA "Voir toutes mes compétences" -->
+      <div class="section-cta">
+        <a href="competences.html" class="btn-ghost"
+           data-fr="Voir toutes mes compétences →"
+           data-en="See all my skills →">
+          Voir toutes mes compétences →
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /home-sections -->
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy" data-fr="© 2025 Simon Dartiguelongue" data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:ton@email.com" class="footer-contact" data-fr="ton@email.com" data-en="your@email.com">ton@email.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

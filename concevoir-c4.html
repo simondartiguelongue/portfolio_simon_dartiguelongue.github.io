@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C.4 — Rédiger un dossier de conception · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Wrapper ─────────────────────────────────────────────── */
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Retour ──────────────────────────────────────────────── */
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+      text-decoration: none;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    /* ── En-tête page ────────────────────────────────────────── */
+    .comp-page-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-page-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .comp-page-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .comp-page-badge.highlight {
+      background: #181818; color: #fff;
+    }
+    .comp-page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--text-main); margin-bottom: 0.8rem;
+    }
+    .comp-page-subtitle {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.75; max-width: 620px;
+    }
+
+    /* ── Section projet ──────────────────────────────────────── */
+    .projet-section {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .projet-section:last-of-type { border-bottom: none; }
+
+    .projet-section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .projet-section-header-left { flex: 1; min-width: 0; }
+
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.35rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 0;
+    }
+
+    .projet-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      border: 1px solid var(--border); border-radius: 50px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap; flex-shrink: 0; margin-top: 4px;
+    }
+    .projet-link:hover { color: var(--text-main); border-color: var(--text-main); }
+
+    /* ── Texte ───────────────────────────────────────────────── */
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem;
+    }
+    .projet-text:last-of-type { margin-bottom: 0; }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── Figures ─────────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #f5f4f0;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-placeholder {
+      height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .fig-placeholder-icon { font-size: 24px; opacity: 0.25; }
+    .fig-placeholder-text {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      color: var(--text-muted); opacity: 0.5;
+    }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.55rem; border-top: 1px solid var(--border);
+      line-height: 1.55;
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.5rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fig-full { margin: 1.5rem 0; }
+
+    /* ── Navigation bas de page ──────────────────────────────── */
+    .comp-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .comp-nav-btn {
+      font-family: var(--font-display);
+      font-size: 13px; font-weight: 600;
+      padding: 10px 24px; border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+      letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .comp-nav-btn.back {
+      background: var(--text-main); color: #fff;
+      border: 1px solid var(--text-main);
+    }
+    .comp-nav-btn.back:hover { opacity: 0.82; }
+    .comp-nav-btn.prev {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.prev:hover { border-color: var(--text-main); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .fig-row.col-2,
+      .fig-row.col-3 { grid-template-columns: 1fr; }
+      .projet-section-header { flex-direction: column; gap: 0.6rem; }
+      .comp-nav-footer { flex-direction: column; align-items: stretch; }
+      .comp-nav-btn { justify-content: center; text-align: center; }
+    }
+
+  </style>
+</head>
+<body class="page-inner">
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link" data-fr="Projets"     data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link active" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <!-- ── Retour ──────────────────────────────────────── -->
+      <a href="competences.html" class="projet-back anim-1">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10 12L6 8l4-4"/>
+        </svg>
+        <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+      </a>
+
+      <!-- ── En-tête ─────────────────────────────────────── -->
+      <header class="comp-page-header anim-2">
+        <div class="comp-page-meta-row">
+          <span class="comp-page-badge highlight"
+                data-fr="Compétence C" data-en="Competency C">Compétence C</span>
+          <span class="comp-page-badge"
+                data-fr="Concevoir" data-en="Design">Concevoir</span>
+          <span class="comp-page-badge"
+                data-fr="C.4" data-en="C.4">C.4</span>
+          <span class="comp-page-badge"
+                data-fr="BUT 1 — S1 &amp; S2" data-en="BUT 1 — S1 &amp; S2">BUT 1 — S1 &amp; S2</span>
+        </div>
+        <h1 class="comp-page-title"
+            data-fr="Je rédige un dossier de conception et de fabrication"
+            data-en="I write a design and manufacturing file">
+          Je rédige un dossier<br>de conception et de fabrication
+        </h1>
+        <p class="comp-page-subtitle"
+           data-fr="La conception ne s'arrête pas au circuit : elle doit être tracée, justifiée et transmissible. Cette compétence consiste à produire deux documents structurés — le Dossier De Conception (DDC) et le Dossier De Fabrication (DDF) — qui formalisent l'ensemble des choix techniques et permettent à un tiers de comprendre, reproduire et vérifier le produit réalisé."
+           data-en="Design does not stop at the circuit: it must be traced, justified and transferable. This competency involves producing two structured documents — the Design File (DDC) and the Manufacturing File (DDF) — that formalise all technical decisions and allow a third party to understand, reproduce and verify the finished product.">
+          La conception ne s'arrête pas au circuit : elle doit être tracée, justifiée et transmissible. Cette compétence consiste à produire deux documents structurés — le <strong>Dossier De Conception (DDC)</strong> et le <strong>Dossier De Fabrication (DDF)</strong> — qui formalisent l'ensemble des choix techniques et permettent à un tiers de comprendre, reproduire et vérifier le produit réalisé.
+        </p>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 1 — SLR
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="SLR — Système Sonore et Lumineux Rafale"
+                data-en="SLR — Sound and Light Rafale System">
+              SLR — Système Sonore et Lumineux Rafale
+            </h2>
+          </div>
+          <a href="projet-slr.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Sur le DDC SLR, la conception préliminaire (paragraphes CPR_XXX) avait été rédigée par les enseignants pour poser le standard documentaire ; mon rôle s'y limitait à la relecture. Mon premier paragraphe en tant que rédacteur a été CDT_CLIGNOTE, en conception détaillée, qui répond à l'exigence EXIG_CLIGNOTE : un dispositif lumineux dont la période (1,9 s ± 20 %) et le temps d'allumage (0,1 s ± 20 %) sont imposés par le cahier des charges."
+           data-en="On the SLR DDC, the preliminary design (CPR_XXX paragraphs) had been written by the teachers to set the documentary standard; my role there was limited to review. My first paragraph as author was CDT_CLIGNOTE, in the detailed design phase, addressing requirement EXIG_CLIGNOTE: a blinking light whose period (1.9 s ± 20%) and on-time (0.1 s ± 20%) are imposed by the specification.">
+          Sur le DDC SLR, la conception préliminaire (paragraphes <strong>CPR_XXX</strong>) avait été rédigée par les enseignants pour poser le standard documentaire ; mon rôle s'y limitait à la relecture. Mon premier paragraphe en tant que <strong>rédacteur</strong> a été <strong>CDT_CLIGNOTE</strong>, en conception détaillée, qui répond à l'exigence EXIG_CLIGNOTE : un dispositif lumineux dont la période (1,9 s ± 20 %) et le temps d'allumage (0,1 s ± 20 %) sont imposés par le cahier des charges.
+        </p>
+
+        <p class="projet-text"
+           data-fr="J'ai dimensionné le montage astable à NE555 à partir des formules de la datasheet, fixé le condensateur à 100 µF puis calculé les deux résistances avant de les normaliser en série E6 (22 kΩ et 1,5 kΩ). Une simulation sous ISIS m'a permis de vérifier les chronogrammes obtenus : une période de 1,73 s et un temps d'allumage de 0,103 s, soit des écarts de -8,8 % et +3,0 % par rapport aux valeurs cibles — bien dans la tolérance imposée."
+           data-en="I sized the NE555 astable circuit from the datasheet formulas, fixed the capacitor at 100 µF then calculated the two resistors before normalising them to the E6 series (22 kΩ and 1.5 kΩ). An ISIS simulation let me check the resulting timing: a 1.73 s period and a 0.103 s on-time, i.e. deviations of -8.8% and +3.0% from the target values — well within the required tolerance.">
+          J'ai dimensionné le montage astable à NE555 à partir des formules de la datasheet, fixé le condensateur à <strong>100 µF</strong> puis calculé les deux résistances avant de les normaliser en série E6 (<strong>22 kΩ et 1,5 kΩ</strong>). Une simulation sous ISIS m'a permis de vérifier les chronogrammes obtenus : une période de 1,73 s et un temps d'allumage de 0,103 s, soit des écarts de -8,8 % et +3,0 % par rapport aux valeurs cibles — bien dans la tolérance imposée.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Sur le Dossier De Fabrication, j'ai été seul rédacteur des trois paragraphes de la carte lumière — schéma électrique, nomenclature et typons — avec Baptiste Masiero comme relecteur. Produire ces typons m'a confronté à une exigence très concrète : le calque doit être imprimé à l'échelle 1 pour pouvoir servir de masque de gravure du circuit imprimé."
+           data-en="On the Manufacturing File, I was sole author of the three paragraphs for the light board — electrical schematic, bill of materials and PCB artwork — with Baptiste Masiero as reviewer. Producing this artwork confronted me with a very concrete requirement: the layer must be printed at true scale to serve as an etching mask for the PCB.">
+          Sur le Dossier De Fabrication, j'ai été <strong>seul rédacteur</strong> des trois paragraphes de la carte lumière — schéma électrique, nomenclature et typons — avec Baptiste Masiero comme relecteur. Produire ces typons m'a confronté à une exigence très concrète : le calque doit être imprimé <strong>à l'échelle 1</strong> pour pouvoir servir de masque de gravure du circuit imprimé.
+        </p>
+
+        <!-- Figures SLR -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/slr-c4-paragraphe-clignote.png" alt="Paragraphe CDT_CLIGNOTE du DDC SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📄</span>
+              <span class="fig-placeholder-text">slr-c4-paragraphe-clignote.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 1 : En-tête du paragraphe CDT_CLIGNOTE (DDC SLR) — dimensionnement du NE555 entièrement rédigé par Simon Dartiguelongue"
+               data-en="Figure 1: Header of paragraph CDT_CLIGNOTE (SLR DDC) — NE555 sizing entirely written by Simon Dartiguelongue">
+              Figure 1 : Paragraphe CDT_CLIGNOTE du DDC SLR — dimensionnement du NE555
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/slr-c4-typon-bottom.png" alt="Typon bottom de la carte lumière SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📄</span>
+              <span class="fig-placeholder-text">slr-c4-typon-bottom.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 2 : Typon bottom de la carte lumière SLR (DDF) — calque cuivre rédigé par Simon Dartiguelongue"
+               data-en="Figure 2: Bottom-layer PCB artwork of the SLR light board (DDF) — copper layer written by Simon Dartiguelongue">
+              Figure 2 : Typon bottom de la carte lumière SLR (DDF)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 2 — TDB
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="TDB — Thermomètre De Bébé"
+                data-en="TDB — Baby Thermometer">
+              TDB — Thermomètre De Bébé
+            </h2>
+          </div>
+          <a href="projet-tdb.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Sur le DDC TDB, j'ai coécrit avec toute l'équipe le paragraphe CPR_ARCHITECTURE, qui pose le synoptique fonctionnel du thermomètre (acquisition, traitement, action, énergie). J'ai ensuite coécrit CPR_COMPARAISONS avec Baptiste Masiero : le choix de l'amplificateur opérationnel MCP6002 pour comparer la température mesurée aux deux seuils définis, en tenant compte de la tension d'alimentation réelle du montage. J'ai par ailleurs été relecteur sur CPR_MESURE et CPR_SEUILS."
+           data-en="On the TDB DDC, I co-wrote the CPR_ARCHITECTURE paragraph with the whole team, setting out the thermometer's functional block diagram (acquisition, processing, action, power). I then co-wrote CPR_COMPARAISONS with Baptiste Masiero: choosing the MCP6002 op-amp to compare the measured temperature against the two defined thresholds, accounting for the circuit's actual supply voltage. I was also reviewer on CPR_MESURE and CPR_SEUILS.">
+          Sur le DDC TDB, j'ai <strong>coécrit</strong> avec toute l'équipe le paragraphe <strong>CPR_ARCHITECTURE</strong>, qui pose le synoptique fonctionnel du thermomètre (acquisition, traitement, action, énergie). J'ai ensuite coécrit <strong>CPR_COMPARAISONS</strong> avec Baptiste Masiero : le choix de l'amplificateur opérationnel <strong>MCP6002</strong> pour comparer la température mesurée aux deux seuils définis, en tenant compte de la tension d'alimentation réelle du montage. J'ai par ailleurs été relecteur sur CPR_MESURE et CPR_SEUILS.
+        </p>
+
+        <p class="projet-text"
+           data-fr="La matrice de conformité du DDC TDB synthétise cette traçabilité : chaque exigence (EXIG_MESURE, EXIG_SEUILS, EXIG_COMPARAISONS, EXIG_ALLUMAGES, EXIG_INTENSITES) y est associée à son paragraphe de conception préliminaire et détaillée, avec un statut de conformité vérifié pour chacune."
+           data-en="The TDB DDC's compliance matrix summarises this traceability: each requirement (EXIG_MESURE, EXIG_SEUILS, EXIG_COMPARAISONS, EXIG_ALLUMAGES, EXIG_INTENSITES) is linked to its preliminary and detailed design paragraph, with a verified conformance status for each.">
+          La <strong>matrice de conformité</strong> du DDC TDB synthétise cette traçabilité : chaque exigence (EXIG_MESURE, EXIG_SEUILS, EXIG_COMPARAISONS, EXIG_ALLUMAGES, EXIG_INTENSITES) y est associée à son paragraphe de conception préliminaire et détaillée, avec un statut de conformité vérifié pour chacune.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Le Dossier De Fabrication du TDB a été rédigé collectivement avec Mathis Raclet, Léandre Cyuzuzo et Baptiste Masiero : schéma électrique complet, nomenclature chiffrée, typons top et bottom de la carte double face, plan de perçage et schéma d'implantation. La carte comporte 4 perçages en 4 mm, 8 en 30th et 56 en 40th, chaque diamètre correspondant à un type de composant."
+           data-en="The TDB Manufacturing File was written collectively with Mathis Raclet, Léandre Cyuzuzo and Baptiste Masiero: full electrical schematic, costed bill of materials, top and bottom artwork for the double-sided board, drilling plan and placement diagram. The board has 4 holes at 4 mm, 8 at 30th and 56 at 40th, each diameter matching a component type.">
+          Le Dossier De Fabrication du TDB a été rédigé <strong>collectivement</strong> avec Mathis Raclet, Léandre Cyuzuzo et Baptiste Masiero : schéma électrique complet, nomenclature chiffrée, <strong>typons top et bottom</strong> de la carte double face, plan de perçage et schéma d'implantation. La carte comporte 4 perçages en 4 mm, 8 en 30th et 56 en 40th, chaque diamètre correspondant à un type de composant.
+        </p>
+
+        <!-- Figures TDB -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/tdb-c4-matrice-conformite.png" alt="Matrice de conformité du DDC TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📄</span>
+              <span class="fig-placeholder-text">tdb-c4-matrice-conformite.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 3 : Matrice de conformité du DDC TDB — traçabilité exigence ↔ paragraphe CPR/CDT"
+               data-en="Figure 3: TDB DDC compliance matrix — requirement ↔ CPR/CDT paragraph traceability">
+              Figure 3 : Matrice de conformité du DDC TDB
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/tdb-c4-typon-top.png" alt="Typon top de la carte TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📄</span>
+              <span class="fig-placeholder-text">tdb-c4-typon-top.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 4 : Typon top de la carte TDB (DDF) — calque cuivre coécrit avec l'équipe"
+               data-en="Figure 4: Top-layer PCB artwork of the TDB board (DDF) — copper layer co-written with the team">
+              Figure 4 : Typon top de la carte TDB (DDF)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 3 — KAH
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S2" data-en="BUT 1 · SAÉ S2">BUT 1 · SAÉ S2</p>
+            <h2 class="projet-section-title"
+                data-fr="KAH — Kart à Hélice"
+                data-en="KAH — Propeller Kart">
+              KAH — Kart à Hélice
+            </h2>
+          </div>
+          <a href="projet-kah.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Le DDC du KAH adopte une architecture documentaire bi-sous-système : l'émetteur et le récepteur disposent chacun de leurs sections — CPR_EMTT_XXX / CPR_RCPT_XXX en conception préliminaire, puis CDT_EMTT_XXX / CDT_RCPT_XXX en conception détaillée — réparties en blocs Mécanique, Électronique et Informatique. Sur ce projet, mes contributions se concentrent essentiellement sur le récepteur."
+           data-en="The KAH DDC follows a dual-sub-system document structure: the transmitter and receiver each have their own sections — CPR_EMTT_XXX / CPR_RCPT_XXX in preliminary design, then CDT_EMTT_XXX / CDT_RCPT_XXX in detailed design — split into Mechanical, Electronic and Software blocks. On this project, my contributions focus mainly on the receiver.">
+          Le DDC du KAH adopte une architecture documentaire <strong>bi-sous-système</strong> : l'émetteur et le récepteur disposent chacun de leurs sections — <strong>CPR_EMTT_XXX / CPR_RCPT_XXX</strong> en conception préliminaire, puis <strong>CDT_EMTT_XXX / CDT_RCPT_XXX</strong> en conception détaillée — réparties en blocs Mécanique, Électronique et Informatique. Sur ce projet, mes contributions se concentrent essentiellement sur le récepteur.
+        </p>
+
+        <p class="projet-text"
+           data-fr="J'ai coécrit avec Mathis Raclet le paragraphe de dimensionnement de la carte récepteur, qui justifie le placement de chaque composant : connecteurs moteur et servomoteur regroupés côté droit pour limiter le survol de câbles, LEDs centrées pour rester visibles malgré l'hélice et le siège du kart, et composants d'horloge (quartz, résistance, condensateurs) regroupés au plus près du microcontrôleur."
+           data-en="I co-wrote with Mathis Raclet the receiver board sizing paragraph, which justifies the placement of each component: motor and servo connectors grouped on the right side to limit cables crossing the board, centred LEDs to stay visible despite the propeller and seat, and clock components (crystal, resistor, capacitors) grouped close to the microcontroller.">
+          J'ai <strong>coécrit avec Mathis Raclet</strong> le paragraphe de dimensionnement de la carte récepteur, qui justifie le placement de chaque composant : connecteurs moteur et servomoteur regroupés côté droit pour limiter le survol de câbles, LEDs centrées pour rester visibles malgré l'hélice et le siège du kart, et composants d'horloge (quartz, résistance, condensateurs) regroupés au plus près du microcontrôleur.
+        </p>
+
+        <p class="projet-text"
+           data-fr="J'ai par ailleurs coécrit avec Baptiste Masiero les paragraphes de traitement (choix et dimensionnement de l'ATmega328P), d'énergie (dimensionnement de la batterie LiPo et vérification du régulateur), de sécurité, de retentissement du klaxon et de l'interrupteur, côté récepteur. J'ai été seul rédacteur du schéma électrique détaillé du récepteur."
+           data-en="I also co-wrote with Baptiste Masiero the receiver-side paragraphs on processing (choosing and sizing the ATmega328P), power (LiPo battery sizing and regulator check), safety, horn output and the switch. I was sole author of the receiver's detailed electrical schematic.">
+          J'ai par ailleurs coécrit avec Baptiste Masiero les paragraphes de <strong>traitement</strong> (choix et dimensionnement de l'ATmega328P), d'<strong>énergie</strong> (dimensionnement de la batterie LiPo et vérification du régulateur), de sécurité, de retentissement du klaxon et de l'interrupteur, côté récepteur. J'ai été <strong>seul rédacteur</strong> du schéma électrique détaillé du récepteur.
+        </p>
+
+        <!-- Figures KAH -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/kah-c4-table-matieres.png" alt="Table des matières du DDC KAH"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📄</span>
+              <span class="fig-placeholder-text">kah-c4-table-matieres.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 5 : Table des matières du DDC KAH — structure bi-sous-système émetteur/récepteur"
+               data-en="Figure 5: KAH DDC table of contents — dual transmitter/receiver sub-system structure">
+              Figure 5 : Table des matières du DDC KAH
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/kah-c4-schema-implantation.png" alt="Schéma d'implantation de la carte récepteur KAH"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📄</span>
+              <span class="fig-placeholder-text">kah-c4-schema-implantation.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 6 : Schéma d'implantation de la carte récepteur KAH — placement des composants justifié paragraphe par paragraphe"
+               data-en="Figure 6: KAH receiver board placement diagram — component layout justified paragraph by paragraph">
+              Figure 6 : Schéma d'implantation de la carte récepteur KAH
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Navigation bas de page ──────────────────── -->
+      <nav class="comp-nav-footer">
+        <a href="competences.html" class="comp-nav-btn back">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+        </a>
+        <a href="concevoir-c3.html" class="comp-nav-btn prev">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Compétence précédente : C.3" data-en="Previous competency: C.3">Compétence précédente : C.3</span>
+        </a>
+        <!-- Pas de bouton suivant : C.4 est la dernière compétence Concevoir -->
+      </nav>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy"
+            data-fr="© 2025 Simon Dartiguelongue"
+            data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact"
+         data-fr="simon.dartiguelongue@gmail.com"
+         data-en="simon.dartiguelongue@gmail.com">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

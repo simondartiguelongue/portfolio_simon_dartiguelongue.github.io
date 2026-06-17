@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V.2 — Identifier et corriger les non-conformités · Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Wrapper ─────────────────────────────────────────────── */
+    .projet-wrapper { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Retour ──────────────────────────────────────────────── */
+    .projet-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 2.5rem; transition: color 0.2s;
+      text-decoration: none;
+    }
+    .projet-back:hover { color: var(--text-main); }
+    .projet-back svg { width: 14px; height: 14px; }
+
+    /* ── En-tête page ────────────────────────────────────────── */
+    .comp-page-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-page-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .comp-page-badge {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; background: var(--tag-bg); color: var(--tag-text);
+    }
+    .comp-page-badge.highlight {
+      background: #181818; color: #fff;
+    }
+    .comp-page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--text-main); margin-bottom: 0.8rem;
+    }
+    .comp-page-subtitle {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.75; max-width: 620px;
+    }
+
+    /* ── Section projet ──────────────────────────────────────── */
+    .projet-section {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .projet-section:last-of-type { border-bottom: none; }
+
+    .projet-section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .projet-section-header-left { flex: 1; min-width: 0; }
+
+    .projet-section-label {
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.35rem;
+    }
+    .projet-section-title {
+      font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text-main); margin-bottom: 0;
+    }
+
+    .projet-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      border: 1px solid var(--border); border-radius: 50px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap; flex-shrink: 0; margin-top: 4px;
+    }
+    .projet-link:hover { color: var(--text-main); border-color: var(--text-main); }
+
+    /* ── Texte ───────────────────────────────────────────────── */
+    .projet-text {
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem;
+    }
+    .projet-text:last-of-type { margin-bottom: 0; }
+    .projet-text strong { font-weight: 500; color: var(--text-main); }
+
+    /* ── Figures ─────────────────────────────────────────────── */
+    .fig {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .fig-img {
+      width: 100%; display: block;
+      object-fit: contain; background: #f5f4f0;
+    }
+    .fig-img.h-auto  { height: auto; max-height: 400px; }
+    .fig-img.h-200   { height: 200px; }
+    .fig-img.h-260   { height: 260px; }
+    .fig-placeholder {
+      height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px);
+    }
+    .fig-placeholder-icon { font-size: 24px; opacity: 0.25; }
+    .fig-placeholder-text {
+      font-family: var(--font-display); font-size: 11px; font-weight: 600;
+      color: var(--text-muted); opacity: 0.5;
+    }
+
+    .fig-caption {
+      font-family: var(--font-body); font-size: 11px; color: var(--text-muted);
+      padding: 0.45rem 0.85rem 0.55rem; border-top: 1px solid var(--border);
+      line-height: 1.55;
+    }
+
+    .fig-row { display: grid; gap: 12px; margin: 1.5rem 0; }
+    .fig-row.col-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fig-full { margin: 1.5rem 0; }
+
+    /* ── Navigation bas de page ──────────────────────────────── */
+    .comp-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .comp-nav-btn {
+      font-family: var(--font-display);
+      font-size: 13px; font-weight: 600;
+      padding: 10px 24px; border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+      letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .comp-nav-btn.back {
+      background: var(--text-main); color: #fff;
+      border: 1px solid var(--text-main);
+    }
+    .comp-nav-btn.back:hover { opacity: 0.82; }
+    .comp-nav-btn.prev {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.prev:hover { border-color: var(--text-main); }
+    .comp-nav-btn.next {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .comp-nav-btn.next:hover { border-color: var(--text-main); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .fig-row.col-2,
+      .fig-row.col-3 { grid-template-columns: 1fr; }
+      .projet-section-header { flex-direction: column; gap: 0.6rem; }
+      .comp-nav-footer { flex-direction: column; align-items: stretch; }
+      .comp-nav-btn { justify-content: center; text-align: center; }
+    }
+
+  </style>
+</head>
+<body class="page-inner">
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link" data-fr="Accueil"     data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link" data-fr="À propos"    data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link" data-fr="Projets"     data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link active" data-fr="Compétences" data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link" data-fr="Contact"     data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="projet-wrapper">
+
+      <!-- ── Retour ──────────────────────────────────────── -->
+      <a href="competences.html" class="projet-back anim-1">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10 12L6 8l4-4"/>
+        </svg>
+        <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+      </a>
+
+      <!-- ── En-tête ─────────────────────────────────────── -->
+      <header class="comp-page-header anim-2">
+        <div class="comp-page-meta-row">
+          <span class="comp-page-badge highlight"
+                data-fr="Compétence V" data-en="Competency V">Compétence V</span>
+          <span class="comp-page-badge"
+                data-fr="Vérifier" data-en="Verify">Vérifier</span>
+          <span class="comp-page-badge"
+                data-fr="V.2" data-en="V.2">V.2</span>
+          <span class="comp-page-badge"
+                data-fr="BUT 1 — S1 &amp; S2" data-en="BUT 1 — S1 &amp; S2">BUT 1 — S1 &amp; S2</span>
+        </div>
+        <h1 class="comp-page-title"
+            data-fr="J'identifie et je corrige les non-conformités d'un prototype"
+            data-en="I identify and correct non-conformities in a prototype">
+          J'identifie et je corrige<br>les non-conformités d'un prototype
+        </h1>
+        <p class="comp-page-subtitle"
+           data-fr="Concevoir et vérifier sont indissociables : lorsqu'un essai révèle un écart entre la mesure et l'exigence, il faut analyser l'origine de la non-conformité, corriger le prototype et re-vérifier jusqu'à obtenir la conformité. Cette compétence couvre l'ensemble de cette boucle diagnostic–correction–validation, appliquée sur les trois projets du BUT 1."
+           data-en="Design and verification are inseparable: when a test reveals a gap between a measurement and a requirement, the root cause of the non-conformity must be analysed, the prototype corrected, and re-verified until compliance is achieved. This competency covers the full diagnosis–correction–validation loop, applied across the three BUT 1 projects.">
+          Concevoir et vérifier sont indissociables : lorsqu'un essai révèle un écart entre la mesure et l'exigence, il faut analyser l'origine de la non-conformité, corriger le prototype et re-vérifier jusqu'à obtenir la conformité. Cette compétence couvre l'ensemble de cette boucle diagnostic–correction–validation, appliquée sur les trois projets du BUT 1.
+        </p>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 1 — SLR
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="SLR — Système Sonore et Lumineux Rafale"
+                data-en="SLR — Sound and Light Rafale System">
+              SLR — Système Sonore et Lumineux Rafale
+            </h2>
+          </div>
+          <a href="projet-slr.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="J'ai rédigé l'essai ESS_CLIGNOTE, qui vérifie la période et le temps actif du clignotement de la LED jaune par rapport à l'exigence EXIG_CLIGNOTE. À l'oscilloscope, j'ai mesuré une période de 1,8 s pour une exigence de 1,9 s ±20 % (plage acceptable de 1,52 s à 2,28 s), puis un temps actif de 108 ms pour une exigence de 0,1 s ±20 % (plage de 80 ms à 120 ms). Les deux mesures se situent dans la fenêtre de tolérance : l'essai est conforme."
+           data-en="I wrote the ESS_CLIGNOTE test procedure, which checks the period and on-time of the yellow LED's blinking against the EXIG_CLIGNOTE requirement. On the oscilloscope, I measured a period of 1.8 s against a requirement of 1.9 s ±20% (acceptable range 1.52 s to 2.28 s), then an on-time of 108 ms against a requirement of 0.1 s ±20% (range 80 ms to 120 ms). Both measurements fall within the tolerance window: the test is compliant.">
+          J'ai rédigé l'essai <strong>ESS_CLIGNOTE</strong>, qui vérifie la période et le temps actif du clignotement de la LED jaune par rapport à l'exigence <strong>EXIG_CLIGNOTE</strong>. À l'oscilloscope, j'ai mesuré une période de <strong>1,8 s</strong> pour une exigence de 1,9 s ±20 % (plage acceptable de 1,52 s à 2,28 s), puis un temps actif de <strong>108 ms</strong> pour une exigence de 0,1 s ±20 % (plage de 80 ms à 120 ms). Les deux mesures se situent dans la fenêtre de tolérance : l'essai est conforme.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Au cours de cette campagne d'essai, j'ai identifié deux anomalies physiques sur la carte testée : une soudure qui s'était écartée de sa piste pour créer un contact involontaire avec le plan de masse, et le circuit NE555 monté à l'envers. J'ai corrigé la première en refaisant fondre l'étain pour repositionner la liaison, puis remplacé le composant mal orienté avant de reprendre les mesures, écartant ainsi tout risque d'imprécision sur les résultats validés."
+           data-en="During this test campaign, I identified two physical defects on the board under test: a solder joint that had drifted off its track and created an unintended connection to the ground plane, and the NE555 chip mounted backwards. I fixed the first by reflowing the solder to reposition the connection, then replaced the misoriented component before repeating the measurements, ruling out any risk of inaccuracy in the validated results.">
+          Au cours de cette campagne d'essai, j'ai identifié deux anomalies physiques sur la carte testée : une <strong>soudure</strong> qui s'était écartée de sa piste pour créer un contact involontaire avec le plan de masse, et le circuit <strong>NE555 monté à l'envers</strong>. J'ai corrigé la première en refaisant fondre l'étain pour repositionner la liaison, puis remplacé le composant mal orienté avant de reprendre les mesures, écartant ainsi tout risque d'imprécision sur les résultats validés.
+        </p>
+
+        <!-- Figures SLR -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/slr-v2-periode.png" alt="Oscilloscope — mesure de période SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">slr-v2-periode.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 1 : Mesure à l'oscilloscope de la période du clignotement — 1,8 s, conforme à EXIG_CLIGNOTE (1,9 s ±20 %)"
+               data-en="Figure 1: Oscilloscope measurement of the blink period — 1.8 s, compliant with EXIG_CLIGNOTE (1.9 s ±20%)">
+              Figure 1 : Mesure de la période du clignotement — 1,8 s (conforme à EXIG_CLIGNOTE)
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/slr-v2-allumage.png" alt="Oscilloscope — mesure temps actif SLR"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">slr-v2-allumage.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 2 : Mesure à l'oscilloscope du temps actif du clignotement — 108 ms, conforme à l'exigence (0,1 s ±20 %)"
+               data-en="Figure 2: Oscilloscope measurement of the blink on-time — 108 ms, compliant with the requirement (0.1 s ±20%)">
+              Figure 2 : Mesure du temps actif du clignotement — 108 ms (conforme)
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 2 — TDB
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S1" data-en="BUT 1 · SAÉ S1">BUT 1 · SAÉ S1</p>
+            <h2 class="projet-section-title"
+                data-fr="TDB — Thermostat de Bébé"
+                data-en="TDB — Baby Thermostat">
+              TDB — Thermostat de Bébé
+            </h2>
+          </div>
+          <a href="projet-tdb.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="J'ai co-rédigé, avec Mathis Raclet, Léandre Cyuzuzo et Baptiste Masiero, l'essai ESS_DIMENSIONS, qui vérifie au pied à coulisse les dimensions de la carte et de ses trous de fixation par rapport à l'exigence EXIG_DIMENSIONS. La longueur (100,26 mm) et la largeur (59,97 mm) de la carte sont conformes à la tolérance de ±0,5 mm, de même que la distance entre le centre des trous et le bord de la carte (5,02 mm)."
+           data-en="I co-wrote, with Mathis Raclet, Léandre Cyuzuzo and Baptiste Masiero, the ESS_DIMENSIONS test, which uses a caliper to check the board's dimensions and its fixing holes against the EXIG_DIMENSIONS requirement. The board's length (100.26 mm) and width (59.97 mm) comply with the ±0.5 mm tolerance, as does the distance between the hole centers and the board edge (5.02 mm).">
+          J'ai co-rédigé, avec Mathis Raclet, Léandre Cyuzuzo et Baptiste Masiero, l'essai <strong>ESS_DIMENSIONS</strong>, qui vérifie au pied à coulisse les dimensions de la carte et de ses trous de fixation par rapport à l'exigence <strong>EXIG_DIMENSIONS</strong>. La longueur (100,26 mm) et la largeur (59,97 mm) de la carte sont conformes à la tolérance de ±0,5 mm, de même que la distance entre le centre des trous et le bord de la carte (5,02 mm).
+        </p>
+
+        <p class="projet-text"
+           data-fr="Le diamètre des trous de fixation, en revanche, a été mesuré à 3,21 mm pour une exigence de 4 mm ±0,2 mm : un écart qui rend l'essai non conforme. J'ai identifié que le foret utilisé pour le perçage était le plus grand diamètre disponible dans notre outillage et ne permettait pas d'atteindre la cote demandée — une limite matérielle de production plutôt qu'une erreur de conception."
+           data-en="The diameter of the fixing holes, however, was measured at 3.21 mm against a requirement of 4 mm ±0.2 mm: a deviation that makes the test non-compliant. I identified that the drill bit used was the largest diameter available in our tooling and could not reach the required size — a production tooling limitation rather than a design error.">
+          Le <strong>diamètre des trous de fixation</strong>, en revanche, a été mesuré à <strong>3,21 mm</strong> pour une exigence de 4 mm ±0,2 mm : un écart qui rend l'essai non conforme. J'ai identifié que le foret utilisé pour le perçage était le plus grand diamètre disponible dans notre outillage et ne permettait pas d'atteindre la cote demandée — une limite matérielle de production plutôt qu'une erreur de conception.
+        </p>
+
+        <p class="projet-text"
+           data-fr="Pour la production en série, la solution retenue est de standardiser l'outillage de perçage avant son lancement afin de garantir cette fois la conformité totale. Le produit a été validé avec réserve, celle-ci étant levée dès cet ajustement de l'outillage."
+           data-en="For series production, the chosen solution is to standardize the drilling tooling before launch in order to guarantee full compliance this time. The product was approved with a reservation, to be lifted as soon as the tooling is adjusted.">
+          Pour la production en série, la solution retenue est de <strong>standardiser l'outillage de perçage</strong> avant son lancement afin de garantir cette fois la conformité totale. Le produit a été validé avec réserve, celle-ci étant levée dès cet ajustement de l'outillage.
+        </p>
+
+        <!-- Figures TDB -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/tdb-v2-resultats.png" alt="Résultats de l'essai ESS_DIMENSIONS TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-v2-resultats.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 3 : Résultats de l'essai ESS_DIMENSIONS — seul le diamètre des trous de fixation (3,21 mm) est non conforme à l'exigence de 4 mm ±0,2 mm"
+               data-en="Figure 3: Results of the ESS_DIMENSIONS test — only the fixing hole diameter (3.21 mm) is non-compliant with the 4 mm ±0.2 mm requirement">
+              Figure 3 : Résultats ESS_DIMENSIONS — diamètre des trous (3,21 mm) non conforme
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/tdb-v2-trou.png" alt="Mesure au pied à coulisse d'un trou de fixation TDB"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">tdb-v2-trou.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 4 : Mesure au pied à coulisse du diamètre d'un trou de fixation — 3,21 mm, à l'origine de la non-conformité"
+               data-en="Figure 4: Caliper measurement of a fixing hole's diameter — 3.21 mm, the source of the non-conformity">
+              Figure 4 : Mesure du diamètre d'un trou de fixation — 3,21 mm
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           BLOC 3 — KAH
+      ═══════════════════════════════════════════════════════ -->
+      <section class="projet-section card-stagger">
+
+        <div class="projet-section-header">
+          <div class="projet-section-header-left">
+            <p class="projet-section-label"
+               data-fr="BUT 1 · SAÉ S2" data-en="BUT 1 · SAÉ S2">BUT 1 · SAÉ S2</p>
+            <h2 class="projet-section-title"
+                data-fr="KAH — Kart à Hélice"
+                data-en="KAH — Propeller Kart">
+              KAH — Kart à Hélice
+            </h2>
+          </div>
+          <a href="projet-kah.html" class="projet-link"
+             data-fr="Voir le projet →" data-en="View project →">Voir le projet →</a>
+        </div>
+
+        <p class="projet-text"
+           data-fr="Le projet KAH a réuni deux binômes en parallèle — l'un sur l'émetteur, l'autre sur le récepteur — rassemblés dans un même DDV. De mon côté, j'ai vérifié les dimensions de la carte émettrice (ESS_EMTT_MÉCANIQUE) : largeur, longueur et trous de fixation, tous conformes aux tolérances du cahier des charges. Sur le récepteur, mes coéquipiers Darren De Oliveira-Da Silva et Kélyann Crime ont mené l'essai symétrique ESS_RCPT_DIMENSIONS, qui vérifie les mêmes grandeurs sur la carte réceptrice par rapport à l'exigence EXIG_RCPT_DIMENSIONS."
+           data-en="The KAH project brought together two sub-teams working in parallel — one on the transmitter, one on the receiver — combined into a single DDV. On my side, I checked the dimensions of the transmitter board (ESS_EMTT_MÉCANIQUE): width, length and fixing holes, all compliant with the specification's tolerances. On the receiver, my teammates Darren De Oliveira-Da Silva and Kélyann Crime carried out the matching ESS_RCPT_DIMENSIONS test, which checks the same quantities on the receiver board against the EXIG_RCPT_DIMENSIONS requirement.">
+          Le projet KAH a réuni deux binômes en parallèle — l'un sur l'émetteur, l'autre sur le récepteur — rassemblés dans un même DDV. De mon côté, j'ai vérifié les dimensions de la carte émettrice (<strong>ESS_EMTT_MÉCANIQUE</strong>) : largeur, longueur et trous de fixation, tous conformes aux tolérances du cahier des charges. Sur le récepteur, mes coéquipiers Darren De Oliveira-Da Silva et Kélyann Crime ont mené l'essai symétrique <strong>ESS_RCPT_DIMENSIONS</strong>, qui vérifie les mêmes grandeurs sur la carte réceptrice par rapport à l'exigence <strong>EXIG_RCPT_DIMENSIONS</strong>.
+        </p>
+
+        <p class="projet-text"
+           data-fr="La largeur (100,13 mm) et la longueur (75,41 mm) de la carte réceptrice sont conformes, de même que le diamètre des quatre trous de fixation (entre 2,84 et 2,92 mm pour une tolérance de 2,5 à 3,5 mm). En revanche, la distance entre le centre des trous et le bord de la carte dépasse la tolérance de 5,5 à 6,5 mm sur trois des quatre trous — jusqu'à 6,64 mm —, rendant l'essai non conforme. Un manque de précision lors du perçage a été identifié comme cause de cet écart."
+           data-en="The receiver board's width (100.13 mm) and length (75.41 mm) are compliant, as is the diameter of the four fixing holes (between 2.84 and 2.92 mm against a 2.5 to 3.5 mm tolerance). However, the distance between the hole centers and the board edge exceeds the 5.5 to 6.5 mm tolerance on three of the four holes — up to 6.64 mm —, making the test non-compliant. A lack of precision during drilling was identified as the cause of this deviation.">
+          La largeur (100,13 mm) et la longueur (75,41 mm) de la carte réceptrice sont conformes, de même que le diamètre des quatre trous de fixation (entre 2,84 et 2,92 mm pour une tolérance de 2,5 à 3,5 mm). En revanche, la <strong>distance entre le centre des trous et le bord de la carte</strong> dépasse la tolérance de 5,5 à 6,5 mm sur trois des quatre trous — jusqu'à <strong>6,64 mm</strong> —, rendant l'essai non conforme. Un manque de précision lors du perçage a été identifié comme cause de cet écart.
+        </p>
+
+        <p class="projet-text"
+           data-fr="La solution retenue pour les prochaines réalisations consiste à vérifier le diamètre réel de l'embout de perçage utilisé et à contrôler les trous immédiatement après perçage, avant l'assemblage final, afin de garantir le respect des tolérances dès la fabrication."
+           data-en="The solution adopted for future builds is to check the actual diameter of the drill bit used and to inspect the holes immediately after drilling, before final assembly, in order to guarantee tolerance compliance from the manufacturing stage onward.">
+          La solution retenue pour les prochaines réalisations consiste à <strong>vérifier le diamètre réel de l'embout de perçage</strong> utilisé et à contrôler les trous immédiatement après perçage, avant l'assemblage final, afin de garantir le respect des tolérances dès la fabrication.
+        </p>
+
+        <!-- Figures KAH -->
+        <div class="fig-row col-2">
+          <div class="fig">
+            <img src="img/kah-v2-resultats.png" alt="Résultats de l'essai ESS_RCPT_DIMENSIONS KAH"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-v2-resultats.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 5 : Résultats de l'essai ESS_RCPT_DIMENSIONS — seule la distance des trous de fixation au bord de la carte réceptrice dépasse la tolérance de 5,5 à 6,5 mm"
+               data-en="Figure 5: Results of the ESS_RCPT_DIMENSIONS test — only the distance from the fixing holes to the receiver board edge exceeds the 5.5 to 6.5 mm tolerance">
+              Figure 5 : Résultats ESS_RCPT_DIMENSIONS — distance au bord non conforme
+            </p>
+          </div>
+          <div class="fig">
+            <img src="img/kah-v2-trou.png" alt="Mesure au pied à coulisse d'un trou de fixation KAH"
+                 class="fig-img h-auto"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="fig-placeholder" style="display:none;">
+              <span class="fig-placeholder-icon">📐</span>
+              <span class="fig-placeholder-text">kah-v2-trou.png</span>
+            </div>
+            <p class="fig-caption"
+               data-fr="Figure 6 : Mesure au pied à coulisse de la distance entre le bord d'un trou de fixation et le bord de la carte (5,19 mm), utilisée pour calculer l'écart à l'origine de la non-conformité"
+               data-en="Figure 6: Caliper measurement of the distance between a fixing hole's edge and the board edge (5.19 mm), used to calculate the deviation behind the non-conformity">
+              Figure 6 : Mesure du bord d'un trou au bord de la carte — 5,19 mm
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Navigation bas de page ──────────────────── -->
+      <nav class="comp-nav-footer">
+        <a href="competences.html" class="comp-nav-btn back">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Retour aux compétences" data-en="Back to skills">Retour aux compétences</span>
+        </a>
+        <a href="verifier-v1.html" class="comp-nav-btn prev">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 12L6 8l4-4"/>
+          </svg>
+          <span data-fr="Compétence précédente : V.1" data-en="Previous competency: V.1">Compétence précédente : V.1</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy"
+            data-fr="© 2025 Simon Dartiguelongue"
+            data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelongue@gmail.com" class="footer-contact"
+         data-fr="simon.dartiguelongue@gmail.com"
+         data-en="simon.dartiguelongue@gmail.com">simon.dartiguelongue@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

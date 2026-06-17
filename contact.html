@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2.5rem;
+      align-items: start;
+      margin-bottom: 4rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .form-input,
+    .form-textarea {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: none;
+      width: 100%;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: #BEBCB5; }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--text-main);
+      box-shadow: 0 0 0 3px rgba(24,24,24,0.06);
+    }
+    .form-input.error { border-color: #e05c5c; }
+
+    .form-textarea { height: 130px; }
+
+    .form-submit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 13px 32px;
+      background: var(--text-main);
+      color: #FFF;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .form-submit:hover { opacity: 0.85; transform: translateY(-1px); }
+    .form-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 1rem 1.25rem;
+      background: #f0faf4;
+      border: 1px solid #b6e4c5;
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      color: #2d8a4e;
+      margin-top: 1rem;
+    }
+
+    /* ── Coordonnées ─────────────────────────────── */
+    .contact-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .coord-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow);
+    }
+
+    .coord-card-title {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .coord-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .coord-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--text-main);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .coord-item:hover { opacity: 0.6; }
+
+    .coord-icon {
+      width: 32px; height: 32px;
+      background: var(--tag-bg);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .coord-detail { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .coord-detail-label {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .coord-detail-value {
+      font-size: 13px; font-weight: 500;
+      color: var(--text-main);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .dispo-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #f0faf4; border: 1px solid #b6e4c5; border-radius: 20px;
+      padding: 5px 12px; margin-top: 1rem;
+      font-family: var(--font-body); font-size: 11px; font-weight: 500; color: #2d8a4e;
+    }
+    .dispo-dot {
+      width: 7px; height: 7px;
+      background: #2d8a4e; border-radius: 50%;
+      animation: dpulse 2s ease-in-out infinite;
+    }
+    @keyframes dpulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── CV ──────────────────────────────────────── */
+    .cv-section {
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+    }
+
+    .cv-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cv-download-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-display); font-size: 13px; font-weight: 600;
+      padding: 10px 22px; background: var(--text-main); color: #FFF;
+      border-radius: 50px; transition: opacity 0.2s, transform 0.2s;
+      text-decoration: none;
+    }
+    .cv-download-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .cv-frame-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    /* Placeholder — remplacer par <iframe> quand cv.pdf est disponible */
+    .cv-placeholder {
+      width: 100%; height: 660px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 10px,
+        rgba(0,0,0,0.018) 10px, rgba(0,0,0,0.018) 20px
+      );
+    }
+    .cv-placeholder-icon { font-size: 40px; opacity: 0.35; }
+    .cv-placeholder-text {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text-muted);
+    }
+    .cv-placeholder-sub { font-size: 12px; color: var(--text-muted); opacity: 0.65; text-align:center; padding: 0 2rem; }
+
+    .cv-iframe { width: 100%; height: 660px; border: none; display: block; }
+
+    @media (max-width: 860px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── Bouton CV ── */
+    .btn-cv {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 10px 22px;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .btn-cv:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-main);
+      background: var(--text-main);
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="page-inner">
+
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link"        data-fr="Accueil"      data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link"        data-fr="À propos"     data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link"        data-fr="Projets"      data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link"        data-fr="Compétences"  data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link active" data-fr="Contact"      data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="wrapper">
+
+      <p class="section-label anim-1" data-fr="Me joindre" data-en="Reach out">Me joindre</p>
+      <h2 class="section-title anim-2" data-fr="Contact" data-en="Contact">Contact</h2>
+
+      <div class="contact-layout anim-3">
+
+        <!-- ① Formulaire -->
+        <div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="nom" data-fr="Nom" data-en="Last name">Nom</label>
+              <input class="form-input" type="text" id="nom" placeholder="Dupont" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="prenom" data-fr="Prénom" data-en="First name">Prénom</label>
+              <input class="form-input" type="text" id="prenom" placeholder="Marie" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">E-mail</label>
+            <input class="form-input" type="email" id="email" placeholder="marie.dupont@example.fr" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sujet" data-fr="Sujet" data-en="Subject">Sujet</label>
+            <input class="form-input" type="text" id="sujet"
+                   placeholder="Proposition de stage / Question"
+                   data-placeholder-fr="Proposition de stage / Question"
+                   data-placeholder-en="Internship proposal / Question" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message" data-fr="Message" data-en="Message">Message</label>
+            <textarea class="form-textarea" id="message"
+                      placeholder="Bonjour Simon, je souhaitais vous contacter au sujet de…"
+                      data-placeholder-fr="Bonjour Simon, je souhaitais vous contacter au sujet de…"
+                      data-placeholder-en="Hello Simon, I wanted to reach out about…"></textarea>
+          </div>
+
+          <button class="form-submit" id="submitBtn" type="button" onclick="handleSubmit()">
+            <span id="submitLabel" data-fr="Envoyer le message" data-en="Send message">Envoyer le message</span>
+            <span>→</span>
+          </button>
+
+          <div class="form-success" id="formSuccess"
+               data-fr="✓ Message envoyé ! Je vous réponds sous 48 h."
+               data-en="✓ Message sent! I'll get back to you within 48 hours.">
+            ✓ Message envoyé ! Je vous réponds sous 48 h.
+          </div>
+        </div>
+
+        <!-- ② Coordonnées -->
+        <div class="contact-aside">
+
+          <a href="#cv" class="btn-cv" style="display:inline-flex;margin-bottom:1.25rem;"
+             data-fr="Voir mon CV →" data-en="View my résumé →">
+            Voir mon CV →
+          </a>
+
+          <div class="coord-card">
+            <p class="coord-card-title" data-fr="Coordonnées" data-en="Contact info">Coordonnées</p>
+            <div class="coord-list">
+
+              <a href="mailto:simon.dartiguelon@etu.u-bordeaux.fr" class="coord-item">
+                <div class="coord-icon">✉️</div>
+                <div class="coord-detail">
+                  <span class="coord-detail-label" data-fr="E-mail" data-en="Email">E-mail</span>
+                  <span class="coord-detail-value">simon.dartiguelon@etu.u-bordeaux.fr</span>
+                </div>
+              </a>
+
+              <a href="tel:+33647732215" class="coord-item">
+                <div class="coord-icon">📱</div>
+                <div class="coord-detail">
+                  <span class="coord-detail-label" data-fr="Téléphone" data-en="Phone">Téléphone</span>
+                  <span class="coord-detail-value">06 47 73 22 15</span>
+                </div>
+              </a>
+
+              <a href="https://www.linkedin.com/in/simon-dartiguelongue" target="_blank" class="coord-item">
+                <div class="coord-icon">🔗</div>
+                <div class="coord-detail">
+                  <span class="coord-detail-label">LinkedIn</span>
+                  <span class="coord-detail-value">linkedin.com/in/simon-dartiguelongue</span>
+                </div>
+              </a>
+
+              <a href="https://github.com/simondartiguelongue" target="_blank" class="coord-item">
+                <div class="coord-icon">⚙️</div>
+                <div class="coord-detail">
+                  <span class="coord-detail-label">GitHub</span>
+                  <span class="coord-detail-value">github.com/simondartiguelongue</span>
+                </div>
+              </a>
+
+              <div class="coord-item" style="cursor:default;">
+                <div class="coord-icon">📍</div>
+                <div class="coord-detail">
+                  <span class="coord-detail-label" data-fr="Localisation" data-en="Location">Localisation</span>
+                  <span class="coord-detail-value">Bordeaux, France</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="dispo-badge">
+              <span class="dispo-dot"></span>
+              <span data-fr="Disponible pour stage / alternance"
+                    data-en="Open to internship / apprenticeship">
+                Disponible pour stage / alternance
+              </span>
+            </div>
+          </div>
+
+          <div class="coord-card">
+            <p class="coord-card-title" data-fr="Temps de réponse" data-en="Response time">Temps de réponse</p>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.7; margin:0;"
+               data-fr="Je réponds généralement sous 48 heures, du lundi au vendredi."
+               data-en="I usually reply within 48 hours, Monday to Friday.">
+              Je réponds généralement sous 48 heures, du lundi au vendredi.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ③ CV -->
+      <div class="cv-section anim-4" id="cv">
+
+        <div class="cv-header">
+          <div>
+            <p class="section-label" data-fr="Curriculum vitae" data-en="Résumé">Curriculum vitae</p>
+            <h3 class="section-title" style="margin-bottom:0;"
+                data-fr="Mon CV" data-en="My Résumé">Mon CV</h3>
+          </div>
+          <a href="cv.pdf" download="CV_Simon_Dartiguelongue.pdf" class="cv-download-btn">
+            <span data-fr="Télécharger le CV" data-en="Download résumé">Télécharger le CV</span>
+            <span>↓</span>
+          </a>
+        </div>
+
+        <div class="cv-frame-wrapper">
+          <iframe class="cv-iframe" src="cv.pdf#toolbar=0&navpanes=0"
+                  title="CV Simon Dartiguelongue"></iframe>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy" data-fr="© 2025 Simon Dartiguelongue" data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:simon.dartiguelon@etu.u-bordeaux.fr" class="footer-contact" data-fr="simon.dartiguelon@etu.u-bordeaux.fr" data-en="simon.dartiguelon@etu.u-bordeaux.fr">simon.dartiguelon@etu.u-bordeaux.fr</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Mise à jour des placeholders lors du changement de langue
+    const _origToggle = window.toggleLang;
+    window.toggleLang = function() {
+      _origToggle();
+      const l = document.documentElement.lang;
+      document.querySelectorAll('[data-placeholder-' + l + ']').forEach(el => {
+        el.placeholder = el.getAttribute('data-placeholder-' + l);
+      });
+    };
+
+    function handleSubmit() {
+      const fields = ['nom','prenom','email','message'];
+      let valid = true;
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) {
+          el.classList.add('error');
+          el.addEventListener('input', () => el.classList.remove('error'), { once: true });
+          valid = false;
+        }
+      });
+      if (!valid) return;
+
+      const btn     = document.getElementById('submitBtn');
+      const label   = document.getElementById('submitLabel');
+      const success = document.getElementById('formSuccess');
+      const isFr    = document.documentElement.lang !== 'en';
+
+      btn.disabled = true;
+      label.textContent = isFr ? 'Envoyé ✓' : 'Sent ✓';
+      success.style.display = 'block';
+
+      // ── Branchez ici votre service d'envoi (Formspree, EmailJS…) ──
+      // Exemple Formspree :
+      // const data = new FormData();
+      // data.append('nom', document.getElementById('nom').value);
+      // … etc.
+      // fetch('https://formspree.io/f/VOTRE_ID', { method:'POST', body: data });
+    }
+  </script>
+</body>
+</html>

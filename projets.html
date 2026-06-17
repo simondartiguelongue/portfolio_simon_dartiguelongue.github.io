@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projets — Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Placeholder "bientôt disponible" ───────────────────────── */
+    .placeholder-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+    .placeholder-zone .ph-icon {
+      font-size: 28px;
+      margin-bottom: 0.75rem;
+    }
+    .placeholder-zone .ph-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    /* ── Sous-sections académiques ───────────────────────────────── */
+    .acad-section { margin-bottom: 3.5rem; }
+
+    .acad-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .acad-label .acad-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 9px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+    .acad-label .acad-badge.active {
+      background: var(--text-main);
+      color: #fff;
+    }
+
+    /* ── Carrousel ───────────────────────────────────────────────── */
+    .carousel-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      user-select: none;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+    }
+
+    .carousel-slide {
+      flex: 0 0 100%;
+      min-width: 100%;
+      height: 380px;
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      background: #1a1a1a;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    /* Image de fond */
+    .carousel-slide .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.55;
+      transition: opacity 0.4s;
+    }
+    .carousel-slide:hover .slide-bg { opacity: 0.65; }
+
+    /* Overlay dégradé côté gauche */
+    .carousel-slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.45) 55%,
+        rgba(0,0,0,0.10) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Contenu intérieur */
+    .slide-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+      padding: 2.2rem 2.8rem 2.5rem 2.8rem;
+    }
+
+    .slide-left { flex: 1; min-width: 0; }
+
+    .slide-meta {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 0.6rem;
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.9rem;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-desc {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    .slide-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 1.1rem;
+    }
+
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    /* Contrôles intégrés dans la carte */
+    .carousel-controls {
+      display: none;
+    }
+
+    /* Flèches latérales — texte simple, sans bulle */
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.7);
+      font-size: 22px;
+      font-weight: 300;
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
+      padding: 8px 12px;
+      transition: color 0.2s, transform 0.15s;
+      line-height: 1;
+    }
+    .carousel-arrow.prev { left: 8px; }
+    .carousel-arrow.next { right: 8px; }
+    .carousel-arrow:hover {
+      color: #fff;
+    }
+
+    /* Bouton Découvrir — sous le texte de description */
+    .slide-btn {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 50px;
+      padding: 8px 22px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 1.25rem;
+      cursor: pointer;
+    }
+    .slide-btn:hover {
+      background: rgba(255,255,255,0.22);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    /* Points indicateurs — en bas de la carte */
+    .carousel-dots {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 7px;
+      z-index: 10;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      border: none;
+      padding: 0;
+    }
+    .carousel-dot.active {
+      background: #fff;
+      transform: scale(1.25);
+    }
+
+    /* ── Cartes statiques empilées (perso / autres acad.) ─────────── */
+    .stack-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .stack-wrap .carousel-slide {
+      width: 100%;
+      height: 380px; /* même hauteur que les cartes SAÉ, pour une dimension identique partout */
+      flex: none; /* hors d'un track flex-row, on neutralise le flex-basis du carrousel */
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 640px) {
+      .stack-wrap .carousel-slide { height: 440px; }
+    }
+
+    /* ── Bouton "voir mes autres projets académiques" ──────────────── */
+    .jump-btn-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1.5rem;
+    }
+
+    .jump-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 9px 18px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .jump-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-main);
+      background: var(--text-main);
+      color: #fff;
+    }
+    .jump-btn svg { width: 13px; height: 13px; transition: transform 0.2s; }
+    .jump-btn:hover svg { transform: translateY(2px); }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .carousel-slide { height: 440px; }
+      .slide-inner { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+      .slide-right { width: 100%; }
+      .slide-btn { width: 100%; text-align: center; }
+      .jump-btn-row { justify-content: flex-start; }
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       SOUS-NAVIGATION PROJETS — barre "pilule" rétractable, fixée
+       sous la barre principale (collée pendant tout le scroll)
+       ════════════════════════════════════════════════════════════ */
+    .subnav-wrapper {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 64px; /* valeur de repli, recalculée en JS sur la hauteur réelle du dock */
+      z-index: 90;
+      display: flex;
+      justify-content: center;
+      pointer-events: none; /* seule la pilule capte les events */
+      transition: top 0.2s ease;
+    }
+
+    /* Cale le contenu de la page pour compenser le dock + la sous-nav,
+       tous deux désormais hors du flux normal (fixed) */
+    .inner-main {
+      padding-top: 96px; /* recalculé en JS : hauteur dock + hauteur sous-nav + marge */
+    }
+
+    .subnav {
+      pointer-events: all;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(244, 243, 238, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      box-shadow: var(--shadow);
+      padding: 6px;
+      margin-top: 10px;
+      transition: padding 0.4s cubic-bezier(.4,0,.2,1),
+                  gap 0.4s cubic-bezier(.4,0,.2,1),
+                  width 0.4s cubic-bezier(.4,0,.2,1),
+                  height 0.4s cubic-bezier(.4,0,.2,1),
+                  transform 0.4s cubic-bezier(.4,0,.2,1);
+      opacity: 0;
+      transform: translateY(-14px);
+    }
+
+    .subnav.revealed {
+      animation: subnavDrop 0.5s cubic-bezier(.34,1.56,.64,1) forwards;
+    }
+    @keyframes subnavDrop {
+      0%   { opacity: 0; transform: translateY(-14px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* État "collapsed" — la pilule devient une capsule fine et allongée,
+       discrète, qui ne garde que le libellé de l'onglet actif */
+    .subnav.collapsed {
+      padding: 4px 5px;
+      gap: 0;
+      transform: scale(0.92) translateY(-2px);
+    }
+
+    .subnav-btn {
+      position: relative;
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: 50px;
+      padding: 9px 18px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.25s, background 0.25s,
+                  max-width 0.4s cubic-bezier(.4,0,.2,1),
+                  padding 0.4s cubic-bezier(.4,0,.2,1),
+                  font-size 0.4s cubic-bezier(.4,0,.2,1),
+                  opacity 0.3s, margin 0.4s;
+      max-width: 240px;
+      overflow: hidden;
+    }
+
+    .subnav-btn.active {
+      color: #fff;
+      background: var(--text-main);
+    }
+
+    .subnav-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: rgba(0,0,0,0.045);
+    }
+
+    /* Quand collapsed : les onglets inactifs disparaissent, l'onglet actif
+       se réduit à une capsule allongée et fine (moins épaisse en hauteur) */
+    .subnav.collapsed .subnav-btn {
+      max-width: 0;
+      padding: 5px 0;
+      margin: 0;
+      opacity: 0;
+    }
+    .subnav.collapsed .subnav-btn.active {
+      max-width: 220px;
+      padding: 5px 20px;
+      font-size: 11px;
+      opacity: 1;
+    }
+
+    @media (max-width: 640px) {
+      .subnav-btn { font-size: 11.5px; padding: 8px 13px; }
+      .subnav.collapsed .subnav-btn.active { padding: 5px 16px; font-size: 10.5px; }
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       PANNEAUX D'ONGLETS (académique / perso / pro) — même page
+       ════════════════════════════════════════════════════════════ */
+    .tab-panel { display: none; }
+    .tab-panel.active {
+      display: block;
+      animation: tabFadeIn 0.35s ease;
+    }
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Modal expérience pro (réutilise le pattern "comp-modal") ──── */
+    .xp-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(244, 243, 238, 0.65);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 1.5rem;
+    }
+    .xp-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .xp-modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 720px;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(10px);
+      transition: transform 0.25s ease;
+      padding: 2.5rem;
+    }
+    .xp-modal.active .xp-modal-content {
+      transform: translateY(0);
+    }
+    .xp-modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: transparent;
+      border: none;
+      font-size: 26px;
+      color: var(--text-muted);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .xp-modal-close:hover { color: var(--text-main); }
+    .xp-modal-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+    .xp-modal-eyebrow {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+    .xp-modal-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+    .xp-modal-body {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+    .xp-modal-body p { margin: 0 0 1rem 0; }
+    .xp-modal-body p:last-child { margin-bottom: 0; }
+    .xp-modal-body ul { margin: 0.75rem 0 1rem 1.25rem; padding: 0; }
+    .xp-modal-body li { margin-bottom: 0.5rem; }
+    .xp-modal-body strong { color: var(--text-main); font-weight: 500; }
+
+    /* Figures intégrées dans les modals (photos + légende) */
+    .modal-figure {
+      margin: 1.1rem 0 1.5rem 0;
+    }
+    .modal-figure img {
+      width: 100%;
+      display: block;
+      border-radius: calc(var(--radius) - 4px);
+      box-shadow: var(--shadow);
+      background: #ececec; /* visible tant que la photo n'est pas encore fournie */
+    }
+    .modal-figure-caption {
+      display: block;
+      margin-top: 0.6rem;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body class="page-inner">
+
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link"        data-fr="Accueil"      data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link"        data-fr="À propos"     data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link active" data-fr="Projets"      data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link"        data-fr="Compétences"  data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link"        data-fr="Contact"      data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <div class="subnav-wrapper">
+    <nav class="subnav" id="projSubnav">
+      <button class="subnav-btn active" data-tab="academique" data-fr="Projets académiques" data-en="Academic projects"><span class="full">Projets académiques</span></button>
+      <button class="subnav-btn" data-tab="perso" data-fr="Projets personnels" data-en="Personal projects"><span class="full">Projets personnels</span></button>
+      <button class="subnav-btn" data-tab="pro" data-fr="Expérience professionnelle" data-en="Professional experience"><span class="full">Expérience professionnelle</span></button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="wrapper">
+
+      <!-- ════════════════════════════════════════════════════════
+           ONGLET 1 — PROJETS ACADÉMIQUES
+           ════════════════════════════════════════════════════════ -->
+      <section class="tab-panel active" id="panel-academique">
+
+        <p class="section-label anim-1" data-fr="Cursus IUT" data-en="IUT coursework">Cursus IUT</p>
+        <h2 class="section-title anim-2" data-fr="Projets académiques" data-en="Academic projects">Projets académiques</h2>
+
+        <div class="jump-btn-row">
+          <button class="jump-btn" id="jumpOtherAcad" data-fr="Voir mes autres projets académiques" data-en="See my other academic projects">
+            <span data-fr="Voir mes autres projets académiques" data-en="See my other academic projects">Voir mes autres projets académiques</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </button>
+        </div>
+
+        <!-- BUT 1 — actif, carrousel SAÉ -->
+        <div class="acad-section card-stagger">
+          <div class="acad-label">
+            <span data-fr="BUT 1 — Semestre 1 &amp; 2" data-en="BUT 1 — Semester 1 &amp; 2">BUT 1 — Semestre 1 &amp; 2</span>
+            <span class="acad-badge active" data-fr="En cours" data-en="Ongoing">En cours</span>
+          </div>
+
+          <div class="carousel-wrap" id="carousel">
+            <div class="carousel-track" id="carouselTrack">
+
+              <!-- Slide KAH -->
+              <div class="carousel-slide">
+                <div class="slide-bg" style="background-image: url('img/kah.jpg');"></div>
+                <div class="slide-inner">
+                  <div class="slide-left">
+                    <div class="slide-meta"
+                         data-fr="BUT 1 · SAÉ S2"
+                         data-en="BUT 1 · SAÉ S2">
+                      BUT 1 · SAÉ S2
+                    </div>
+                    <div class="slide-title"
+                         data-fr="KAH — Kart à Hélice"
+                         data-en="KAH — Propeller Kart">
+                      KAH — Kart à Hélice
+                    </div>
+                    <p class="slide-desc"
+                       data-fr="Conception et modélisation d'un kart propulsé par hélice. Travail sur la chaîne d'énergie, la transmission et la commande électronique."
+                       data-en="Design and modelling of a propeller-driven kart. Work on the energy chain, transmission and electronic control.">
+                      Conception et modélisation d'un kart propulsé par hélice. Travail sur la chaîne d'énergie, la transmission et la commande électronique.
+                    </p>
+                    <a href="projet-kah.html" class="slide-btn discover-btn"
+                       data-fr="Découvrir →" data-en="Discover →">Découvrir →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide TDB -->
+              <div class="carousel-slide">
+                <div class="slide-bg" style="background-image: url('img/tdb.jpg');"></div>
+                <div class="slide-inner">
+                  <div class="slide-left">
+                    <div class="slide-meta"
+                         data-fr="BUT 1 · SAÉ S1"
+                         data-en="BUT 1 · SAÉ S1">
+                      BUT 1 · SAÉ S1
+                    </div>
+                    <div class="slide-title"
+                         data-fr="TDB — Thermomètre de Bain"
+                         data-en="TDB — Bath Thermometer">
+                      TDB — Thermomètre de Bain
+                    </div>
+                    <p class="slide-desc"
+                       data-fr="Conception d'un thermomètre électronique pour bain de bébé. Schématique, routage PCB et validation des mesures analogiques."
+                       data-en="Design of an electronic thermometer for baby baths. Schematic, PCB routing and analogue measurement validation.">
+                      Conception d'un thermomètre électronique pour bain de bébé. Schématique, routage PCB et validation des mesures analogiques.
+                    </p>
+                    <a href="projet-tdb.html" class="slide-btn discover-btn"
+                       data-fr="Découvrir →" data-en="Discover →">Découvrir →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide SLR -->
+              <div class="carousel-slide">
+                <div class="slide-bg" style="background-image: url('img/slr.jpg');"></div>
+                <div class="slide-inner">
+                  <div class="slide-left">
+                    <div class="slide-meta"
+                         data-fr="BUT 1 · SAÉ S1"
+                         data-en="BUT 1 · SAÉ S1">
+                      BUT 1 · SAÉ S1
+                    </div>
+                    <div class="slide-title"
+                         data-fr="SLR — Son et Lumière Rafale"
+                         data-en="SLR — Sound and Light Burst">
+                      SLR — Son et Lumière Rafale
+                    </div>
+                    <p class="slide-desc"
+                       data-fr="Système son et lumière synchronisé inspiré du guidage d'avions sur pont d'envol. Programmation et gestion des signaux lumineux et sonores."
+                       data-en="Synchronised sound and light system inspired by aircraft guidance on a flight deck. Programming and management of light and sound signals.">
+                      Système son et lumière synchronisé inspiré du guidage d'avions sur pont d'envol. Programmation et gestion des signaux lumineux et sonores.
+                    </p>
+                    <a href="projet-slr.html" class="slide-btn discover-btn"
+                       data-fr="Découvrir →" data-en="Discover →">Découvrir →</a>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /track -->
+
+            <!-- Dots -->
+            <div class="carousel-dots" id="carouselDots">
+              <button class="carousel-dot active" data-index="0" aria-label="Slide 1"></button>
+              <button class="carousel-dot"        data-index="1" aria-label="Slide 2"></button>
+              <button class="carousel-dot"        data-index="2" aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Flèches dans la carte -->
+            <button class="carousel-arrow prev" id="prevBtn" aria-label="Précédent">&lt;</button>
+            <button class="carousel-arrow next" id="nextBtn" aria-label="Suivant">&gt;</button>
+
+          </div><!-- /carousel-wrap -->
+
+          <!-- Espace vide (contrôles désormais dans la carte) -->
+          <div class="carousel-controls"></div>
+        </div>
+
+        <!-- BUT 2 — placeholder -->
+        <div class="acad-section card-stagger">
+          <div class="acad-label">
+            <span data-fr="BUT 2 — Semestre 3 &amp; 4" data-en="BUT 2 — Semester 3 &amp; 4">BUT 2 — Semestre 3 &amp; 4</span>
+            <span class="acad-badge" data-fr="À venir" data-en="Coming soon">À venir</span>
+          </div>
+          <div class="placeholder-zone">
+            <div class="ph-icon">📐</div>
+            <div class="ph-title"
+                 data-fr="Projets BUT 2 — À venir"
+                 data-en="BUT 2 projects — Coming soon">
+              Projets BUT 2 — À venir
+            </div>
+            <span data-fr="Ces projets seront ajoutés à partir de la rentrée prochaine."
+                  data-en="These projects will be added from next academic year.">
+              Ces projets seront ajoutés à partir de la rentrée prochaine.
+            </span>
+          </div>
+        </div>
+
+        <!-- BUT 3 — placeholder -->
+        <div class="acad-section card-stagger">
+          <div class="acad-label">
+            <span data-fr="BUT 3 — Semestre 5 &amp; 6" data-en="BUT 3 — Semester 5 &amp; 6">BUT 3 — Semestre 5 &amp; 6</span>
+            <span class="acad-badge" data-fr="À venir" data-en="Coming soon">À venir</span>
+          </div>
+          <div class="placeholder-zone">
+            <div class="ph-icon">🚀</div>
+            <div class="ph-title"
+                 data-fr="Projets BUT 3 — À venir"
+                 data-en="BUT 3 projects — Coming soon">
+              Projets BUT 3 — À venir
+            </div>
+            <span data-fr="Ces projets incluront le stage et les SAÉ de troisième année."
+                  data-en="These projects will include the internship and third-year SAÉ.">
+              Ces projets incluront le stage et les SAÉ de troisième année.
+            </span>
+          </div>
+        </div>
+
+        <!-- Autres projets académiques -->
+        <div class="acad-section card-stagger" id="autresAcad" style="margin-top: 4.5rem; padding-top: 3rem; border-top: 1px solid var(--border);">
+          <div class="acad-label">
+            <span data-fr="Hors SAÉ" data-en="Outside SAÉ">Hors SAÉ</span>
+          </div>
+          <h3 class="section-title" style="font-size: 1.4rem; margin-bottom: 1.5rem;"
+              data-fr="Autres projets académiques" data-en="Other academic projects">
+            Autres projets académiques
+          </h3>
+
+          <div class="stack-wrap">
+
+            <!-- Slide Plateforme industrielle Festo -->
+            <div class="carousel-slide">
+              <div class="slide-bg" style="background-image: url('img/festo-cplab-general.jpg');"></div>
+              <div class="slide-inner">
+                <div class="slide-left">
+                  <div class="slide-meta" data-fr="Automatisme industriel · TIA Portal" data-en="Industrial automation · TIA Portal">Automatisme industriel · TIA Portal</div>
+                  <div class="slide-title"
+                       data-fr="Programmation d'une plateforme industrielle Festo"
+                       data-en="Programming an industrial Festo platform">
+                    Programmation d'une plateforme industrielle Festo
+                  </div>
+                  <p class="slide-desc"
+                     data-fr="Pilotage de plusieurs stations de la ligne de production didactique CPLab FESTO sous TIA Portal : prise en main de l'automate, programmation GRAFCET et gestion des modes de marche et d'arrêt."
+                     data-en="Driving several stations of the CPLab FESTO didactic production line under TIA Portal: PLC onboarding, GRAFCET programming and operating mode management.">
+                    Pilotage de plusieurs stations de la ligne de production didactique CPLab FESTO sous TIA Portal : prise en main de l'automate, programmation GRAFCET et gestion des modes de marche et d'arrêt.
+                  </p>
+                  <span class="slide-btn xp-open-btn" data-modal="modalFesto"
+                        data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide Portfolio -->
+            <div class="carousel-slide">
+              <div class="slide-bg" style="background-image: url('img/portfolio.jpg');"></div>
+              <div class="slide-inner">
+                <div class="slide-left">
+                  <div class="slide-meta" data-fr="Développement web" data-en="Web development">Développement web</div>
+                  <div class="slide-title"
+                       data-fr="Réalisation de ce portfolio"
+                       data-en="Building this portfolio">
+                    Réalisation de ce portfolio
+                  </div>
+                  <p class="slide-desc"
+                     data-fr="Conception et développement de ce site personnel, pensé comme une vitrine de mon parcours et de mes projets en BUT GEII."
+                     data-en="Design and development of this personal website, built to showcase my journey and projects throughout the BUT GEII programme.">
+                    Conception et développement de ce site personnel, pensé comme une vitrine de mon parcours et de mes projets en BUT GEII.
+                  </p>
+                  <span class="slide-btn xp-open-btn" data-modal="modalPortfolio"
+                        data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Modal — Plateforme industrielle Festo -->
+        <div id="modalFesto" class="xp-modal" onclick="closeXpModalOnBackdrop(event)">
+          <div class="xp-modal-content">
+            <button class="xp-modal-close" onclick="closeXpModal('modalFesto')">&times;</button>
+            <div class="xp-modal-header">
+              <span class="xp-modal-eyebrow" data-fr="Automatisme industriel · IUT Bordeaux GEII" data-en="Industrial automation · IUT Bordeaux GEII">Automatisme industriel · IUT Bordeaux GEII</span>
+              <h3 class="xp-modal-title" data-fr="Programmation d'une plateforme industrielle Festo" data-en="Programming an industrial Festo platform">Programmation d'une plateforme industrielle Festo</h3>
+            </div>
+            <div class="xp-modal-body">
+
+              <p data-fr="La plateforme CPLab FESTO est une ligne de production didactique qui simule un processus industriel réel d'assemblage de coques plastiques encapsulant des dispositifs électroniques. Les pièces sont transportées sur des palettes le long de convoyeurs, chaque station réalisant une tâche précise (stockage, dépose, pressage, étiquetage), avec une identification de chaque pièce assurée par une puce RFID intégrée au porte-palette. Les trois TP suivants, réalisés au fil des semestres du BUT GEII, m'ont permis de programmer plusieurs de ces stations sous l'environnement TIA Portal de Siemens."
+                 data-en="The CPLab FESTO platform is a didactic production line simulating a real industrial process: assembling plastic shells encapsulating electronic devices. Parts travel on pallets along conveyors, each station performing a precise task (storage, deposit, pressing, labelling), with each part identified via an RFID chip on its pallet carrier. The three lab sessions below, carried out across BUT GEII semesters, let me program several of these stations under Siemens' TIA Portal environment.">
+                La plateforme CPLab FESTO est une ligne de production didactique qui simule un processus industriel réel d'assemblage de coques plastiques encapsulant des dispositifs électroniques. Les pièces sont transportées sur des palettes le long de convoyeurs, chaque station réalisant une tâche précise (stockage, dépose, pressage, étiquetage), avec une identification de chaque pièce assurée par une puce RFID intégrée au porte-palette. Les trois TP suivants, réalisés au fil des semestres du BUT GEII, m'ont permis de programmer plusieurs de ces stations sous l'environnement TIA Portal de Siemens.
+              </p>
+
+              <p style="margin-top:1.75rem;">
+                <strong data-fr="TP1 — Prise en main de TIA Portal et pilotage d'une unité de transfert (Semestre 1)" data-en="Lab 1 — TIA Portal onboarding and conveyor unit control (Semester 1)">TP1 — Prise en main de TIA Portal et pilotage d'une unité de transfert (Semestre 1)</strong>
+              </p>
+              <p data-fr="Ce premier TP, réalisé avec Léo Kauss sur l'automate PLCIDRILL, posait les bases de la programmation d'automates industriels. À partir d'un cahier des charges, nous avons conçu un GRAFCET décrivant le pilotage d'un convoyeur (détection de pièce, démarrage, blocage par une butée temporisée, arrêt en fin de course), puis l'avons implémenté successivement dans quatre langages disponibles sous TIA Portal : le LADDER (logique à contacts), le SFC/GRAPH (représentation séquentielle proche du GRAFCET), le SCL (langage textuel structuré proche de Python) et enfin une version LADDER enrichie d'une base de données et de blocs MOVE. Le cahier des charges a ensuite évolué pour intégrer un bouton reset, un arrêt d'urgence, un compteur de cycles et deux modes de fonctionnement (manuel et automatique). Ce TP m'a permis de comparer concrètement plusieurs approches de programmation d'un même comportement séquentiel."
+                 data-en="This first lab, carried out with Léo Kauss on the PLCIDRILL controller, laid the groundwork for industrial PLC programming. From a set of specifications, we designed a GRAFCET describing conveyor control (part detection, start-up, timed stop at a guard, end-of-line stop), then implemented it successively in four languages available under TIA Portal: LADDER (relay logic), SFC/GRAPH (sequential representation close to GRAFCET), SCL (structured text close to Python), and finally an enhanced LADDER version using a database and MOVE blocks. The specifications then evolved to include a reset button, an emergency stop, a cycle counter and two operating modes (manual and automatic). This lab let me compare several programming approaches for the same sequential behaviour.">
+                Ce premier TP, réalisé avec Léo Kauss sur l'automate PLCIDRILL, posait les bases de la programmation d'automates industriels. À partir d'un cahier des charges, nous avons conçu un GRAFCET décrivant le pilotage d'un convoyeur (détection de pièce, démarrage, blocage par une butée temporisée, arrêt en fin de course), puis l'avons implémenté successivement dans quatre langages disponibles sous TIA Portal : le LADDER (logique à contacts), le SFC/GRAPH (représentation séquentielle proche du GRAFCET), le SCL (langage textuel structuré proche de Python) et enfin une version LADDER enrichie d'une base de données et de blocs MOVE. Le cahier des charges a ensuite évolué pour intégrer un bouton reset, un arrêt d'urgence, un compteur de cycles et deux modes de fonctionnement (manuel et automatique). Ce TP m'a permis de comparer concrètement plusieurs approches de programmation d'un même comportement séquentiel.
+              </p>
+
+              <!-- FIGURE 1/3 -->
+              <div class="modal-figure">
+                <img src="img/festo-convoyeur.jpg" alt="Station convoyeur de la plateforme Festo" />
+                <span class="modal-figure-caption" data-fr="Station de transfert (convoyeur) pilotée lors du TP1 : détection de pièce, démarrage, blocage temporisé, arrêt en fin de course." data-en="Transfer station (conveyor) controlled during Lab 1: part detection, start-up, timed stop, end-of-line stop.">Station de transfert (convoyeur) pilotée lors du TP1 : détection de pièce, démarrage, blocage temporisé, arrêt en fin de course.</span>
+              </div>
+
+              <p style="margin-top:1.75rem;">
+                <strong data-fr="TP2 — Pilotage de la station de presse pneumatique (Semestre 2)" data-en="Lab 2 — Pneumatic press station control (Semester 2)">TP2 — Pilotage de la station de presse pneumatique (Semestre 2)</strong>
+              </p>
+              <p data-fr="Ce TP portait sur l'analyse et le pilotage d'une station chargée de clipser deux coques plastiques l'une sur l'autre à l'aide d'un vérin pneumatique double effet. Après une étude des capteurs (détecteur optique à barrière, capteurs magnétiques de position) et du schéma pneumatique (distributeur 5/2 bistable), nous avons établi puis programmé en langage GRAPH un GRAFCET de production normale gérant le convoyage de la palette, la détection de la coque, le pressage temporisé et l'évacuation. La station a ensuite été enrichie d'un GRAFCET de conduite gérant l'arrêt d'urgence et les modes Auto/Manu, avec une cohérence inter-GRAFCET assurée par les propriétés X41/¬X41 des blocs de données."
+                 data-en="This lab covered the analysis and control of a station that clips two plastic shells together using a double-acting pneumatic cylinder. After studying the sensors (optical barrier detector, magnetic position sensors) and the pneumatic diagram (5/2 bistable valve), we built and programmed in GRAPH language a normal-production GRAFCET handling pallet conveying, shell detection, timed pressing and evacuation. The station was then extended with a supervisory GRAFCET managing the emergency stop and Auto/Manual modes, with inter-GRAFCET consistency ensured via the X41/¬X41 data block properties.">
+                Ce TP portait sur l'analyse et le pilotage d'une station chargée de clipser deux coques plastiques l'une sur l'autre à l'aide d'un vérin pneumatique double effet. Après une étude des capteurs (détecteur optique à barrière, capteurs magnétiques de position) et du schéma pneumatique (distributeur 5/2 bistable), nous avons établi puis programmé en langage GRAPH un GRAFCET de production normale gérant le convoyage de la palette, la détection de la coque, le pressage temporisé et l'évacuation. La station a ensuite été enrichie d'un GRAFCET de conduite gérant l'arrêt d'urgence et les modes Auto/Manu, avec une cohérence inter-GRAFCET assurée par les propriétés X41/¬X41 des blocs de données.
+              </p>
+
+              <!-- FIGURE 2/3 -->
+              <div class="modal-figure">
+                <img src="img/festo-presse-pneumatique.jpg" alt="Station de presse pneumatique de la plateforme Festo" />
+                <span class="modal-figure-caption" data-fr="Station de presse pneumatique pilotée lors du TP2 : le vérin double effet clipse les deux coques de la palette." data-en="Pneumatic press station controlled during Lab 2: the double-acting cylinder clips the pallet's two shells together.">Station de presse pneumatique pilotée lors du TP2 : le vérin double effet clipse les deux coques de la palette.</span>
+              </div>
+
+              <p style="margin-top:1.75rem;">
+                <strong data-fr="TP3 — GEMMA et pilotage de la station MACBACK (Semestre 2)" data-en="Lab 3 — GEMMA and MACBACK station control (Semester 2)">TP3 — GEMMA et pilotage de la station MACBACK (Semestre 2)</strong>
+              </p>
+              <p data-fr="Ce dernier TP visait à piloter la station MACBACK, chargée de déposer automatiquement une coque du dessus sur une palette munie de sa coque du dessous. Après une étude des capteurs à fibre optique et des deux vérins pneumatiques (levage et séparateur de pièces), j'ai réalisé l'étude complète des modes de marche et d'arrêt selon la méthode GEMMA, à partir d'un cahier des charges intégrant un arrêt d'urgence verrouillant une unité anti-chute de sécurité. Cette analyse a ensuite été traduite en GRAFCETs de sécurité, de conduite et de production normale sous TIA Portal, avec les mêmes principes de cohérence inter-GRAFCET que pour le TP2. Ce TP a constitué une montée en compétence par rapport aux précédents, en combinant analyse de sécurité, méthode GEMMA et architecture modulaire de programmation."
+                 data-en="This final lab aimed at controlling the MACBACK station, which automatically deposits a top shell onto a pallet already carrying its bottom shell. After studying the fibre-optic sensors and the two pneumatic cylinders (lifting and part separator), I carried out a full study of operating and stopping modes using the GEMMA method, based on specifications including an emergency stop that locks a fall-prevention safety unit. This analysis was then translated into safety, supervisory and normal-production GRAFCETs under TIA Portal, following the same inter-GRAFCET consistency principles as in Lab 2. This lab represented a step up in complexity compared to the previous ones, combining safety analysis, the GEMMA method and a modular programming architecture.">
+                Ce dernier TP visait à piloter la station MACBACK, chargée de déposer automatiquement une coque du dessus sur une palette munie de sa coque du dessous. Après une étude des capteurs à fibre optique et des deux vérins pneumatiques (levage et séparateur de pièces), j'ai réalisé l'étude complète des modes de marche et d'arrêt selon la méthode GEMMA, à partir d'un cahier des charges intégrant un arrêt d'urgence verrouillant une unité anti-chute de sécurité. Cette analyse a ensuite été traduite en GRAFCETs de sécurité, de conduite et de production normale sous TIA Portal, avec les mêmes principes de cohérence inter-GRAFCET que pour le TP2. Ce TP a constitué une montée en compétence par rapport aux précédents, en combinant analyse de sécurité, méthode GEMMA et architecture modulaire de programmation.
+              </p>
+
+              <!-- FIGURE 3/3 -->
+              <div class="modal-figure">
+                <img src="img/festo-macback.jpg" alt="Station MACBACK de dépose de coque du dessus" />
+                <span class="modal-figure-caption" data-fr="Station MACBACK pilotée lors du TP3, pour la dépose automatique d'une coque du dessus sur la palette." data-en="MACBACK station controlled during Lab 3, for automatic deposit of a top shell onto the pallet.">Station MACBACK pilotée lors du TP3, pour la dépose automatique d'une coque du dessus sur la palette.</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal — Portfolio -->
+        <div id="modalPortfolio" class="xp-modal" onclick="closeXpModalOnBackdrop(event)">
+          <div class="xp-modal-content">
+            <button class="xp-modal-close" onclick="closeXpModal('modalPortfolio')">&times;</button>
+            <div class="xp-modal-header">
+              <span class="xp-modal-eyebrow" data-fr="Développement web" data-en="Web development">Développement web</span>
+              <h3 class="xp-modal-title" data-fr="Réalisation de ce portfolio" data-en="Building this portfolio">Réalisation de ce portfolio</h3>
+            </div>
+            <div class="xp-modal-body">
+              <p data-fr="Ce portfolio présente mon parcours en BUT GEII à l'IUT de Bordeaux : les projets académiques réalisés chaque semestre (SAÉ SLR, TDB, KAH), mes projets personnels (montage de PC, hébergement de serveur), et mes expériences professionnelles saisonnières. Une page compétences détaille les savoir-faire développés à travers ces projets — conception électronique, vérification, automatisme, développement web — en les organisant selon les deux familles Concevoir et Vérifier du référentiel BUT GEII. L'ensemble est pensé pour qu'un visiteur puisse naviguer librement entre un aperçu rapide (cartes carrousel) et le détail complet de chaque projet (pages dédiées avec figures, schémas et livrables PDF)."
+                 data-en="This portfolio showcases my journey through the BUT GEII programme at IUT Bordeaux: the academic projects completed each semester (SLR, TDB, KAH SAÉs), personal projects (PC building, server hosting), and seasonal professional experience. A skills page details the know-how developed through these projects — electronics design, verification, automation, web development — organised around the two BUT GEII competency families, Design and Verify. The whole site is designed so that a visitor — recruiter, lecturer or peer — can freely navigate between a quick overview (carousel cards) and the full detail of each project (dedicated pages with figures, diagrams and PDF deliverables).">
+                Ce portfolio présente mon parcours en BUT GEII à l'IUT de Bordeaux : les projets académiques réalisés chaque semestre (SAÉ SLR, TDB, KAH), mes projets personnels (montage de PC, hébergement de serveur), et mes expériences professionnelles saisonnières. Une page compétences détaille les savoir-faire développés à travers ces projets — conception électronique, vérification, automatisme, développement web — en les organisant selon les deux familles Concevoir et Vérifier du référentiel BUT GEII. L'ensemble est pensé pour qu'un visiteur puisse naviguer librement entre un aperçu rapide (cartes carrousel) et le détail complet de chaque projet (pages dédiées avec figures, schémas et livrables PDF).
+              </p>
+              <p data-fr="Le site a été conçu et développé entièrement à la main, en HTML, CSS et JavaScript vanilla, sans framework ni outil de génération. Le design repose sur un système de variables CSS (couleurs, typographie, rayons, ombres) qui garantit une cohérence visuelle entre les pages. L'architecture est modulaire : un composant dock de navigation partagé, des cartes carrousel réutilisables, et des modals pour les contenus détaillés. L'accent a été mis sur la lisibilité et l'animation discrète — apparition progressive des sections, pilule de sous-navigation rétractable — plutôt que sur l'accumulation de bibliothèques externes."
+                 data-en="The site was designed and developed entirely by hand in HTML, CSS and vanilla JavaScript, with no framework or generation tool. The design relies on a CSS variable system (colours, typography, radii, shadows) that ensures visual consistency across pages. The architecture is modular: a shared navigation dock component, reusable carousel cards, and modals for detailed content. The emphasis was on legibility and subtle animation — progressive section appearance, a collapsible sub-navigation pill — rather than loading up on external libraries.">
+                Le site a été conçu et développé entièrement à la main, en HTML, CSS et JavaScript vanilla, sans framework ni outil de génération. Le design repose sur un système de variables CSS (couleurs, typographie, rayons, ombres) qui garantit une cohérence visuelle entre les pages. L'architecture est modulaire : un composant dock de navigation partagé, des cartes carrousel réutilisables, et des modals pour les contenus détaillés. L'accent a été mis sur la lisibilité et l'animation discrète — apparition progressive des sections, pilule de sous-navigation rétractable — plutôt que sur l'accumulation de bibliothèques externes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           ONGLET 2 — PROJETS PERSONNELS
+           ════════════════════════════════════════════════════════ -->
+      <section class="tab-panel" id="panel-perso">
+
+        <p class="section-label anim-1" data-fr="Hors cursus" data-en="Personal work">Hors cursus</p>
+        <h2 class="section-title anim-2" data-fr="Projets personnels" data-en="Personal projects">Projets personnels</h2>
+
+        <div class="stack-wrap card-stagger">
+
+          <!-- Slide Montage PC -->
+          <div class="carousel-slide">
+            <div class="slide-bg" style="background-image: url('img/montage-pc.jpg');"></div>
+            <div class="slide-inner">
+              <div class="slide-left">
+                <div class="slide-meta" data-fr="Hardware" data-en="Hardware">Hardware</div>
+                <div class="slide-title"
+                     data-fr="Montage de tours de PC"
+                     data-en="PC tower building">
+                  Montage de tours de PC
+                </div>
+                <p class="slide-desc"
+                   data-fr="Choix des composants, assemblage et optimisation : plusieurs configurations montées de A à Z, en fonction d'un budget et d'un usage donnés."
+                   data-en="Component selection, assembly and optimisation: several builds put together from scratch, tailored to a given budget and use case.">
+                  Choix des composants, assemblage et optimisation : plusieurs configurations montées de A à Z, en fonction d'un budget et d'un usage donnés.
+                </p>
+                <span class="slide-btn xp-open-btn" data-modal="modalMontagePC"
+                      data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide Hébergement serveur -->
+          <div class="carousel-slide">
+            <div class="slide-bg" style="background-image: url('img/serveur-jeux.jpg');"></div>
+            <div class="slide-inner">
+              <div class="slide-left">
+                <div class="slide-meta" data-fr="Auto-hébergement" data-en="Self-hosting">Auto-hébergement</div>
+                <div class="slide-title"
+                     data-fr="Hébergement d'un serveur de jeux en ligne"
+                     data-en="Hosting an online game server">
+                  Hébergement d'un serveur de jeux en ligne
+                </div>
+                <p class="slide-desc"
+                   data-fr="Mise en place et administration, sur ma propre machine, d'un serveur de jeu permettant à d'autres joueurs de s'y connecter."
+                   data-en="Setting up and administering, on my own machine, a game server that other players can connect to.">
+                  Mise en place et administration, sur ma propre machine, d'un serveur de jeu permettant à d'autres joueurs de s'y connecter.
+                </p>
+                <span class="slide-btn xp-open-btn" data-modal="modalServeurJeux"
+                      data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Modal — Montage PC -->
+        <div id="modalMontagePC" class="xp-modal" onclick="closeXpModalOnBackdrop(event)">
+          <div class="xp-modal-content">
+            <button class="xp-modal-close" onclick="closeXpModal('modalMontagePC')">&times;</button>
+            <div class="xp-modal-header">
+              <span class="xp-modal-eyebrow" data-fr="Hardware" data-en="Hardware">Hardware</span>
+              <h3 class="xp-modal-title" data-fr="Montage de tours de PC" data-en="PC tower building">Montage de tours de PC</h3>
+            </div>
+            <div class="xp-modal-body">
+              <p data-fr="J'ai monté plusieurs ordinateurs de A à Z, ce qui m'a amené à choisir moi-même chaque composant (carte mère, processeur, carte graphique, alimentation, stockage, refroidissement) en fonction de trois critères principaux : le budget disponible, l'utilisation prévue de la machine (bureautique, gaming, montage vidéo, etc.) et la compatibilité entre les pièces (socket du processeur, format de la carte mère, puissance et connecteurs de l'alimentation, gabarit du boîtier). Cette démarche demande de bien équilibrer les composants entre eux pour éviter qu'une pièce ne bride les performances des autres, tout en respectant l'enveloppe budgétaire fixée."
+                 data-en="I have built several computers from scratch, which meant choosing every component myself (motherboard, processor, graphics card, power supply, storage, cooling) based on three main criteria: the available budget, the intended use of the machine (office work, gaming, video editing, etc.) and the compatibility between parts (processor socket, motherboard form factor, power supply wattage and connectors, case dimensions). This requires carefully balancing components so that no single part bottlenecks the others, while staying within the set budget.">
+                J'ai monté plusieurs ordinateurs de A à Z, ce qui m'a amené à choisir moi-même chaque composant (carte mère, processeur, carte graphique, alimentation, stockage, refroidissement) en fonction de trois critères principaux : le budget disponible, l'utilisation prévue de la machine (bureautique, gaming, montage vidéo, etc.) et la compatibilité entre les pièces (socket du processeur, format de la carte mère, puissance et connecteurs de l'alimentation, gabarit du boîtier). Cette démarche demande de bien équilibrer les composants entre eux pour éviter qu'une pièce ne bride les performances des autres, tout en respectant l'enveloppe budgétaire fixée.
+              </p>
+              <p data-fr="Au-delà du montage, ces projets m'ont aussi appris à diagnostiquer une panne et à identifier un composant défectueux : démarche par élimination, tests de composants un par un, vérification des branchements et des tensions d'alimentation. Cette capacité à analyser méthodiquement un dysfonctionnement matériel rejoint directement les compétences développées en BUT GEII autour de l'électronique et des systèmes."
+                 data-en="Beyond the build itself, these projects also taught me how to diagnose a fault and identify a defective component: troubleshooting by elimination, testing parts one by one, checking connections and supply voltages. This ability to methodically analyse a hardware issue directly echoes the skills developed in the BUT GEII programme around electronics and systems.">
+                Au-delà du montage, ces projets m'ont aussi appris à diagnostiquer une panne et à identifier un composant défectueux : démarche par élimination, tests de composants un par un, vérification des branchements et des tensions d'alimentation. Cette capacité à analyser méthodiquement un dysfonctionnement matériel rejoint directement les compétences développées en BUT GEII autour de l'électronique et des systèmes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal — Serveur de jeux en ligne -->
+        <div id="modalServeurJeux" class="xp-modal" onclick="closeXpModalOnBackdrop(event)">
+          <div class="xp-modal-content">
+            <button class="xp-modal-close" onclick="closeXpModal('modalServeurJeux')">&times;</button>
+            <div class="xp-modal-header">
+              <span class="xp-modal-eyebrow" data-fr="Auto-hébergement" data-en="Self-hosting">Auto-hébergement</span>
+              <h3 class="xp-modal-title" data-fr="Hébergement d'un serveur de jeux en ligne" data-en="Hosting an online game server">Hébergement d'un serveur de jeux en ligne</h3>
+            </div>
+            <div class="xp-modal-body">
+              <p data-fr="Dans des jeux comme Minecraft, mais aussi Terraria, Valheim ou encore Project Zomboid, qui proposent tous le même principe de serveur dédié, j'ai téléchargé sur ma propre machine les fichiers nécessaires pour créer et héberger mon propre serveur de jeu. Concrètement, cela consiste à installer le logiciel serveur, configurer le réseau de la machine (ouverture de ports, redirection NAT sur la box internet, éventuellement nom de domaine ou IP fixe) pour le rendre accessible depuis l'extérieur, puis à assurer son administration au quotidien."
+                 data-en="In games like Minecraft, but also Terraria, Valheim or Project Zomboid, which all offer the same dedicated-server principle, I downloaded onto my own machine the files needed to create and host my own game server. In practice, this means installing the server software, configuring the machine's network (port forwarding, NAT redirection on the home router, possibly a domain name or fixed IP) to make it reachable from outside, and then handling its day-to-day administration.">
+                Dans des jeux comme Minecraft, mais aussi Terraria, Valheim ou encore Project Zomboid, qui proposent tous le même principe de serveur dédié, j'ai téléchargé sur ma propre machine les fichiers nécessaires pour créer et héberger mon propre serveur de jeu. Concrètement, cela consiste à installer le logiciel serveur, configurer le réseau de la machine (ouverture de ports, redirection NAT sur la box internet, éventuellement nom de domaine ou IP fixe) pour le rendre accessible depuis l'extérieur, puis à assurer son administration au quotidien.
+              </p>
+              <p data-fr="Héberger son propre serveur ouvre de nombreuses possibilités par rapport à un serveur officiel : inviter des amis à jouer ensemble sur un monde persistant et entièrement personnalisable, installer des mods ou des plugins pour modifier les règles du jeu, gérer les droits de chaque joueur, programmer des sauvegardes automatiques, et garder un contrôle total sur les performances et la disponibilité du serveur. Cette expérience m'a permis de me familiariser concrètement avec l'administration réseau et système, des compétences qui complètent utilement ma formation en informatique industrielle."
+                 data-en="Self-hosting a server opens up many possibilities compared to an official one: inviting friends to play together on a persistent, fully customisable world, installing mods or plugins to change the game's rules, managing each player's permissions, scheduling automatic backups, and keeping full control over the server's performance and availability. This experience gave me hands-on exposure to network and system administration, skills that usefully complement my training in industrial computing.">
+                Héberger son propre serveur ouvre de nombreuses possibilités par rapport à un serveur officiel : inviter des amis à jouer ensemble sur un monde persistant et entièrement personnalisable, installer des mods ou des plugins pour modifier les règles du jeu, gérer les droits de chaque joueur, programmer des sauvegardes automatiques, et garder un contrôle total sur les performances et la disponibilité du serveur. Cette expérience m'a permis de me familiariser concrètement avec l'administration réseau et système, des compétences qui complètent utilement ma formation en informatique industrielle.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           ONGLET 3 — EXPÉRIENCE PROFESSIONNELLE
+           ════════════════════════════════════════════════════════ -->
+      <section class="tab-panel" id="panel-pro">
+
+        <p class="section-label anim-1" data-fr="Travaux saisonniers & stages" data-en="Seasonal jobs & internships">Travaux saisonniers &amp; stages</p>
+        <h2 class="section-title anim-2" data-fr="Expérience professionnelle" data-en="Professional experience">Expérience professionnelle</h2>
+
+        <!-- Carrousel travaux saisonniers -->
+        <div class="acad-section card-stagger">
+          <div class="acad-label">
+            <span data-fr="Travaux saisonniers" data-en="Seasonal work">Travaux saisonniers</span>
+            <span class="acad-badge active" data-fr="Effectué" data-en="Completed">Effectué</span>
+          </div>
+
+          <div class="carousel-wrap" id="carouselPro">
+            <div class="carousel-track" id="carouselProTrack">
+
+              <!-- Slide Agricole -->
+              <div class="carousel-slide">
+                <div class="slide-bg" style="background-image: url('img/agricole.jpg');"></div>
+                <div class="slide-inner">
+                  <div class="slide-left">
+                    <div class="slide-meta" data-fr="Travail saisonnier" data-en="Seasonal work">Travail saisonnier</div>
+                    <div class="slide-title"
+                         data-fr="Castrage de maïs & épuration de tournesol"
+                         data-en="Corn detasseling & sunflower purification">
+                      Castrage de maïs &amp; épuration de tournesol
+                    </div>
+                    <p class="slide-desc"
+                       data-fr="Travail saisonnier en plein champ : castrage manuel du maïs semence et contrôle des plants de tournesol pour garantir des croisements de variétés contrôlés."
+                       data-en="Seasonal fieldwork: manual detasseling of seed corn and inspection of sunflower plants to guarantee controlled variety crosses.">
+                      Travail saisonnier en plein champ : castrage manuel du maïs semence et contrôle des plants de tournesol pour garantir des croisements de variétés contrôlés.
+                    </p>
+                    <span class="slide-btn xp-open-btn" data-modal="modalAgricole"
+                          data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide Carrefour -->
+              <div class="carousel-slide">
+                <div class="slide-bg" style="background-image: url('img/carrefour.jpg');"></div>
+                <div class="slide-inner">
+                  <div class="slide-left">
+                    <div class="slide-meta" data-fr="Travail saisonnier" data-en="Seasonal work">Travail saisonnier</div>
+                    <div class="slide-title"
+                         data-fr="Équipier Drive — Carrefour"
+                         data-en="Drive team member — Carrefour">
+                      Équipier Drive — Carrefour
+                    </div>
+                    <p class="slide-desc"
+                       data-fr="Préparation de commandes en ligne, gestion des stocks et chargement client : un poste rythmé qui demande rapidité, organisation et travail d'équipe."
+                       data-en="Online order picking, stock handling and customer loading: a fast-paced role requiring speed, organisation and teamwork.">
+                      Préparation de commandes en ligne, gestion des stocks et chargement client : un poste rythmé qui demande rapidité, organisation et travail d'équipe.
+                    </p>
+                    <span class="slide-btn xp-open-btn" data-modal="modalCarrefour"
+                          data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</span>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /track -->
+
+            <!-- Dots -->
+            <div class="carousel-dots" id="carouselProDots">
+              <button class="carousel-dot active" data-index="0" aria-label="Slide 1"></button>
+              <button class="carousel-dot"        data-index="1" aria-label="Slide 2"></button>
+            </div>
+
+            <!-- Flèches dans la carte -->
+            <button class="carousel-arrow prev" id="prevProBtn" aria-label="Précédent">&lt;</button>
+            <button class="carousel-arrow next" id="nextProBtn" aria-label="Suivant">&gt;</button>
+
+          </div><!-- /carousel-wrap -->
+        </div>
+
+        <!-- Stage BUT 2 — placeholder -->
+        <div class="acad-section card-stagger">
+          <div class="acad-label">
+            <span data-fr="Stage — BUT 2" data-en="Internship — BUT 2">Stage — BUT 2</span>
+            <span class="acad-badge" data-fr="À venir" data-en="Coming soon">À venir</span>
+          </div>
+          <div class="placeholder-zone">
+            <div class="ph-icon">📐</div>
+            <div class="ph-title"
+                 data-fr="Stage de BUT 2 — À venir"
+                 data-en="BUT 2 internship — Coming soon">
+              Stage de BUT 2 — À venir
+            </div>
+            <span data-fr="Ce stage sera détaillé une fois réalisé."
+                  data-en="This internship will be detailed once completed.">
+              Ce stage sera détaillé une fois réalisé.
+            </span>
+          </div>
+        </div>
+
+        <!-- Alternance BUT 3 — placeholder -->
+        <div class="acad-section card-stagger">
+          <div class="acad-label">
+            <span data-fr="Alternance — BUT 3" data-en="Apprenticeship — BUT 3">Alternance — BUT 3</span>
+            <span class="acad-badge" data-fr="À venir" data-en="Coming soon">À venir</span>
+          </div>
+          <div class="placeholder-zone">
+            <div class="ph-icon">🚀</div>
+            <div class="ph-title"
+                 data-fr="Alternance de BUT 3 — À venir"
+                 data-en="BUT 3 apprenticeship — Coming soon">
+              Alternance de BUT 3 — À venir
+            </div>
+            <span data-fr="Cette expérience sera détaillée à partir de la troisième année."
+                  data-en="This experience will be detailed from third year onwards.">
+              Cette expérience sera détaillée à partir de la troisième année.
+            </span>
+          </div>
+        </div>
+
+        <!-- Modals d'informations détaillées -->
+        <div id="modalAgricole" class="xp-modal" onclick="closeXpModalOnBackdrop(event)">
+          <div class="xp-modal-content">
+            <button class="xp-modal-close" onclick="closeXpModal('modalAgricole')">&times;</button>
+            <div class="xp-modal-header">
+              <span class="xp-modal-eyebrow" data-fr="Travail saisonnier" data-en="Seasonal work">Travail saisonnier</span>
+              <h3 class="xp-modal-title" data-fr="Castrage de maïs & épuration de tournesol" data-en="Corn detasseling & sunflower purification">Castrage de maïs &amp; épuration de tournesol</h3>
+            </div>
+            <div class="xp-modal-body">
+
+              <p><strong data-fr="Castrage du maïs semence" data-en="Seed corn detasseling">Castrage du maïs semence</strong></p>
+              <p data-fr="Le castrage du maïs consiste à retirer manuellement la fleur mâle (la panicule, située au sommet du plant) sur les rangs dits « femelles », avant qu'elle ne libère son pollen. L'objectif est d'empêcher toute autofécondation pour garantir un croisement contrôlé entre deux variétés différentes : les rangs femelles, une fois castrés, ne peuvent être fécondés que par le pollen des rangs mâles voisins, volontairement laissés intacts. Cette technique est à la base de la production de maïs semence hybride, qui est ensuite vendu aux agriculteurs pour être ressemé l'année suivante."
+                 data-en="Detasseling corn means manually removing the male flower (the tassel, at the top of the plant) on the rows designated as female, before it releases its pollen. The goal is to prevent any self-pollination in order to guarantee a controlled cross between two different varieties: once detasseled, female rows can only be pollinated by the pollen from the neighbouring male rows, which are deliberately left untouched. This technique underpins the production of hybrid seed corn, which is then sold to farmers to be sown the following year.">
+                Le castrage du maïs consiste à retirer manuellement la fleur mâle (la panicule, située au sommet du plant) sur les rangs dits « femelles », avant qu'elle ne libère son pollen. L'objectif est d'empêcher toute autofécondation pour garantir un croisement contrôlé entre deux variétés différentes : les rangs femelles, une fois castrés, ne peuvent être fécondés que par le pollen des rangs mâles voisins, volontairement laissés intacts. Cette technique est à la base de la production de maïs semence hybride, qui est ensuite vendu aux agriculteurs pour être ressemé l'année suivante.
+              </p>
+              <p data-fr="Sur l'exploitation où je travaillais, nous étions organisés en équipes de 5 par planche : 4 castreurs avançaient chacun sur un des 4 sillons femelles, retirant la panicule de chaque plant au fil de leur passage, tandis qu'un 5ᵉ équipier jouait le rôle de contrôleur et repassait juste derrière pour vérifier qu'aucune fleur mâle n'avait été oubliée. À côté de ces 4 sillons femelles se trouvaient les sillons mâles, non castrés, qui assuraient la pollinisation. Ce travail demandait de la rigueur et de l'endurance, les journées se déroulant en plein champ sous la chaleur de l'été, avec un passage systématique et rapide sur chaque plant."
+                 data-en="On the farm where I worked, we were organised in teams of 5 per bed: 4 detasselers each moved along one of the 4 female rows, removing the tassel from every plant as they went, while a 5th team member acted as a checker and went back over the same rows right behind them to make sure no male flower had been missed. Next to these 4 female rows were the untouched male rows, which ensured pollination. This work required discipline and stamina, with full days spent in the fields under the summer heat, moving quickly and systematically over every single plant.">
+                Sur l'exploitation où je travaillais, nous étions organisés en équipes de 5 par planche : 4 castreurs avançaient chacun sur un des 4 sillons femelles, retirant la panicule de chaque plant au fil de leur passage, tandis qu'un 5ᵉ équipier jouait le rôle de contrôleur et repassait juste derrière pour vérifier qu'aucune fleur mâle n'avait été oubliée. À côté de ces 4 sillons femelles se trouvaient les sillons mâles, non castrés, qui assuraient la pollinisation. Ce travail demandait de la rigueur et de l'endurance, les journées se déroulant en plein champ sous la chaleur de l'été, avec un passage systématique et rapide sur chaque plant.
+              </p>
+
+              <p style="margin-top:1.75rem;"><strong data-fr="Épuration du tournesol semence" data-en="Seed sunflower purification">Épuration du tournesol semence</strong></p>
+              <p data-fr="L'épuration du tournesol repose sur le même principe que le castrage du maïs : il s'agit de garantir un croisement contrôlé entre deux variétés en empêchant l'autofécondation des plants femelles. Contrairement au maïs, le tournesol ne se castre pas fleur par fleur : le travail consiste à contrôler chaque plant du rang femelle pour vérifier qu'il n'a pas été fécondé par son propre pollen ou par une variété indésirable, et à arracher tout plant non conforme."
+                 data-en="Sunflower purification follows the same principle as corn detasseling: it ensures a controlled cross between two varieties by preventing self-pollination of the female plants. Unlike corn, sunflowers are not detasseled flower by flower: the work consists of checking every plant on the female row to make sure it has not been pollinated by its own pollen or by an unwanted variety, and pulling out any non-compliant plant.">
+                L'épuration du tournesol repose sur le même principe que le castrage du maïs : il s'agit de garantir un croisement contrôlé entre deux variétés en empêchant l'autofécondation des plants femelles. Contrairement au maïs, le tournesol ne se castre pas fleur par fleur : le travail consiste à contrôler chaque plant du rang femelle pour vérifier qu'il n'a pas été fécondé par son propre pollen ou par une variété indésirable, et à arracher tout plant non conforme.
+              </p>
+              <p data-fr="Pour le tournesol, chacun contrôlait sa propre planche de 4 sillons mâles, en se plaçant face à la fleur pour bien observer son cœur : il fallait vérifier qu'elle n'avait pas été fécondée, reconnaissable à l'aspect de son disque floral. Si la fleur s'avérait fécondée, le plant devait être arraché entièrement et sorti du champ, exactement selon la même logique que pour le maïs, afin de ne conserver que des plants garantissant la pureté génétique de la future semence. Ce travail minutieux demandait une attention constante et un sens de l'observation, plant après plant, sur l'ensemble de la planche."
+                 data-en="For sunflowers, each of us checked our own bed of 4 male rows, standing face-on to the flower to closely inspect its centre: we had to check whether it had been pollinated, which is recognisable from the appearance of its floral disc. If a flower turned out to be pollinated, the whole plant had to be pulled out and removed from the field, following the exact same logic as for corn, so that only plants guaranteeing the genetic purity of the future seed were kept. This meticulous work required constant attention and a good eye for detail, plant after plant, across the whole bed.">
+                Pour le tournesol, chacun contrôlait sa propre planche de 4 sillons mâles, en se plaçant face à la fleur pour bien observer son cœur : il fallait vérifier qu'elle n'avait pas été fécondée, reconnaissable à l'aspect de son disque floral. Si la fleur s'avérait fécondée, le plant devait être arraché entièrement et sorti du champ, exactement selon la même logique que pour le maïs, afin de ne conserver que des plants garantissant la pureté génétique de la future semence. Ce travail minutieux demandait une attention constante et un sens de l'observation, plant après plant, sur l'ensemble de la planche.
+              </p>
+
+              <div class="modal-figure" style="margin-top:1.5rem;">
+                <img src="img/castrage.jpg" alt="Castrage du maïs en plein champ" style="width:100%;border-radius:8px;box-shadow:var(--shadow);" />
+                <span class="modal-figure-caption">Équipe au travail dans les sillons de maïs semence — chaque castreur avance sur son rang femelle.</span>
+              </div>
+              <div class="modal-figure">
+                <img src="img/epuration.jpg" alt="Épuration du tournesol semence" style="width:100%;border-radius:8px;box-shadow:var(--shadow);" />
+                <span class="modal-figure-caption">Contrôle plant par plant dans les rangs de tournesol : vérification du disque floral et arrachage des plants non conformes.</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="modalCarrefour" class="xp-modal" onclick="closeXpModalOnBackdrop(event)">
+          <div class="xp-modal-content">
+            <button class="xp-modal-close" onclick="closeXpModal('modalCarrefour')">&times;</button>
+            <div class="xp-modal-header">
+              <span class="xp-modal-eyebrow" data-fr="Travail saisonnier" data-en="Seasonal work">Travail saisonnier</span>
+              <h3 class="xp-modal-title" data-fr="Équipier Drive — Carrefour" data-en="Drive team member — Carrefour">Équipier Drive — Carrefour</h3>
+            </div>
+            <div class="xp-modal-body">
+              <p data-fr="En tant qu'équipier Drive, ma mission principale consistait à préparer les commandes passées en ligne par les clients : à partir d'un bon de commande affiché sur une tablette ou un terminal, je parcourais les rayons de l'entrepôt pour rassembler chaque article de la liste, en respectant les dates de péremption et en faisant attention à la fragilité de certains produits (fruits, bouteilles, surgelés à conditionner rapidement). Une fois la commande complète, les articles étaient regroupés en bacs et stockés en zone de stockage dans l'attente du retrait par le client."
+                 data-en="As a Drive team member, my main task was preparing orders placed online by customers: based on a picking list shown on a tablet or terminal, I went through the warehouse aisles to gather every item on the list, paying attention to expiry dates and to the fragility of certain products (fruit, bottles, frozen items that need to be handled quickly). Once an order was complete, the items were grouped into crates and stored in a holding area until customer pick-up.">
+                En tant qu'équipier Drive, ma mission principale consistait à préparer les commandes passées en ligne par les clients : à partir d'un bon de commande affiché sur une tablette ou un terminal, je parcourais les rayons de l'entrepôt pour rassembler chaque article de la liste, en respectant les dates de péremption et en faisant attention à la fragilité de certains produits (fruits, bouteilles, surgelés à conditionner rapidement). Une fois la commande complète, les articles étaient regroupés en bacs et stockés en zone de stockage dans l'attente du retrait par le client.
+              </p>
+              <p data-fr="Ce poste demandait de travailler avec rapidité tout en restant rigoureux, chaque commande étant soumise à un temps de préparation à respecter, ainsi qu'un bon sens de l'organisation pour optimiser ses déplacements dans l'entrepôt et éviter les allers-retours inutiles. Le travail s'effectuait en équipe, avec une répartition des commandes entre équipiers selon les zones du magasin, et nécessitait une communication efficace pour gérer les ruptures de stock ou les produits manquants en proposant des solutions de remplacement. Enfin, au moment du retrait, j'assurais le chargement des commandes dans le coffre des clients directement sur le parking du Drive."
+                 data-en="This job required working quickly while staying thorough, since each order had a preparation time to respect, as well as good organisational skills to optimise movements around the warehouse and avoid unnecessary back-and-forth trips. The work was done as a team, with orders split between team members according to store zones, and required effective communication to handle stock shortages or missing products by suggesting substitutes. Finally, at pick-up time, I loaded the orders into customers' car boots directly in the Drive car park.">
+                Ce poste demandait de travailler avec rapidité tout en restant rigoureux, chaque commande étant soumise à un temps de préparation à respecter, ainsi qu'un bon sens de l'organisation pour optimiser ses déplacements dans l'entrepôt et éviter les allers-retours inutiles. Le travail s'effectuait en équipe, avec une répartition des commandes entre équipiers selon les zones du magasin, et nécessitait une communication efficace pour gérer les ruptures de stock ou les produits manquants en proposant des solutions de remplacement. Enfin, au moment du retrait, j'assurais le chargement des commandes dans le coffre des clients directement sur le parking du Drive.
+              </p>
+
+              <div class="modal-figure">
+                <img src="img/drive-interieur.jpg" alt="Préparation de commandes en entrepôt Drive" />
+                <span class="modal-figure-caption" data-fr="Préparation de commandes en entrepôt : scan article par article, conditionnement en bacs, respect des dates de péremption." data-en="Order picking in the warehouse: item-by-item scanning, crate packing, respect of expiry dates.">Préparation de commandes en entrepôt : scan article par article, conditionnement en bacs, respect des dates de péremption.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy" data-fr="© 2025 Simon Dartiguelongue" data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:ton@email.com" class="footer-contact" data-fr="ton@email.com" data-en="your@email.com">ton@email.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    /* ── Carrousel académique (BUT1 SAÉ) ── */
+    const track  = document.getElementById('carouselTrack');
+    const dots   = document.querySelectorAll('#carouselDots .carousel-dot');
+    const slides = track.querySelectorAll('.carousel-slide');
+    let current  = 0;
+
+    function goTo(n) {
+      current = (n + slides.length) % slides.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.index)));
+
+    /* Swipe tactile */
+    let startX = 0;
+    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) goTo(dx < 0 ? current + 1 : current - 1);
+    });
+
+    /* Auto-avance toutes les 5 s */
+    let timer = setInterval(() => goTo(current + 1), 5000);
+    document.getElementById('carousel').addEventListener('mouseenter', () => clearInterval(timer));
+    document.getElementById('carousel').addEventListener('mouseleave', () => {
+      clearInterval(timer);
+      timer = setInterval(() => goTo(current + 1), 5000);
+    });
+
+    /* ── Carrousel expérience professionnelle ── */
+    const trackPro  = document.getElementById('carouselProTrack');
+    const dotsPro   = document.querySelectorAll('#carouselProDots .carousel-dot');
+    const slidesPro = trackPro.querySelectorAll('.carousel-slide');
+    let currentPro  = 0;
+
+    function goToPro(n) {
+      currentPro = (n + slidesPro.length) % slidesPro.length;
+      trackPro.style.transform = `translateX(-${currentPro * 100}%)`;
+      dotsPro.forEach((d, i) => d.classList.toggle('active', i === currentPro));
+    }
+
+    document.getElementById('prevProBtn').addEventListener('click', () => goToPro(currentPro - 1));
+    document.getElementById('nextProBtn').addEventListener('click', () => goToPro(currentPro + 1));
+    dotsPro.forEach(d => d.addEventListener('click', () => goToPro(+d.dataset.index)));
+
+    let startXPro = 0;
+    trackPro.addEventListener('touchstart', e => { startXPro = e.touches[0].clientX; }, { passive: true });
+    trackPro.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - startXPro;
+      if (Math.abs(dx) > 40) goToPro(dx < 0 ? currentPro + 1 : currentPro - 1);
+    });
+
+    let timerPro = setInterval(() => goToPro(currentPro + 1), 5000);
+    document.getElementById('carouselPro').addEventListener('mouseenter', () => clearInterval(timerPro));
+    document.getElementById('carouselPro').addEventListener('mouseleave', () => {
+      clearInterval(timerPro);
+      timerPro = setInterval(() => goToPro(currentPro + 1), 5000);
+    });
+
+    /* ── Modals expérience pro ── */
+    function openXpModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeXpModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    function closeXpModalOnBackdrop(event) {
+      if (event.target.classList.contains('xp-modal')) {
+        event.target.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    document.querySelectorAll('.xp-open-btn').forEach(btn => {
+      btn.addEventListener('click', () => openXpModal(btn.dataset.modal));
+    });
+
+    /* ── Sous-navigation Projets : onglets + apparition + pilule rétractable ── */
+    (function () {
+      const subnav        = document.getElementById('projSubnav');
+      const subnavWrapper = document.querySelector('.subnav-wrapper');
+      const dockWrapper    = document.querySelector('.dock-wrapper');
+      const innerMain      = document.querySelector('.inner-main');
+      const tabButtons = subnav.querySelectorAll('.subnav-btn');
+      const panels = document.querySelectorAll('.tab-panel');
+
+      function activateTab(tabName) {
+        tabButtons.forEach(b => b.classList.toggle('active', b.dataset.tab === tabName));
+        panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + tabName));
+      }
+
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+      });
+
+      // Bouton "voir mes autres projets académiques" → scroll fluide
+      const jumpBtn = document.getElementById('jumpOtherAcad');
+      if (jumpBtn) {
+        jumpBtn.addEventListener('click', () => {
+          document.getElementById('autresAcad').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      // Cale la sous-nav juste sous la barre de navigation principale (.dock-wrapper),
+      // et reste collée à elle pendant tout le scroll (les deux étant en position fixed).
+      // Le padding du contenu est calculé sur la taille DÉPLIÉE de la pilule (état stable),
+      // pour éviter tout saut de mise en page quand la pilule se réduit au survol.
+      function alignUnderDock() {
+        const wasCollapsed = subnav.classList.contains('collapsed');
+        if (wasCollapsed) subnav.classList.remove('collapsed');
+
+        const dockHeight   = dockWrapper ? dockWrapper.getBoundingClientRect().height : 64;
+        const subnavHeight = subnav.getBoundingClientRect().height;
+        subnavWrapper.style.top = dockHeight + 'px';
+        if (innerMain) {
+          innerMain.style.paddingTop = (dockHeight + subnavHeight + 26) + 'px';
+        }
+
+        if (wasCollapsed) subnav.classList.add('collapsed');
+      }
+      alignUnderDock();
+      window.addEventListener('resize', alignUnderDock);
+      window.addEventListener('load', alignUnderDock);
+
+      // Effet de propagation à l'arrivée sur la page
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          subnav.classList.add('revealed');
+          setTimeout(alignUnderDock, 520); // recalage une fois l'animation d'entrée terminée
+        }, 120);
+      });
+
+      let collapseTimer = null;
+
+      function expand() {
+        clearTimeout(collapseTimer);
+        subnav.classList.remove('collapsed');
+      }
+      function scheduleCollapse() {
+        clearTimeout(collapseTimer);
+        collapseTimer = setTimeout(() => subnav.classList.add('collapsed'), 900);
+      }
+
+      subnav.addEventListener('mouseenter', expand);
+      subnav.addEventListener('mouseleave', scheduleCollapse);
+
+
+      // Collapse initial après l'apparition, pour garder l'esthétique
+      setTimeout(scheduleCollapse, 1800);
+    })();
+  </script>
+</body>
+</html>

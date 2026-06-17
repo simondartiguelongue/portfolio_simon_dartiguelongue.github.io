@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>À propos — Simon Dartiguelongue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Intro block ── */
+    .intro-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--text-main);
+      border-radius: var(--radius);
+      padding: 2rem 2rem 2rem 2.5rem;
+      margin-bottom: 5rem;
+      box-shadow: var(--shadow);
+    }
+    .intro-block p {
+      font-size: 1.05rem; line-height: 1.8;
+      color: var(--text-muted);
+    }
+    .intro-block p strong { color: var(--text-main); font-weight: 500; }
+
+    /* ── Timeline ── */
+    .timeline-section { margin-bottom: 5rem; }
+
+    .block-label {
+      font-family: var(--font-display);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-section h3,
+    .interests-section h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-weight: 700;
+      margin-bottom: 3rem;
+      color: var(--text-main);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 8px; top: 6px; bottom: 6px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--text-main), transparent);
+      border-radius: 2px;
+      opacity: 0.18;
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 2.8rem;
+      opacity: 0; transform: translateX(-20px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .tl-item.visible { opacity: 1; transform: translateX(0); }
+
+    .tl-dot {
+      position: absolute; left: -2.5rem; top: 6px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--text-main);
+      transition: background .3s;
+    }
+    .tl-item:hover .tl-dot { background: var(--text-main); }
+
+    .tl-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      box-shadow: var(--shadow);
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+    .tl-item:hover .tl-card {
+      border-color: var(--text-muted);
+      transform: translateX(4px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    }
+    .tl-item.current .tl-card {
+      border-left: 3px solid var(--text-main);
+    }
+
+    .tl-year {
+      font-family: var(--font-display);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    .tl-item.current .tl-year { color: var(--text-main); }
+
+    .tl-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+    .tl-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+    .tl-desc strong { color: var(--text-main); font-weight: 500; }
+
+    /* ── Interests ── */
+    .interests-section { margin-bottom: 3rem; }
+
+    .interest-group { margin-bottom: 3rem; }
+    .interest-group-label {
+      font-family: var(--font-display);
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted);
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.4rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .interest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      justify-items: center;
+    }
+
+    .interest-card {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      box-shadow: var(--shadow);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .5s ease, transform .5s ease,
+                  border-color .3s, box-shadow .3s;
+      cursor: default;
+    }
+    .interest-card.visible { opacity: 1; transform: translateY(0); }
+    .interest-card:hover {
+      border-color: var(--text-muted);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+      transform: translateY(-3px) !important;
+    }
+
+    /* Image pleine largeur (comme les project-cards) */
+    .interest-icon-img {
+      width: 100%;
+      height: 160px;
+      border-radius: 8px;
+      object-fit: cover;
+      display: block;
+      background: #E0DFDA;
+      margin-bottom: 0.25rem;
+    }
+
+    .interest-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem; font-weight: 700;
+      color: var(--text-main);
+    }
+    .interest-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+    @media (max-width: 640px) {
+      .interest-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="page-inner">
+
+  <div class="dock-wrapper">
+    <nav class="dock" id="dock">
+      <a href="index.html"       class="dock-link"        data-fr="Accueil"      data-en="Home">Accueil</a>
+      <span class="dock-sep"></span>
+      <a href="apropos.html"     class="dock-link active" data-fr="À propos"     data-en="About">À propos</a>
+      <span class="dock-sep"></span>
+      <a href="projets.html"     class="dock-link"        data-fr="Projets"      data-en="Projects">Projets</a>
+      <span class="dock-sep"></span>
+      <a href="competences.html" class="dock-link"        data-fr="Compétences"  data-en="Skills">Compétences</a>
+      <span class="dock-sep"></span>
+      <a href="contact.html"     class="dock-link"        data-fr="Contact"      data-en="Contact">Contact</a>
+      <span class="dock-sep"></span>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
+
+  <main class="inner-main">
+    <div class="wrapper">
+
+      <p class="section-label anim-1" data-fr="Qui suis-je" data-en="About me">Qui suis-je</p>
+      <h2 class="section-title anim-2" data-fr="À propos" data-en="About">À propos</h2>
+
+      <!-- ① Intro -->
+      <div class="intro-block anim-3">
+        <p
+          data-fr="Je suis actuellement étudiant en première année de <strong>BUT Génie Électrique et Informatique Industrielle (GEII)</strong> à l'IUT de Bordeaux. Je m'oriente vers les métiers liés à l'<strong>électronique</strong> et aux <strong>systèmes automatisés</strong>, avec un intérêt particulier pour la conception de cartes électroniques et la programmation industrielle. Issu d'un baccalauréat général avec les spécialités <strong>mathématiques</strong> et <strong>NSI</strong>, j'ai acquis des bases solides dans les matières théoriques tout en restant efficace lors des phases de manipulation. J'apprécie particulièrement le travail en équipe dans les <strong>Situations d'Apprentissage et d'Évaluation (SAÉ)</strong>, qui me permettent de mettre en pratique mes compétences avec dynamisme et engagement."
+          data-en="I am currently a first-year student in <strong>Electrical Engineering and Industrial Computing (GEII)</strong> at the IUT of Bordeaux. I am moving toward careers in <strong>electronics</strong> and <strong>automated systems</strong>, with a particular interest in PCB design and industrial programming. Coming from a general baccalaureate with specialisations in <strong>Mathematics</strong> and <strong>Computer Science (NSI)</strong>, I have built solid theoretical foundations while remaining effective during hands-on practical phases. I particularly enjoy teamwork in <strong>Learning and Assessment Situations (SAÉ)</strong>, which allow me to apply my skills with energy and commitment.">
+          Je suis actuellement étudiant en première année de <strong>BUT Génie Électrique et Informatique Industrielle (GEII)</strong> à l'IUT de Bordeaux. Je m'oriente vers les métiers liés à l'<strong>électronique</strong> et aux <strong>systèmes automatisés</strong>, avec un intérêt particulier pour la conception de cartes électroniques et la programmation industrielle. Issu d'un baccalauréat général avec les spécialités <strong>mathématiques</strong> et <strong>NSI</strong>, j'ai acquis des bases solides dans les matières théoriques tout en restant efficace lors des phases de manipulation. J'apprécie particulièrement le travail en équipe dans les <strong>Situations d'Apprentissage et d'Évaluation (SAÉ)</strong>, qui me permettent de mettre en pratique mes compétences avec dynamisme et engagement.
+        </p>
+      </div>
+
+      <!-- ② Timeline -->
+      <section class="timeline-section">
+        <p class="block-label" data-fr="Parcours scolaire" data-en="Academic path">Parcours scolaire</p>
+        <h3 data-fr="Ma trajectoire" data-en="My trajectory">Ma trajectoire</h3>
+
+        <div class="timeline">
+
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-year" data-fr="3ème" data-en="Year 9">3ème</div>
+              <div class="tl-title" data-fr="Brevet mention Très Bien" data-en="National diploma — High Distinction">Brevet mention Très Bien</div>
+              <p class="tl-desc"
+                data-fr="Obtention du brevet avec mention Très Bien. Réalisation d'un stage d'observation chez <strong>Informatique 40</strong>, permettant une première immersion dans le domaine informatique et technologique."
+                data-en="Obtained the national diploma with High Distinction. Completed an observation internship at <strong>Informatique 40</strong>, providing a first immersion in the computing and technology sector.">
+                Obtention du brevet avec mention Très Bien. Réalisation d'un stage d'observation chez <strong>Informatique 40</strong>, permettant une première immersion dans le domaine informatique et technologique.
+              </p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-year" data-fr="Première générale" data-en="Year 11">Première générale</div>
+              <div class="tl-title" data-fr="Mathématiques · NSI · Physique" data-en="Mathematics · CS · Physics">Mathématiques · NSI · Physique</div>
+              <p class="tl-desc"
+                data-fr="Choix des spécialités mathématiques, NSI et physique. Orientation progressive vers les métiers de l'électronique, avec acquisition de bases en programmation et en logique."
+                data-en="Choice of specialisations in Mathematics, Computer Science, and Physics. Progressive orientation toward electronics careers, with acquisition of foundations in programming and logic.">
+                Choix des spécialités mathématiques, NSI et physique. Orientation progressive vers les métiers de l'électronique, avec acquisition de bases en programmation et en logique.
+              </p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-year" data-fr="Terminale générale" data-en="Year 12">Terminale générale</div>
+              <div class="tl-title" data-fr="Baccalauréat mention Bien" data-en="Baccalaureate — Good Distinction">Baccalauréat mention Bien</div>
+              <p class="tl-desc"
+                data-fr="Poursuite des spécialités mathématiques et NSI, consolidation des compétences en informatique et en analyse. Obtention du baccalauréat mention Bien."
+                data-en="Continued with Mathematics and Computer Science specialisations, consolidating skills in programming and analytical thinking. Obtained the baccalaureate with Good Distinction.">
+                Poursuite des spécialités mathématiques et NSI, consolidation des compétences en informatique et en analyse. Obtention du baccalauréat mention Bien.
+              </p>
+            </div>
+          </div>
+
+          <div class="tl-item current">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-year" data-fr="En cours · BUT 1 GEII" data-en="Ongoing · BUT 1 GEII">En cours · BUT 1 GEII</div>
+              <div class="tl-title" data-fr="IUT de Bordeaux — Parcours ESE" data-en="IUT of Bordeaux — ESE track">IUT de Bordeaux — Parcours ESE</div>
+              <p class="tl-desc"
+                data-fr="Formation en Génie Électrique et Informatique Industrielle, avec une approche concrète mêlant électronique et programmation industrielle. Réalisation de projets pratiques et travail en équipe en SAÉ. Objectif : intégrer le parcours <strong>Électronique et Systèmes Embarqués</strong>."
+                data-en="Training in Electrical Engineering and Industrial Computing, with a hands-on approach combining electronics and industrial programming. Practical projects and team work in SAÉ. Goal: join the <strong>Electronics and Embedded Systems</strong> track.">
+                Formation en Génie Électrique et Informatique Industrielle, avec une approche concrète mêlant électronique et programmation industrielle. Réalisation de projets pratiques et travail en équipe en SAÉ. Objectif : intégrer le parcours <strong>Électronique et Systèmes Embarqués</strong>.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ③ Centres d'intérêt -->
+      <section class="interests-section">
+        <p class="block-label" data-fr="Personnalité &amp; loisirs" data-en="Personality &amp; hobbies">Personnalité &amp; loisirs</p>
+        <h3 data-fr="Centres d'intérêt" data-en="Interests">Centres d'intérêt</h3>
+
+        <!-- Nature -->
+        <div class="interest-group">
+          <div class="interest-group-label">
+            <span>🌿</span>
+            <span data-fr="Activités en nature" data-en="Outdoor activities">Activités en nature</span>
+          </div>
+          <div class="interest-grid">
+
+            <div class="interest-card">
+              <img class="interest-icon-img" src="img/randonnee.jpg" alt="Randonnée" />
+              <div class="interest-title" data-fr="Randonnée en montagne" data-en="Mountain hiking">Randonnée en montagne</div>
+              <p class="interest-text"
+                 data-fr="Développe endurance, persévérance et capacité à rester concentré sur la durée."
+                 data-en="Builds endurance, perseverance, and the ability to stay focused over extended periods.">
+                Développe endurance, persévérance et capacité à rester concentré sur la durée.
+              </p>
+            </div>
+
+            <div class="interest-card">
+              <img class="interest-icon-img" src="img/peche.jpg" alt="Pêche" />
+              <div class="interest-title" data-fr="Pêche" data-en="Fishing">Pêche</div>
+              <p class="interest-text"
+                 data-fr="Développe patience, observation et précision."
+                 data-en="Builds patience, observation, and precision.">
+                Développe patience, observation et précision.
+              </p>
+            </div>
+
+            <div class="interest-card">
+              <img class="interest-icon-img" src="img/tir-arc.jpg" alt="Tir à l'arc" />
+              <div class="interest-title" data-fr="Tir à l'arc" data-en="Archery">Tir à l'arc</div>
+              <p class="interest-text"
+                 data-fr="Développe concentration, rigueur et maîtrise de soi."
+                 data-en="Builds concentration, precision, and self-mastery.">
+                Développe concentration, rigueur et maîtrise de soi.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Physique -->
+        <div class="interest-group">
+          <div class="interest-group-label">
+            <span>🏃</span>
+            <span data-fr="Activités physiques" data-en="Physical activities">Activités physiques</span>
+          </div>
+          <div class="interest-grid">
+
+            <div class="interest-card">
+              <img class="interest-icon-img" src="img/escalade.jpg" alt="Escalade" />
+              <div class="interest-title" data-fr="Escalade" data-en="Climbing">Escalade</div>
+              <p class="interest-text"
+                 data-fr="Développe adaptation, analyse et résolution de problèmes."
+                 data-en="Builds adaptability, analytical thinking, and problem-solving skills.">
+                Développe adaptation, analyse et résolution de problèmes.
+              </p>
+            </div>
+
+            <div class="interest-card">
+              <img class="interest-icon-img" src="img/musculation.jpg" alt="Musculation" />
+              <div class="interest-title" data-fr="Musculation" data-en="Strength training">Musculation</div>
+              <p class="interest-text"
+                 data-fr="Développe discipline, régularité et persévérance."
+                 data-en="Builds discipline, consistency, and perseverance.">
+                Développe discipline, régularité et persévérance.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Associatif -->
+        <div class="interest-group">
+          <div class="interest-group-label">
+            <span>🤝</span>
+            <span data-fr="Engagement associatif" data-en="Community involvement">Engagement associatif</span>
+          </div>
+          <div class="interest-grid">
+
+            <div class="interest-card">
+              <img class="interest-icon-img" src="img/comite-fetes.jpg" alt="Comité des fêtes" />
+              <div class="interest-title" data-fr="Comité des fêtes" data-en="Events committee">Comité des fêtes</div>
+              <p class="interest-text"
+                 data-fr="Participation à l'organisation d'événements, développement du travail en équipe et du sens des responsabilités."
+                 data-en="Involvement in event organisation, developing teamwork and a sense of responsibility.">
+                Participation à l'organisation d'événements, développement du travail en équipe et du sens des responsabilités.
+              </p>
+            </div>
+
+            <div class="interest-card">
+              <img class="interest-icon-img" src="img/club-arc.jpg" alt="Club tir à l'arc" />
+              <div class="interest-title" data-fr="Club de tir à l'arc · Bureau" data-en="Archery club · Committee">Club de tir à l'arc · Bureau</div>
+              <p class="interest-text"
+                 data-fr="Implication dans la gestion du club, développement de la communication, de l'engagement et de la prise d'initiative."
+                 data-en="Involvement in club management, developing communication skills, commitment, and initiative.">
+                Implication dans la gestion du club, développement de la communication, de l'engagement et de la prise d'initiative.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy" data-fr="© 2025 Simon Dartiguelongue" data-en="© 2025 Simon Dartiguelongue">© 2025 Simon Dartiguelongue</span>
+      <a href="mailto:ton@email.com" class="footer-contact" data-fr="ton@email.com" data-en="your@email.com">ton@email.com</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.tl-item, .interest-card').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
